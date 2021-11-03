@@ -37,10 +37,7 @@ public class FilesFragment extends Fragment {
 
     private void initRecyclerViewFiles(){
         LinearLayoutManager layoutManager5 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        binding.filesRV.setLayoutManager(layoutManager5);
 
-        RecyclerViewAdapterFiles adapter = new RecyclerViewAdapterFiles(getActivity(),null, false);
-        binding.filesRV.setItemAnimator( new DefaultItemAnimator());
-        binding.filesRV.setAdapter(adapter);
+        binding.filesRV.setLayoutManager(layoutManager5);
     }
 }

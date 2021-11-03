@@ -53,6 +53,7 @@ public class VaultTypeActivity extends AppCompatActivity {
     }
 
     private void parseSnapshot(DataSnapshot snapshot) {
+
         List<String> categories = new ArrayList<>();
 
         for (DataSnapshot child : snapshot.getChildren()) {

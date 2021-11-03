@@ -2,13 +2,16 @@ package com.sar.taxvault.Model;
 
 public class UserModel {
 
-    String firstName="";
-    String lastName="";
-    String phoneNumber="";
-    String email="";
-    String password="";
-    String userType="Individual";
-    String rememberMe="true";
+    String firstName = "";
+    String lastName = "";
+    String phoneNumber = "";
+    String email = "";
+    String password = "";
+    String userType = "Individual";
+    Boolean rememberMe = true;
+    String token;
+    String postCount;
+    String maxCount;
 
 
     public String getFirstName() {
@@ -59,11 +62,11 @@ public class UserModel {
         this.userType = userType;
     }
 
-    public String getRememberMe() {
-        return rememberMe;
-    }
-
-    public void setRememberMe(String rememberMe) {
-        this.rememberMe = rememberMe;
-    }
+//    public String getRememberMe() {
+//        return rememberMe;
+//    }
+//
+//    public void setRememberMe(String rememberMe) {
+//        this.rememberMe = rememberMe;
+//    }
 }

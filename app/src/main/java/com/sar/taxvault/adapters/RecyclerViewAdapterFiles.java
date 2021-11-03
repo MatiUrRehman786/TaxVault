@@ -11,7 +11,9 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.sar.taxvault.Model.Document;
 import com.sar.taxvault.R;
+import com.sar.taxvault.activity.VaultActivity;
 import com.sar.taxvault.databinding.LayoutItemsFilesBinding;
 import com.sar.taxvault.databinding.LayoutItemsNotificationsBinding;
 
@@ -22,14 +24,13 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
 
     private static final String TAG = "RCA_Notifications";
 
-    private List<String> list;
-    private Context mContext;
-    boolean isFromVaultClass;
+    private List<Document> list;
 
-    public RecyclerViewAdapterFiles(Context mContext, List<String> list, boolean isFromVaultClass) {
-        this.list = list;
-        this.mContext = mContext;
-        this.isFromVaultClass = isFromVaultClass;
+    private Context mContext;
+
+    public RecyclerViewAdapterFiles(Context context, List<Document> documents) {
+        this.list = documents;
+        this.mContext = context;
     }
 
     @NonNull
@@ -43,12 +44,13 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
         Log.d(TAG, "onBindViewHolder : called.");
 
-        if(isFromVaultClass){
-            viewHolder.binding.moreOptionsIV.setImageResource(R.drawable.vault);
-        }
-        else{
-            viewHolder.binding.moreOptionsIV.setImageResource(R.drawable.three_dots);
-        }
+        Document document = list.get(i);
+
+        viewHolder.binding.creationDateTV.setText(document.getTime());
+        viewHolder.binding.documentTitleTV.setText(document.getName());
+        viewHolder.binding.fileSizeTV.setText("Total "+document.getSize());
+        viewHolder.binding.moreOptionsIV.setImageResource(R.drawable.three_dots);
+
         viewHolder.binding.moreOptionsIV.setOnClickListener(view -> {
             Dialog dialog = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
             dialog.setContentView(R.layout.dialog_file_options);
@@ -60,25 +62,13 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
 
     @Override
     public int getItemCount() {
-        int arr = 0;
-        try{
-            if(list.size()==0){
-                arr = 0;
-            }
-            else{
 
-                arr=list.size();
-            }
-        }catch (Exception e){
-        }
-
-        return 8;
+        return list.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder{
 
         LayoutItemsFilesBinding binding;
-
 
         public ViewHolder(@NonNull LayoutItemsFilesBinding binding) {
             super(binding.getRoot());
