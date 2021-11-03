@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#80000000"
+    android:paddingVertical="@dimen/_10sdp">
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/containerLL"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@drawable/rectangle_background_light_gray"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintWidth_percent="0.9">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_36sdp"
+            android:layout_height=  "@dimen/_36sdp"
+            android:id="@+id/filesIV"
+            android:scaleType="centerCrop"
+            android:background="@drawable/circular_background_red"
+            android:src="@drawable/document"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:padding="@dimen/_10sdp"
+            android:layout_marginVertical="@dimen/_8sdp"
+            android:layout_marginStart="@dimen/_8sdp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/documentTitleTV"
+            app:layout_constraintTop_toTopOf="@id/filesIV"
+            app:layout_constraintStart_toEndOf="@+id/filesIV"
+            android:fontFamily="@font/poppins_regular"
+            android:textStyle="bold"
+            android:text="Documents"
+            android:textSize="@dimen/_13ssp"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:textAlignment="center"
+            android:layout_marginStart="@dimen/_6sdp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/creationDateTV"
+            app:layout_constraintTop_toBottomOf="@+id/documentTitleTV"
+            app:layout_constraintStart_toEndOf="@+id/filesIV"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Created July 05 2020"
+            android:textSize="@dimen/_8ssp"
+            android:maxLines="1"
+            android:textColor="@color/gray"
+            android:textAlignment="center"
+            android:layout_marginStart="@dimen/_6sdp"/>
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/whiteContainerLL"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/bottom_rounded_background_white"
+            android:padding="@dimen/_8sdp"
+            android:layout_marginTop="@dimen/_8sdp"
+            app:layout_constraintEnd_toEndOf="@id/containerLL"
+            app:layout_constraintStart_toStartOf="@id/containerLL"
+            app:layout_constraintTop_toBottomOf="@id/filesIV">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/shareIV"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:src="@drawable/share"
+                android:background="@drawable/circular_background_blue"
+                android:padding="@dimen/_6sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/shareTV"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Share"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/shareIV"
+                app:layout_constraintTop_toTopOf="@id/shareIV" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/accessIV"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:src="@drawable/access_to_users"
+                android:background="@drawable/circular_background_blue"
+                android:padding="@dimen/_6sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/shareIV" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/accessTV"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Access to users"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/accessIV"
+                app:layout_constraintTop_toTopOf="@id/accessIV" />
+
+            <androidx.appcompat.widget.SwitchCompat
+                android:id="@+id/accessSwitch"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="@id/accessIV"
+                app:layout_constraintTop_toTopOf="@id/accessIV"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:thumbTint="@color/blue"
+                app:trackTint="@color/light_gray_et"/>
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/deleteIV"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:src="@drawable/delete"
+                android:background="@drawable/circular_background_blue"
+                android:padding="@dimen/_6sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/accessIV"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:layout_marginBottom="@dimen/_12sdp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/deleteTV"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Delete"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintStart_toEndOf="@id/deleteIV"
+                app:layout_constraintTop_toTopOf="@id/deleteIV" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

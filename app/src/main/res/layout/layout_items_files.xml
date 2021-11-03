@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:paddingVertical="@dimen/_2sdp"
+    android:layout_marginTop="@dimen/_6sdp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="0dp"
+            app:layout_constraintWidth_percent="0.9"
+            android:layout_height="wrap_content"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginVertical="@dimen/_1sdp"
+            android:background="@drawable/rectangle_background_light_gray">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_36sdp"
+                android:layout_height=  "@dimen/_36sdp"
+                android:id="@+id/filesIV"
+                android:scaleType="centerCrop"
+                android:background="@drawable/circular_background_red"
+                android:src="@drawable/document"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="@dimen/_10sdp"
+                android:layout_marginVertical="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_8sdp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/documentTitleTV"
+                app:layout_constraintTop_toTopOf="@id/filesIV"
+                app:layout_constraintStart_toEndOf="@+id/filesIV"
+                android:fontFamily="@font/poppins_regular"
+                android:textStyle="bold"
+                android:text="Documents"
+                android:textSize="@dimen/_13ssp"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_marginStart="@dimen/_6sdp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/creationDateTV"
+                app:layout_constraintTop_toBottomOf="@+id/documentTitleTV"
+                app:layout_constraintStart_toEndOf="@+id/filesIV"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Created July 05 2020"
+                android:textSize="@dimen/_8ssp"
+                android:maxLines="1"
+                android:textColor="@color/gray"
+                android:textAlignment="center"
+                android:layout_marginStart="@dimen/_6sdp"/>
+
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/fileSizeTV"
+                app:layout_constraintTop_toBottomOf="@+id/creationDateTV"
+                app:layout_constraintStart_toEndOf="@+id/filesIV"
+                app:layout_constraintBottom_toBottomOf="parent"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Total - 2GB"
+                android:textSize="@dimen/_10ssp"
+                android:maxLines="1"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:textAlignment="center"
+                android:layout_marginTop="@dimen/_4sdp"
+                android:layout_marginBottom="@dimen/_8sdp"
+                android:layout_marginStart="@dimen/_6sdp"/>
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:id="@+id/moreOptionsIV"
+                android:src="@drawable/three_dots"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                android:padding="@dimen/_6sdp"
+                android:layout_marginTop="@dimen/_4sdp"/>
+            
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

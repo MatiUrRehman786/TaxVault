@@ -1,0 +1,31 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.sar.taxvault">
+
+    <application
+        android:allowBackup="true"
+        android:icon="@drawable/app_icon"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/app_icon"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TaxVault">
+        <activity
+            android:name=".activity.VaultTypeActivity"
+            android:exported="true" />
+        <activity android:name=".activity.SettingsActivity" />
+        <activity android:name=".activity.RemindersActivity" />
+        <activity android:name=".activity.VaultActivity" />
+        <activity android:name=".activity.DetailedNewsActivity" />
+        <activity android:name=".activity.NewsActivity" />
+        <activity android:name=".activity.Main" />
+        <activity android:name=".activity.Signup" />
+        <activity android:name=".activity.Login">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

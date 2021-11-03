@@ -1,0 +1,322 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Signup">
+
+    <include
+        android:id="@+id/includeView"
+        layout="@layout/include_app_bar" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/verticalLine"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/side_icon"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_96sdp"
+        android:src="@drawable/side_icon"
+        app:layout_constraintEnd_toStartOf="@id/verticalLine"
+        app:layout_constraintTop_toBottomOf="@id/includeView" />
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/_68sdp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="@+id/side_icon">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/firstNameLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_medium"
+                android:text="First Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.8" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/firstNameET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="@string/type_here"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/firstNameLabel"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/lastNameLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Last Name"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/firstNameET"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/lastNameET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="@string/type_here"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lastNameLabel"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/mobileNumberLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Mobile Number"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/lastNameET"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/phoneNumberET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="@string/type_here"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/mobileNumberLabel"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/emailLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Email Address"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/phoneNumberET"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/emailET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="@string/type_here"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailLabel"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/passwordLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Password"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/emailET"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/passwordET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="@string/type_here"
+                android:imeOptions="actionNext"
+                android:inputType="textPassword"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordLabel"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/userTypeLabel"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_medium"
+                android:text="User Type"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/passwordET"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <Spinner
+                android:id="@+id/userTypeSpinner"
+                android:layout_width="0dp"
+                app:layout_constraintWidth_percent="0.8"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:paddingStart="@dimen/_16sdp"
+                android:paddingEnd="@dimen/_56sdp"
+                android:entries="@array/user_type"
+                android:paddingVertical="@dimen/_10sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/userTypeLabel"
+                android:layout_marginTop="@dimen/_5sdp" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:src="@drawable/spinner_arrow"
+                android:tint="@color/blue"
+                app:layout_constraintBottom_toBottomOf="@+id/userTypeSpinner"
+                app:layout_constraintEnd_toEndOf="@+id/userTypeSpinner"
+                app:layout_constraintTop_toTopOf="@+id/userTypeSpinner" />
+
+            <androidx.appcompat.widget.AppCompatCheckBox
+                android:id="@+id/rememberMeCBSignup"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:checked="false"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Remember Me"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/userTypeSpinner"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/signupBtn"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginBottom="@dimen/_24sdp"
+                android:background="@drawable/rectangle_background_blue"
+                android:elevation="@dimen/_1sdp"
+                android:paddingVertical="@dimen/_12sdp"
+                android:text="REGISTER"
+                android:textAlignment="center"
+                android:textColor="@color/white"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rememberMeCBSignup"
+                app:layout_constraintWidth_percent="0.8" />
+
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </ScrollView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".fragment.ProfileFragment">
+
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:layout_width="@dimen/_80sdp"
+            android:layout_height="@dimen/_80sdp"
+            android:id="@+id/profileImageCIV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            android:src="@drawable/profile_pic"
+            android:layout_marginTop="@dimen/_32sdp"
+            android:scaleType="centerCrop"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/userNameTV"
+            app:layout_constraintTop_toBottomOf="@id/profileImageCIV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Kathrine Elisabeth"
+            android:textSize="@dimen/_14ssp"
+            android:maxLines="1"
+            android:textColor="@color/black"
+            android:layout_marginTop="@dimen/_8sdp"/>
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/emailTV"
+            app:layout_constraintTop_toBottomOf="@+id/userNameTV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:fontFamily="@font/poppins_medium"
+            android:text="Katherineelisabeth@info.com"
+            android:textSize="@dimen/_8ssp"
+            android:maxLines="1"
+            android:textColor="@color/gray"/>
+
+        <ScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:paddingHorizontal="@dimen/_20sdp"
+            android:paddingVertical="@dimen/_5sdp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/emailTV"
+            app:layout_constraintBottom_toTopOf="@id/logoutBtn">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical">
+
+                <TextView
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:id="@+id/userFullNameTitleTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_10ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="Full Name"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10ssp"/>
+                <TextView
+                    android:id="@+id/userFullNameTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_12ssp"
+                    android:autoSizeMinTextSize="@dimen/_10ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="Kathrine Elisabeth"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"/>
+                <TextView
+                    android:id="@+id/userEmailAddressTitleTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_10ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="Email Address"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginTop="@dimen/_8sdp"/>
+                <TextView
+                    android:id="@+id/userEmailAddressTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_12ssp"
+                    android:autoSizeMinTextSize="@dimen/_10ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="Katherineelisabeth@info.com"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"/>
+                <TextView
+                    android:id="@+id/userLocationTitleTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_10ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="Location"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginTop="@dimen/_8sdp"/>
+                <TextView
+                    android:id="@+id/userLocationTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_12ssp"
+                    android:autoSizeMinTextSize="@dimen/_10ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="Katherine Elisabeth house 25620"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"/>
+                <TextView
+                    android:id="@+id/userPasswordTitleTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_10ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="Password"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/gray"
+                    android:textSize="@dimen/_10ssp"
+                    android:layout_marginTop="@dimen/_8sdp"/>
+                <TextView
+                    android:id="@+id/userPasswordTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_12ssp"
+                    android:autoSizeMinTextSize="@dimen/_10ssp"
+                    android:autoSizeTextType="uniform"
+                    android:text="123456789"
+                    android:inputType="textPassword"
+                    android:fontFamily="@font/poppins_medium"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"/>
+            </LinearLayout>
+        </ScrollView>
+
+
+        <TextView
+            android:id="@+id/logoutBtn"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:autoSizeMaxTextSize="@dimen/_12ssp"
+            android:autoSizeMinTextSize="@dimen/_9ssp"
+            android:autoSizeTextType="uniform"
+            android:text="Log Out"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            android:layout_marginLeft="@dimen/_20sdp"
+            android:layout_marginVertical="@dimen/_24sdp"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>

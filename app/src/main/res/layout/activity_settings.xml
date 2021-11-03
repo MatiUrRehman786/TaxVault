@@ -1,0 +1,166 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.SettingsActivity">
+
+    <include
+        android:id="@+id/includeView"
+        layout="@layout/include_app_bar_with_back"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:id="@+id/profileImageCIV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/includeView"
+        android:src="@drawable/user_icon"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:scaleType="centerCrop"/>
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        android:visibility="gone"
+        android:layout_width="@dimen/_30sdp"
+        android:layout_height="@dimen/_30sdp"
+        android:id="@+id/editImageIV"
+        android:padding="@dimen/_3sdp"
+        app:layout_constraintStart_toEndOf="@id/profileImageCIV"
+        app:layout_constraintBottom_toBottomOf="@id/profileImageCIV"
+        android:src="@drawable/add_image_icon"
+        android:layout_marginTop="@dimen/_32sdp"
+        android:scaleType="centerCrop"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/userNameTV"
+        app:layout_constraintTop_toBottomOf="@id/profileImageCIV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/poppins_medium"
+        android:text="User"
+        android:textSize="@dimen/_14ssp"
+        android:maxLines="1"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_8sdp"/>
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/emailTV"
+        app:layout_constraintTop_toBottomOf="@+id/userNameTV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:fontFamily="@font/poppins_medium"
+        android:text="user@info.com"
+        android:textSize="@dimen/_8ssp"
+        android:maxLines="1"
+        android:textColor="@color/gray"/>
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:paddingHorizontal="@dimen/_20sdp"
+        android:paddingVertical="@dimen/_5sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/emailTV"
+        app:layout_constraintBottom_toTopOf="@id/logoutBtn">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_marginTop="@dimen/_10sdp"
+                android:id="@+id/userFullNameTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:text="Full Name"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10ssp"/>
+            <TextView
+                android:id="@+id/userFullNameTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_10ssp"
+                android:autoSizeTextType="uniform"
+                android:text="User"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"/>
+            <TextView
+                android:id="@+id/userEmailAddressTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:text="Email Address"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_8sdp"/>
+            <TextView
+                android:id="@+id/userEmailAddressTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_10ssp"
+                android:autoSizeTextType="uniform"
+                android:text="user@info.com"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"/>
+            <TextView
+                android:id="@+id/userLocationTitleTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:text="Phone Number"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_8sdp"/>
+            <TextView
+                android:id="@+id/userPhoneNumberTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_10ssp"
+                android:autoSizeTextType="uniform"
+                android:text="1234567"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"/>
+        </LinearLayout>
+    </ScrollView>
+
+
+    <TextView
+        android:id="@+id/logoutBtn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:autoSizeMaxTextSize="@dimen/_12ssp"
+        android:autoSizeMinTextSize="@dimen/_9ssp"
+        android:autoSizeTextType="uniform"
+        android:text="Log Out"
+        android:padding="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/red"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="@dimen/_20sdp"
+        android:layout_marginVertical="@dimen/_24sdp"/>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

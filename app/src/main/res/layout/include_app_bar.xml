@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:id="@+id/layoutCL"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/titleTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/poppins_medium"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/layoutCL"
+            app:layout_constraintEnd_toEndOf="@+id/layoutCL"
+            app:layout_constraintStart_toStartOf="@+id/layoutCL"
+            app:layout_constraintTop_toTopOf="@+id/layoutCL" />
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/menuIV"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:padding="@dimen/_1sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:src="@drawable/drawer_icon"
+            app:layout_constraintBottom_toBottomOf="@+id/layoutCL"
+            app:layout_constraintStart_toStartOf="@+id/layoutCL"
+            app:layout_constraintTop_toTopOf="@+id/layoutCL" />
+
+        <androidx.appcompat.widget.AppCompatSpinner
+            android:id="@+id/yearSpinner"
+            android:layout_width="@dimen/_48sdp"
+            android:layout_height="@dimen/_16sdp"
+            app:layout_constraintTop_toTopOf="parent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            android:layout_marginEnd="@dimen/_16sdp"
+            android:textAlignment="textStart"
+            android:padding="0dp"
+            android:visibility="invisible"
+            android:drawSelectorOnTop="true"
+            android:entries="@array/year"
+            android:popupBackground="@color/red"
+            android:background="@drawable/rectangle_background_red"
+            android:theme="@style/Spinner"
+            android:tooltipText="Select Year" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/_10sdp"
+            android:layout_height="@dimen/_10sdp"
+            android:src="@drawable/spinner_arrow"
+            android:layout_marginEnd="@dimen/_2sdp"
+            app:layout_constraintBottom_toBottomOf="@+id/yearSpinner"
+            app:layout_constraintEnd_toEndOf="@+id/yearSpinner"
+            app:layout_constraintTop_toTopOf="@+id/yearSpinner" />
+
+<!--        <ImageView-->
+<!--            android:id="@+id/backIV"-->
+<!--            android:layout_width="@dimen/_20sdp"-->
+<!--            android:layout_height="@dimen/_20sdp"-->
+<!--            android:paddingTop="@dimen/_2sdp"-->
+<!--            android:paddingBottom="@dimen/_2sdp"-->
+<!--            android:layout_marginRight="@dimen/_10sdp"-->
+<!--            android:layout_marginEnd="@dimen/_10sdp"-->
+<!--            app:layout_constraintBottom_toBottomOf="@+id/layoutCL"-->
+<!--            app:layout_constraintEnd_toEndOf="@+id/layoutCL"-->
+<!--            app:layout_constraintTop_toTopOf="@+id/layoutCL" />-->
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

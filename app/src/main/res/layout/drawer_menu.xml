@@ -1,0 +1,182 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingLeft="@dimen/_24sdp"
+    android:paddingRight="@dimen/_16sdp"
+    android:background="@color/white">
+
+    <View
+        android:id="@+id/view"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/drawerMenuIV"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
+        android:padding="@dimen/_1sdp"
+        android:src="@drawable/drawer_icon"
+        app:layout_constraintBottom_toBottomOf="@+id/view"
+        app:layout_constraintStart_toStartOf="@+id/view"
+        app:layout_constraintTop_toTopOf="@id/view" />
+
+    <de.hdodenhof.circleimageview.CircleImageView
+        xmlns:app="http://schemas.android.com/apk/res-auto"
+        android:id="@+id/userIV"
+        android:layout_width="@dimen/_80sdp"
+        android:layout_height="@dimen/_80sdp"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:scaleType="centerCrop"
+        android:src="@drawable/user_icon"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/view" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userNameTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:text="Kathrine"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_14ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userIV" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/userEmailTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:text=" @kathrine"
+        android:textColor="@color/gray"
+        android:textSize="@dimen/_10ssp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userNameTV" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/home_nav"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_48sdp"
+        android:src="@drawable/home_nav"
+        android:background="@drawable/circular_background_blue"
+        android:padding="@dimen/_6sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/userEmailTV" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/homeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="Home"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toEndOf="@id/home_nav"
+        app:layout_constraintTop_toTopOf="@id/home_nav" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/files_nav"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:src="@drawable/files_nav"
+        android:background="@drawable/circular_background_blue"
+        android:padding="@dimen/_6sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/home_nav" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/filesTV"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="Files"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toEndOf="@id/files_nav"
+        app:layout_constraintTop_toTopOf="@id/files_nav" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/notification_nav"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:src="@drawable/notification_nav"
+        android:background="@drawable/circular_background_blue"
+        android:padding="@dimen/_6sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/files_nav" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/notificationTV"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="Notifications"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toEndOf="@id/notification_nav"
+        app:layout_constraintTop_toTopOf="@id/notification_nav" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/upgrade_nav"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:src="@drawable/upgrade_nav"
+        android:background="@drawable/circular_background_blue"
+        android:padding="@dimen/_6sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/notification_nav" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/upgradeTV"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="Upgrade Account"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toEndOf="@id/upgrade_nav"
+        app:layout_constraintTop_toTopOf="@id/upgrade_nav" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/settings_nav"
+        android:layout_width="@dimen/_25sdp"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginTop="@dimen/_16sdp"
+        android:src="@drawable/settings_nav"
+        android:background="@drawable/circular_background_blue"
+        android:padding="@dimen/_6sdp"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/upgrade_nav" />
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/settingsTV"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:layout_marginLeft="@dimen/_10sdp"
+        android:fontFamily="@font/poppins_medium"
+        android:gravity="center_vertical"
+        android:text="Settings"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintStart_toEndOf="@id/settings_nav"
+        app:layout_constraintTop_toTopOf="@id/settings_nav" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

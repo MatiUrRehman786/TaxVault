@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "889465372712",
+    "project_id": "taxvault-f041e",
+    "storage_bucket": "taxvault-f041e.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:889465372712:android:9a0fc5229c49085dd6f51d",
+        "android_client_info": {
+          "package_name": "com.sar.taxvault"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBlqqNBkVCIjoBuszJrI8c6b3RcRy3uzBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
