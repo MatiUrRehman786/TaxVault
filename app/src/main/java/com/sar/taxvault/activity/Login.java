@@ -117,7 +117,7 @@ public class Login extends BaseActivity {
 
         binding.forgotPasswordTV.setOnClickListener(v->showForgotDialog());
 
-        binding.googleBtn.setOnClickListener(v -> googleSgnIn());
+      //  binding.googleBtn.setOnClickListener(v -> googleSgnIn());
 
     }
 
