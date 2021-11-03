@@ -45,6 +45,8 @@ public class Login extends BaseActivity {
 
         initFireBase();
 
+        checkLogin();
+
         setContentView(view);
 
         setView();
@@ -61,6 +63,17 @@ public class Login extends BaseActivity {
         mAuth= FirebaseAuth.getInstance();
 
     }
+
+    private void checkLogin() {
+
+        if(mAuth.getCurrentUser()!=null){
+
+            startMainActivity();
+
+        }
+
+    }
+
 
     private void setListeners() {
 
@@ -196,19 +209,24 @@ public class Login extends BaseActivity {
 
                             setRemember();
 
-                            finish();
-
-                            Intent intent = new Intent(Login.this, Main.class);
-
-                            startActivity(intent);
-
-                            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+                            startMainActivity();
 
 
                         }
                     }
                 });
 
+    }
+
+    public  void  startMainActivity(){
+
+        finish();
+
+        Intent intent = new Intent(Login.this, Main.class);
+
+        startActivity(intent);
+
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void setRemember() {

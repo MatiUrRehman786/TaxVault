@@ -5,6 +5,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.os.Bundle;
+import android.view.View;
 
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
@@ -25,7 +26,7 @@ public class VaultTypeActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        binding = ActivityVaultTypeBinding.inflate(getLayoutInflater());
+      binding = ActivityVaultTypeBinding.inflate(getLayoutInflater());
         setContentView(binding.getRoot());
         initView();
         getCategories();
@@ -69,4 +70,15 @@ public class VaultTypeActivity extends AppCompatActivity {
         binding.vaultRV.setLayoutManager(new LinearLayoutManager(this));
         binding.vaultRV.setAdapter(new RecyclerViewAdapterCategories(this,categories));
     }
+
+    private void setView() {
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
+        binding.includeView.titleTV.setText("Vault Category");
+
+        binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
+
+    }
+
 }

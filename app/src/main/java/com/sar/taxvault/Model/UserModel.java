@@ -2,17 +2,41 @@ package com.sar.taxvault.Model;
 
 public class UserModel {
 
-    String firstName = "";
-    String lastName = "";
-    String phoneNumber = "";
-    String email = "";
-    String password = "";
-    String userType = "Individual";
-    Boolean rememberMe = true;
-    String token;
-    String postCount;
-    String maxCount;
+    String firstName="";
+    String lastName="";
+    String phoneNumber="";
+    String email="";
+    String password="";
+    String userType="Individual";
+    String rememberMe="true";
+    String token="";
+    String maxPost="10";
+    String postCount="0";
 
+
+    public String getMaxPost() {
+        return maxPost;
+    }
+
+    public void setMaxPost(String maxPost) {
+        this.maxPost = maxPost;
+    }
+
+    public String getPostCount() {
+        return postCount;
+    }
+
+    public void setPostCount(String postCount) {
+        this.postCount = postCount;
+    }
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getFirstName() {
         return firstName;

@@ -158,13 +158,13 @@ public class Main extends AppCompatActivity {
 
         binding.navView.settingsTV.setOnClickListener(v -> {
 
-            binding.includeView.titleTV.setText("Profile");
-
             checkOpenOrCloseDrawer();
 
-            loadFragment(new com.sar.taxvault.fragments.ProfileFragment());
+            Intent intent = new Intent(this, SettingsActivity.class);
 
-            binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
+            startActivity(intent);
+
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 
@@ -226,4 +226,18 @@ public class Main extends AppCompatActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+
+        if (getSupportFragmentManager().getBackStackEntryCount() < 1) {
+
+            finish();
+
+        } else {
+
+            super.onBackPressed();
+
+        }
+    }
 }

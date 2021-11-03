@@ -51,7 +51,8 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
     private final int PICK_FILE_REQUEST_CODE = 1;
 
     ValueEventListener valueEventListener;
-    @Override
+
+  @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -68,7 +69,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         setListeners();
 
-        getData();
+      getData();
     }
 
     private void getData() {
@@ -150,7 +151,8 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
     private void setView() {
 
-        binding.includeView.titleTV.setText("Vault");
+      binding.includeView.titleTV.setText("Vault");
+
         binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
 
     }
