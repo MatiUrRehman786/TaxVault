@@ -13,23 +13,33 @@ import com.sar.taxvault.databinding.ActivityNewsBinding;
 import com.sar.taxvault.databinding.ActivityVaultBinding;
 
 public class VaultActivity extends AppCompatActivity {
+
     ActivityVaultBinding binding;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+
         binding = ActivityVaultBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
 
         setView();
+
         setListeners();
+
         initRecyclerViewFiles();
+
     }
 
     private void setView() {
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         binding.includeView.titleTV.setText("Vault");
+
         binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
+
     }
 
     private void setListeners() {

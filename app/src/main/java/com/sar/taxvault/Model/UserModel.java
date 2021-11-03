@@ -9,7 +9,16 @@ public class UserModel {
     String password="";
     String userType="Individual";
     String rememberMe="true";
+    String token="";
 
+
+    public String getToken() {
+        return token;
+    }
+
+    public void setToken(String token) {
+        this.token = token;
+    }
 
     public String getFirstName() {
         return firstName;

@@ -31,32 +31,51 @@ public class TaxVaultFragment extends Fragment {
         binding = FragmentTaxVaultBinding.inflate(inflater, container, false);
 
         setListeners();
+
         return binding.getRoot();
+
     }
 
     private void setListeners() {
+
         binding.vaultCL.setOnClickListener(view -> {
+
             Intent intent = new Intent(getActivity(), VaultActivity.class);
+
             startActivity(intent);
+
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         });
 
         binding.newsCL.setOnClickListener(view -> {
+
             Intent intent = new Intent(getActivity(), NewsActivity.class);
+
             startActivity(intent);
+
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         });
 
         binding.remindersCL.setOnClickListener(view -> {
+
             Intent intent = new Intent(getActivity(), RemindersActivity.class);
+
             startActivity(intent);
+
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         });
 
         binding.settingsCL.setOnClickListener(view -> {
+
             Intent intent = new Intent(getActivity(), SettingsActivity.class);
+
             startActivity(intent);
+
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         });
     }
 }
