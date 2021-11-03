@@ -1,6 +1,7 @@
 {
   "project_info": {
     "project_number": "889465372712",
+    "firebase_url": "https://taxvault-f041e-default-rtdb.firebaseio.com",
     "project_id": "taxvault-f041e",
     "storage_bucket": "taxvault-f041e.appspot.com"
   },
@@ -14,7 +15,7 @@
       },
       "oauth_client": [
         {
-          "client_id": "889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com",
+          "client_id": "889465372712-nr74k8212lfpgr1e97a1hhi7tfnk47bn.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
@@ -27,8 +28,16 @@
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com",
+              "client_id": "889465372712-nr74k8212lfpgr1e97a1hhi7tfnk47bn.apps.googleusercontent.com",
               "client_type": 3
+            },
+            {
+              "client_id": "889465372712-651odoo7vc7qm6bdgsns34i2kt0sltje.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "BuzzwareTech.TaxVault2",
+                "app_store_id": "123"
+              }
             }
           ]
         }

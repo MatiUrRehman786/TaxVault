@@ -13,6 +13,9 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
 
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
@@ -34,6 +37,10 @@ public class Login extends BaseActivity {
 
     public DatabaseReference mDatabase;
 
+    private GoogleSignInClient mGoogleSignInClient;
+
+    private final static int RC_SIGN_IN=123;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -51,7 +58,10 @@ public class Login extends BaseActivity {
 
         setView();
 
+       // createRequest();
+
         setListeners();
+
     }
 
     private void initFireBase() {
@@ -106,6 +116,8 @@ public class Login extends BaseActivity {
         });
 
         binding.forgotPasswordTV.setOnClickListener(v->showForgotDialog());
+
+        binding.googleBtn.setOnClickListener(v -> googleSgnIn());
 
     }
 
@@ -262,6 +274,21 @@ public class Login extends BaseActivity {
                 });
 
     }
+
+
+//    private void createRequest() {
+//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                .requestIdToken("889465372712-nr74k8212lfpgr1e97a1hhi7tfnk47bn.apps.googleusercontent.com")
+//                .requestEmail()
+//                .build();
+//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
+//    }
+//
+//
+//    private void googleSgnIn() {
+//        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
+//        startActivityForResult(signInIntent, RC_SIGN_IN);
+//    }
 
 
 }

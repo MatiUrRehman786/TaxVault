@@ -1,5 +1,6 @@
 package com.sar.taxvault.activity;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -12,12 +13,15 @@ import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.R;
 import com.sar.taxvault.databinding.ActivityMainBinding;
@@ -28,7 +32,7 @@ import com.sar.taxvault.fragments.TaxVaultFragment;
 
 import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle;
 
-public class Main extends AppCompatActivity {
+public class Main extends BaseActivity {
 
     private ActivityMainBinding binding;
 
@@ -48,6 +52,8 @@ public class Main extends AppCompatActivity {
         setContentView(view);
 
         initFireBase();
+
+        updateFireBaseToken();
 
         setView();
 
@@ -224,6 +230,41 @@ public class Main extends AppCompatActivity {
 
         usersRef.addListenerForSingleValueEvent(valueEventListener);
 
+    }
+
+    private void updateFireBaseToken() {
+
+        FirebaseMessaging.getInstance().getToken()
+                .addOnCompleteListener(new OnCompleteListener<String>() {
+                    @Override
+                    public void onComplete(@NonNull Task<String> task) {
+
+                        if (!task.isSuccessful()) {
+
+                            Log.w("FireBase Token", "Fetching FCM registration token failed", task.getException());
+
+                            return;
+
+                        }else{
+
+                            String token = task.getResult();
+
+                            addTokenToDB(token);
+
+                            Log.d("FireBase Token", token);
+                        }
+
+                    }
+                });
+    }
+
+    private void addTokenToDB(String token) {
+
+        if (isOnline()) {
+
+            mDatabase.child(mAuth.getCurrentUser().getUid()).child("token").setValue(token);
+
+        }
     }
 
     @Override
