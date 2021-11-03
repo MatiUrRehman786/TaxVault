@@ -13,6 +13,7 @@ import com.sar.taxvault.activity.NewsActivity;
 import com.sar.taxvault.activity.RemindersActivity;
 import com.sar.taxvault.activity.SettingsActivity;
 import com.sar.taxvault.activity.VaultActivity;
+import com.sar.taxvault.activity.VaultTypeActivity;
 import com.sar.taxvault.databinding.FragmentTaxVaultBinding;
 
 public class TaxVaultFragment extends Fragment {
@@ -39,9 +40,9 @@ public class TaxVaultFragment extends Fragment {
     private void setListeners() {
 
         binding.vaultCL.setOnClickListener(view -> {
-
-            Intent intent = new Intent(getActivity(), VaultActivity.class);
-
+          
+            Intent intent = new Intent(getActivity(), VaultTypeActivity.class);
+          
             startActivity(intent);
 
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);

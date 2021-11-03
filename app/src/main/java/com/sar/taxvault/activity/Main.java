@@ -113,7 +113,7 @@ public class Main extends AppCompatActivity {
 
             checkOpenOrCloseDrawer();
 
-            loadFragment(new TaxVaultFragment());
+            startActivity(new Intent(this, VaultTypeActivity.class));
 
             binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
 

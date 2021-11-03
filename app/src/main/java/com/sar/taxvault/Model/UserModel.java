@@ -86,11 +86,11 @@ public class UserModel {
         this.userType = userType;
     }
 
-    public String getRememberMe() {
-        return rememberMe;
-    }
-
-    public void setRememberMe(String rememberMe) {
-        this.rememberMe = rememberMe;
-    }
+//    public String getRememberMe() {
+//        return rememberMe;
+//    }
+//
+//    public void setRememberMe(String rememberMe) {
+//        this.rememberMe = rememberMe;
+//    }
 }
