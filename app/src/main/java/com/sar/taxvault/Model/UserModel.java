@@ -10,7 +10,25 @@ public class UserModel {
     String userType="Individual";
     String rememberMe="true";
     String token="";
+    String maxPost="10";
+    String postCount="0";
 
+
+    public String getMaxPost() {
+        return maxPost;
+    }
+
+    public void setMaxPost(String maxPost) {
+        this.maxPost = maxPost;
+    }
+
+    public String getPostCount() {
+        return postCount;
+    }
+
+    public void setPostCount(String postCount) {
+        this.postCount = postCount;
+    }
 
     public String getToken() {
         return token;
