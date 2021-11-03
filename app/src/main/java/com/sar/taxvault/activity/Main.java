@@ -5,6 +5,7 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
@@ -112,7 +113,7 @@ public class Main extends AppCompatActivity {
 
             checkOpenOrCloseDrawer();
 
-            loadFragment(new TaxVaultFragment());
+            startActivity(new Intent(this, VaultTypeActivity.class));
 
             binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
 
