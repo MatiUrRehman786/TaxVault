@@ -121,11 +121,16 @@ public class Main extends AppCompatActivity {
 
         binding.navView.filesTV.setOnClickListener(v -> {
 
-            binding.includeView.titleTV.setText("Files");
+//            binding.includeView.titleTV.setText("");
 
             checkOpenOrCloseDrawer();
 
-            loadFragment(new FilesFragment());
+            Intent intent = new Intent(Main.this, VaultTypeActivity.class);
+
+            startActivity(intent);
+
+            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
 
             binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
 

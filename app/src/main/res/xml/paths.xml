@@ -3,8 +3,4 @@
 
     <external-path name="external_files" path="."/>
 
-    <external-path
-        name="files_root"
-        path="Android/data/com.sar.taxvault.app.fileprovider/files/" />
-
 </paths>

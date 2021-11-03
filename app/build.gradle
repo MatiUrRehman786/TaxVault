@@ -66,4 +66,11 @@ dependencies {
     //permissions
     implementation 'pub.devrel:easypermissions:3.0.0'
     implementation 'com.google.firebase:firebase-storage:20.0.0'
+
+    //progress Bar
+    implementation 'com.mikhaellopez:circularprogressbar:3.1.0'
+
+    //networking
+    implementation 'com.amitshekhar.android:android-networking:1.0.2'
+
 }

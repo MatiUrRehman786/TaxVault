@@ -8,28 +8,36 @@ public class Document {
 
     String name;
     Long timeStamp;
-    String size;
+    Long size;
     String url;
-    Boolean hasAccessToShare;
+    Boolean accessToUsers;
     String userId;
+    String id;
 
+    public Document(String name, Long timeStamp, Long size, String url) {
 
-    public Document(String name, Long timeStamp, String size, String url) {
         this.name = name;
         this.timeStamp = timeStamp;
         this.size = size;
         this.url = url;
-        this.hasAccessToShare = true;
+        this.accessToUsers = true;
+
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
 
-    public Document() {
-        this.name = name;
-        this.timeStamp = timeStamp;
-        this.size = size;
-        this.url = url;
+    public String getId() {
+        return id;
     }
+
+    public void setId(String id) {
+        this.id = id;
+    }
+
+    public Document() {
+
+    }
+
     public String getName() {
 
         if (name == null)
@@ -50,15 +58,11 @@ public class Document {
         this.timeStamp = timeStamp;
     }
 
-    public String getSize() {
-
-        if (size == null)
-            return "0 GB";
-
+    public Long getSize() {
         return size;
     }
 
-    public void setSize(String size) {
+    public void setSize(Long size) {
         this.size = size;
     }
 
@@ -70,11 +74,11 @@ public class Document {
         this.url = url;
     }
     public Boolean getHasAccessToShare() {
-        return hasAccessToShare;
+        return accessToUsers;
     }
 
-    public void setHasAccessToShare(Boolean hasAccessToShare) {
-        this.hasAccessToShare = hasAccessToShare;
+    public void setHasAccessToShare(Boolean accessToUsers) {
+        this.accessToUsers = accessToUsers;
     }
 
     public String getUserId() {
@@ -90,5 +94,15 @@ public class Document {
         Date date = new Date(timeStamp);
 
         return  date.toString();
+    }
+
+    public boolean belongsToCurrentUser() {
+
+        String currentUserId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        if (userId.equalsIgnoreCase(currentUserId))
+            return true;
+
+        return false;
     }
 }

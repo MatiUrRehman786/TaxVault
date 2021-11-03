@@ -56,17 +56,17 @@ public class Login extends BaseActivity {
 
     private void initFireBase() {
 
-        rootNode= FirebaseDatabase.getInstance();
+        rootNode = FirebaseDatabase.getInstance();
 
-        mDatabase=rootNode.getReference("User");
+        mDatabase = rootNode.getReference("User");
 
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
     private void checkLogin() {
 
-        if(mAuth.getCurrentUser()!=null){
+        if (mAuth.getCurrentUser() != null) {
 
             startMainActivity();
 
@@ -89,9 +89,9 @@ public class Login extends BaseActivity {
 
         binding.loginBtn.setOnClickListener(v -> {
 
-            if(isValid()){
+            if (isValid()) {
 
-                if(isOnline()){
+                if (isOnline()) {
 
                     loginUserNow();
 
@@ -105,7 +105,7 @@ public class Login extends BaseActivity {
 
         });
 
-        binding.forgotPasswordTV.setOnClickListener(v->showForgotDialog());
+        binding.forgotPasswordTV.setOnClickListener(v -> showForgotDialog());
 
     }
 
@@ -153,11 +153,11 @@ public class Login extends BaseActivity {
 
     }
 
-    private boolean isValid(){
+    private boolean isValid() {
 
-        boolean chceck=false;
+        boolean chceck = false;
 
-        if (binding.emailET.getText().toString().trim().isEmpty()){
+        if (binding.emailET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Email!");
 
@@ -165,7 +165,7 @@ public class Login extends BaseActivity {
 
         }
 
-        if (binding.passwordET.getText().toString().trim().isEmpty()){
+        if (binding.passwordET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Password!");
 
@@ -173,7 +173,7 @@ public class Login extends BaseActivity {
 
         }
 
-        chceck= true;
+        chceck = true;
 
         return chceck;
 
@@ -189,11 +189,11 @@ public class Login extends BaseActivity {
 
     private void loginUserNow() {
 
-        String email=binding.emailET.getText().toString();
+        String email = binding.emailET.getText().toString();
 
-        String password=binding.passwordET.getText().toString();
+        String password = binding.passwordET.getText().toString();
 
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
@@ -218,7 +218,7 @@ public class Login extends BaseActivity {
 
     }
 
-    public  void  startMainActivity(){
+    public void startMainActivity() {
 
         finish();
 
@@ -231,13 +231,13 @@ public class Login extends BaseActivity {
 
     private void setRemember() {
 
-        if(binding.rememberMeCB.isChecked()){
+        if (binding.rememberMeCB.isChecked()) {
 
-            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("true");
+//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("true");
 
         } else {
 
-            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("false");
+//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("false");
 
         }
 
@@ -260,7 +260,6 @@ public class Login extends BaseActivity {
                         }
                     }
                 });
-
     }
 
 

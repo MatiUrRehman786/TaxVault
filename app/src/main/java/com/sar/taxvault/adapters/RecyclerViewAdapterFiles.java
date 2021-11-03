@@ -17,6 +17,8 @@ import com.sar.taxvault.activity.VaultActivity;
 import com.sar.taxvault.databinding.LayoutItemsFilesBinding;
 import com.sar.taxvault.databinding.LayoutItemsNotificationsBinding;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.List;
 
 
@@ -27,6 +29,12 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
     private List<Document> list;
 
     private Context mContext;
+
+    EditFileCallback callback;
+
+    public void setCallback(EditFileCallback callback) {
+        this.callback = callback;
+    }
 
     public RecyclerViewAdapterFiles(Context context, List<Document> documents) {
         this.list = documents;
@@ -48,16 +56,23 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
 
         viewHolder.binding.creationDateTV.setText(document.getTime());
         viewHolder.binding.documentTitleTV.setText(document.getName());
-        viewHolder.binding.fileSizeTV.setText("Total "+document.getSize());
+
+        double sizeInMB = new Long(document.getSize()).doubleValue()/1048576;
+
+        double size = round(sizeInMB, 3);
+
+        viewHolder.binding.fileSizeTV.setText("Total "+size+ " MB");
         viewHolder.binding.moreOptionsIV.setImageResource(R.drawable.three_dots);
 
         viewHolder.binding.moreOptionsIV.setOnClickListener(view -> {
-            Dialog dialog = new Dialog(mContext, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
-            dialog.setContentView(R.layout.dialog_file_options);
-
-            dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
-            dialog.show();
+            if (callback != null)
+                callback.onEditPressed(document);
         });
+    }
+
+    public double round(double value, int precision) {
+        int scale = (int) Math.pow(10, precision);
+        return (double) Math.round(value * scale) / scale;
     }
 
     @Override
@@ -75,5 +90,10 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
             this.binding = binding;
 
         }
+    }
+
+    public interface EditFileCallback {
+
+        void onEditPressed(Document document);
     }
 }

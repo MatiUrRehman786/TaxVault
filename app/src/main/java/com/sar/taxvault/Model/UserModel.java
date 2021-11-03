@@ -93,4 +93,18 @@ public class UserModel {
         this.userType = userType;
     }
 
+    public boolean isAllowedToPost() {
+
+        if (postCount < maxPost)
+            return true;
+
+        return false;
+    }
+
+    public int getPercentShared() {
+
+        double percent = (postCount * 100 / maxPost);
+
+        return new Double(percent).intValue();
+    }
 }

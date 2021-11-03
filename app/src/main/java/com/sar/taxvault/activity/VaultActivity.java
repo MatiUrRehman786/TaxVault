@@ -1,17 +1,26 @@
 package com.sar.taxvault.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.AppCompatImageView;
+import androidx.appcompat.widget.AppCompatTextView;
+import androidx.appcompat.widget.SwitchCompat;
+import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import android.Manifest;
 import android.app.Activity;
+import android.app.Dialog;
+import android.content.ContentResolver;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.DocumentsContract;
+import android.provider.MediaStore;
 import android.view.View;
-import android.widget.Toast;
+import android.webkit.MimeTypeMap;
+import android.widget.CompoundButton;
 
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.FirebaseAuth;
@@ -24,11 +33,15 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.sar.taxvault.Model.Document;
+import com.sar.taxvault.Model.UserModel;
+import com.sar.taxvault.R;
 import com.sar.taxvault.adapters.RecyclerViewAdapterFiles;
 import com.sar.taxvault.databinding.ActivityVaultBinding;
 import com.sar.taxvault.utils.UIUpdate;
+import com.sar.taxvault.utils.Utils;
 
 import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -43,16 +56,18 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
     String category = "";
 
-    private static final int RC_FILE_PICKER_PERMISSIONS = 123;
+    UserModel user;
 
-    private static final String[] LOCATION_AND_CONTACTS =
-            {Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.READ_CONTACTS};
+    Document selectedDocument;
+
+    private static final int RC_FILE_PICKER_PERMISSIONS = 123;
+    private static final int RC_SHARE_FILE_PICKER_PERMISSIONS = 12;
 
     private final int PICK_FILE_REQUEST_CODE = 1;
 
     ValueEventListener valueEventListener;
 
-  @Override
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
@@ -69,7 +84,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         setListeners();
 
-      getData();
+        getCurrentUser();
     }
 
     private void getData() {
@@ -92,7 +107,35 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
                         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
-                        UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert",error.getMessage());
+                        UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", error.getMessage());
+                    }
+                });
+    }
+
+    private void getCurrentUser() {
+
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
+
+        FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+
+                        UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+                        if (snapshot.getValue() != null) {
+                            user = snapshot.getValue(UserModel.class);
+
+                            getData();
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+
+                        UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+                        UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", error.getMessage());
                     }
                 });
     }
@@ -112,8 +155,18 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         for (DataSnapshot child : snapshot.getChildren()) {
 
-            if (child.getValue() != null)
-                documents.add(child.getValue(Document.class));
+            if (child.getValue() != null) {
+
+                Document document = child.getValue(Document.class);
+
+                document.setId(child.getKey());
+
+                if (document.belongsToCurrentUser()) {
+
+                    documents.add(document);
+
+                }
+            }
         }
 
         setAdapter(documents);
@@ -130,6 +183,75 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         binding.filesRV.setItemAnimator(new DefaultItemAnimator());
 
         binding.filesRV.setAdapter(adapter);
+
+        adapter.setCallback(this::showDialog);
+    }
+
+    void showDialog(Document document) {
+
+        Dialog dialog = new Dialog(this, android.R.style.Theme_Black_NoTitleBar_Fullscreen);
+        dialog.setContentView(R.layout.dialog_file_options);
+
+        AppCompatTextView accessTV = dialog.findViewById(R.id.accessTV);
+        AppCompatImageView accessIV = dialog.findViewById(R.id.accessIV);
+
+        SwitchCompat accessSwitch = dialog.findViewById(R.id.accessSwitch);
+
+        accessSwitch.setChecked(document.getHasAccessToShare());
+
+        accessIV.setOnClickListener(view -> accessSwitch.setChecked(!accessSwitch.isChecked()));
+        accessTV.setOnClickListener(view -> accessSwitch.setChecked(!accessSwitch.isChecked()));
+        accessSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+            document.setHasAccessToShare(b);
+            FirebaseDatabase.getInstance().getReference("Files").child(category).child(document.getId()).setValue(document);
+        });
+
+        AppCompatTextView shareTV = dialog.findViewById(R.id.shareTV);
+        AppCompatImageView shareIV = dialog.findViewById(R.id.shareIV);
+
+        AppCompatTextView deleteTV = dialog.findViewById(R.id.deleteTV);
+        AppCompatImageView deleteIV = dialog.findViewById(R.id.deleteIV);
+
+        shareIV.setOnClickListener(view -> hasAccessToShare(document));
+        shareIV.setOnClickListener(view -> hasAccessToShare(document));
+
+        deleteIV.setOnClickListener(view -> deleteDocument(document, dialog));
+        deleteTV.setOnClickListener(view -> deleteDocument(document, dialog));
+
+        shareIV.setOnClickListener(view -> checkSharePermissions(document, dialog));
+        shareTV.setOnClickListener(view -> checkSharePermissions(document, dialog));
+
+        dialog.getWindow().setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+        dialog.show();
+    }
+
+    private void hasAccessToShare(Document document) {
+    }
+
+    private void deleteDocument(Document document, Dialog dialog) {
+
+        dialog.dismiss();
+
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
+
+        FirebaseDatabase.getInstance().getReference("Files").child(category).child(document.getId()).removeValue()
+                .addOnCompleteListener(task -> {
+
+                    StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(document.getUrl());
+
+                    if (!task.isSuccessful() && task.getException() != null)
+                        UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", task.getException().getLocalizedMessage());
+
+                    reference.delete().addOnCompleteListener(task1 -> {
+
+                        UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+                        if (!task1.isSuccessful() && task.getException() != null)
+                            UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", task.getException().getLocalizedMessage());
+
+                    });
+                });
+
     }
 
     private void init() {
@@ -151,7 +273,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
     private void setView() {
 
-      binding.includeView.titleTV.setText("Vault");
+        binding.includeView.titleTV.setText("Vault");
 
         binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
 
@@ -174,7 +296,6 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/*", "application/pdf"});
 
         startActivityForResult(intent, PICK_FILE_REQUEST_CODE);
-
     }
 
     @Override
@@ -197,6 +318,25 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         }
     }
 
+    public String getMimeType(Uri uri) {
+
+        String extension;
+
+        //Check uri format to avoid null
+        if (uri.getScheme().equals(ContentResolver.SCHEME_CONTENT)) {
+            //If scheme is a content
+            final MimeTypeMap mime = MimeTypeMap.getSingleton();
+            extension = mime.getExtensionFromMimeType(getContentResolver().getType(uri));
+        } else {
+            //If scheme is a File
+            //This will replace white spaces with %20 and also other special characters. This will avoid returning null values on file name with spaces and special characters.
+            extension = MimeTypeMap.getFileExtensionFromUrl(Uri.fromFile(new File(uri.getPath())).toString());
+
+        }
+
+        return extension;
+    }
+
     private void uploadImage(Uri uri) {
 
         UIUpdate.GetUIUpdate(this).setProgressDialog();
@@ -205,7 +345,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         String name = uri.getLastPathSegment();
 
-        final StorageReference mChildStorage = FirebaseStorage.getInstance().getReference().child("files").child(myId + uri.getLastPathSegment());
+        final StorageReference mChildStorage = FirebaseStorage.getInstance().getReference().child("files").child(myId + uri.getLastPathSegment() + "." + getMimeType(uri));
 
         UploadTask uploadTask = mChildStorage.putFile(uri);
 
@@ -217,24 +357,28 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
                 final Uri imageUrl = uri;
 
-                uploadDataToFirebase(uri, name);
+
+                uploadDataToFirebase(uri, name, taskSnapshot.getMetadata().getSizeBytes());
             }
         }).addOnFailureListener(e -> onFailed(e)));
     }
 
-    private void uploadDataToFirebase(Uri uri, String name) {
+    private void uploadDataToFirebase(Uri uri, String name, long sizeBytes) {
 
         Long timeStamp = new Date().getTime();
 
-        Double size = getFileSize(uri);
 
-        Document document = new Document(name, timeStamp, size+" GB", uri.toString());
+        Document document = new Document(name, timeStamp, sizeBytes, uri.toString());
 
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Files").child(category);
 
         String key = reference.push().getKey();
 
         reference.child(key).setValue(document);
+
+        String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        FirebaseDatabase.getInstance().getReference("User").child(id).setValue(user);
     }
 
     private Double getFileSize(Uri uri) {
@@ -242,7 +386,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         File file = new File(uri.toString());
 
         try {
-            return new Long(file.length()).doubleValue()/1024;
+            return new Long(file.length()).doubleValue() / 1024;
         } catch (Exception e) {
 
         }
@@ -263,13 +407,34 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         if (hasStoragePermissions()) {
             // Have permission, do the thing!
-            openFilePicker();
+            check(user);
         } else {
             // Ask for one permission
             EasyPermissions.requestPermissions(
                     this,
                     "Please provide storage permissions to continue",
                     RC_FILE_PICKER_PERMISSIONS,
+                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+        }
+    }
+
+    @AfterPermissionGranted(RC_SHARE_FILE_PICKER_PERMISSIONS)
+    public void checkSharePermissions(Document document, Dialog dialog) {
+
+        dialog.dismiss();
+
+        if (hasStoragePermissions()) {
+            // Have permission, do the thing!
+            share(document);
+        } else {
+
+            selectedDocument = document;
+
+            // Ask for one permission
+            EasyPermissions.requestPermissions(
+                    this,
+                    "Please provide storage permissions to continue",
+                    RC_SHARE_FILE_PICKER_PERMISSIONS,
                     Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
         }
     }
@@ -299,10 +464,15 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         if (list.size() == 2) {
 
-            openFilePicker();
+            if (RC_FILE_PICKER_PERMISSIONS == requestCode)
+                check(user);
+            else
+                share(selectedDocument);
 
         } else {
-            //todo enable all permissions popup
+
+            UIUpdate.GetUIUpdate(this).showAlertDialog("Alert", "Please allow all storage permissions to continue.");
+
         }
     }
 
@@ -310,7 +480,124 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
     public void onPermissionsDenied(int requestCode, List<String> list) {
 
         if (EasyPermissions.somePermissionPermanentlyDenied(this, list)) {
+
             new AppSettingsDialog.Builder(this).build().show();
+
         }
     }
+
+    private void share(Document document) {
+
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
+
+        final String filename = document.getName() + new Date().toString();
+
+        String url = document.getUrl();
+        String urlWithExtension = url.substring(0, url.lastIndexOf('?'));
+        String extension = urlWithExtension.substring(urlWithExtension.lastIndexOf('.'));
+
+        File f = new File(Utils.getRootDirPath(VaultActivity.this), filename + extension);
+
+        if (!f.exists()) {
+            try {
+                f.createNewFile();
+
+            } catch (IOException e) {
+                UIUpdate.GetUIUpdate(this).dismissProgressDialog();
+                UIUpdate.GetUIUpdate(this).showAlertDialog("Alert", e.getLocalizedMessage());
+                e.printStackTrace();
+            }
+        }
+        StorageReference storageRef = FirebaseStorage.getInstance().getReferenceFromUrl(document.getUrl());
+
+        storageRef.getFile(f).addOnSuccessListener(taskSnapshot -> {
+
+            UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+            Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+            Uri photoURI = FileProvider.getUriForFile(VaultActivity.this, getApplicationContext().getPackageName() + ".provider", f);
+
+            intentShareFile.setType("text/*");
+            intentShareFile.putExtra(Intent.EXTRA_STREAM, photoURI);
+            intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "MyApp File Share: " + f.getName());
+            intentShareFile.putExtra(Intent.EXTRA_TEXT, "MyApp File Share: " + f.getName());
+
+            this.startActivity(Intent.createChooser(intentShareFile, f.getName()));
+
+        }).addOnFailureListener(exception -> {
+
+            UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+            UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", exception.getLocalizedMessage());
+        });
+
+    }
+
+
+    private void check(UserModel user) {
+
+        UIUpdate.GetUIUpdate(VaultActivity.this).setProgressDialog();
+
+        FirebaseDatabase.getInstance().getReference("Files")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
+
+
+                        if (snapshot.getValue() != null)
+                            parseSnapshotBytesCalculation(snapshot);
+                        else
+                            UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+                    }
+
+                    @Override
+                    public void onCancelled(DatabaseError error) {
+
+                        UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+                        UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", error.getMessage());
+                    }
+                });
+    }
+
+
+    private void parseSnapshotBytesCalculation(DataSnapshot snapshot) {
+
+        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+        Long bytes = 0l;
+
+        for (DataSnapshot child : snapshot.getChildren()) {
+
+            for (DataSnapshot documentSnapshot : child.getChildren()) {
+
+                Document document = documentSnapshot.getValue(Document.class);
+
+                if (document.getUserId().equalsIgnoreCase(userId)) {
+
+                    bytes = bytes + document.getSize();
+                }
+            }
+        }
+
+        long GB = 1073741824;
+
+        UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+        if (bytes < GB) {
+
+            Long percentUsed = (bytes * 100) / GB;
+
+            double sizeInMB = new Long(bytes).doubleValue() / 1048576;
+            double sizeInGB = new Long(GB).doubleValue() / 1048576;
+
+            openFilePicker();
+
+        } else {
+
+            UIUpdate.GetUIUpdate(this).showAlertDialog("Alert", "You've reached max upload limit. Purchase premium to get unlimited uploads.");
+
+        }
+    }
+
 }
