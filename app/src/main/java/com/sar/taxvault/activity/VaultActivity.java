@@ -100,6 +100,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
                         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
                         if (snapshot.getValue() != null)
+
                             parseSnapshot(snapshot);
                     }
 
@@ -286,7 +287,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         binding.includeView.titleTV.setText("Vault");
 
-        binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
+        binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
 
     }
 

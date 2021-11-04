@@ -1,6 +1,9 @@
 package com.sar.taxvault.Model;
 
-public class UserModel {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class UserModel implements Parcelable {
 
     String firstName = "";
     String lastName = "";
@@ -11,7 +14,125 @@ public class UserModel {
     Boolean rememberMe = true;
     String token = "";
     int maxPost = 10;
+    String customerId;
+    String clientSecret;
+    String currentPackage;
+    Long purchasedTSp;
     int postCount = 0;
+
+    public UserModel(String firstName, String lastName, String phoneNumber, String email, String password, String userType, Boolean rememberMe, String token, int maxPost, String customerId, String clientSecret, String currentPackage, Long purchasedTSp, int postCount) {
+
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.phoneNumber = phoneNumber;
+        this.email = email;
+        this.password = password;
+        this.userType = userType;
+        this.rememberMe = rememberMe;
+        this.token = token;
+        this.maxPost = maxPost;
+        this.customerId = customerId;
+        this.clientSecret = clientSecret;
+        this.currentPackage = currentPackage;
+        this.purchasedTSp = purchasedTSp;
+        this.postCount = postCount;
+    }
+
+    public UserModel() {}
+
+    protected UserModel(Parcel in) {
+        firstName = in.readString();
+        lastName = in.readString();
+        phoneNumber = in.readString();
+        email = in.readString();
+        password = in.readString();
+        userType = in.readString();
+        byte tmpRememberMe = in.readByte();
+        rememberMe = tmpRememberMe == 0 ? null : tmpRememberMe == 1;
+        token = in.readString();
+        maxPost = in.readInt();
+        customerId = in.readString();
+        clientSecret = in.readString();
+        currentPackage = in.readString();
+        if (in.readByte() == 0) {
+            purchasedTSp = null;
+        } else {
+            purchasedTSp = in.readLong();
+        }
+        postCount = in.readInt();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(phoneNumber);
+        dest.writeString(email);
+        dest.writeString(password);
+        dest.writeString(userType);
+        dest.writeByte((byte) (rememberMe == null ? 0 : rememberMe ? 1 : 2));
+        dest.writeString(token);
+        dest.writeInt(maxPost);
+        dest.writeString(customerId);
+        dest.writeString(clientSecret);
+        dest.writeString(currentPackage);
+        if (purchasedTSp == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(purchasedTSp);
+        }
+        dest.writeInt(postCount);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
+        @Override
+        public UserModel createFromParcel(Parcel in) {
+            return new UserModel(in);
+        }
+
+        @Override
+        public UserModel[] newArray(int size) {
+            return new UserModel[size];
+        }
+    };
+
+    public String getClientSecret() {
+        return clientSecret;
+    }
+
+    public void setClientSecret(String clientSecret) {
+        this.clientSecret = clientSecret;
+    }
+
+    public String getCustomerId() {
+        return customerId;
+    }
+
+    public void setCustomerId(String customerId) {
+        this.customerId = customerId;
+    }
+
+    public String getCurrentPackage() {
+        return currentPackage;
+    }
+
+    public void setCurrentPackage(String currentPackage) {
+        this.currentPackage = currentPackage;
+    }
+
+    public Long getPurchasedTSp() {
+        return purchasedTSp;
+    }
+
+    public void setPurchasedTSp(Long purchasedTSp) {
+        this.purchasedTSp = purchasedTSp;
+    }
 
     public Boolean getRememberMe() {
         return rememberMe;
@@ -70,6 +191,10 @@ public class UserModel {
     }
 
     public String getEmail() {
+
+        if (email == null)
+            return "";
+
         return email;
     }
 

@@ -6,7 +6,7 @@
 
 
 <!--    copy this from firbase json file-->
-    <string name="default_web_client_id">889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com</string>
+<!--    <string name="default_web_client_id">889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com</string>-->
 
     <string name="app_name">Tax Vault</string>
     <string name="type_here">Type Here</string>
