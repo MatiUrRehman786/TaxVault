@@ -16,7 +16,7 @@ import java.util.Objects;
 
 public class PaymentResultCallback  implements ApiResultCallback<PaymentIntentResult> {
     @NonNull
-    private final WeakReference<Booking> activityRef;
+    private final WeakReference<Main> activityRef;
 
     public PaymentResultCallback(@NonNull Main activity) {
         activityRef = new WeakReference<>(activity);
