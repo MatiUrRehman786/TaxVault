@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -123,6 +124,33 @@ public class SettingsActivity extends BaseActivity {
 
         binding.includeView.backIV.setOnClickListener(v -> finish());
         binding.logoutBtn.setOnClickListener(v -> logOut());
+        binding.updateBtn.setOnClickListener(v -> updateProfile());
+
+    }
+
+    private void updateProfile() {
+
+        String name = binding.userFullNameTV.getText().toString();
+
+        if (name.contains(" ")) {
+
+            String[] data = name.split(" ");
+
+            mDatabase.child(mAuth.getCurrentUser().getUid()).child("firstName").setValue(data[0]);
+
+            mDatabase.child(mAuth.getCurrentUser().getUid()).child("lastName").setValue(data[1]);
+
+        } else {
+
+            mDatabase.child(mAuth.getCurrentUser().getUid()).child("firstName").setValue(name);
+
+        }
+
+        mDatabase.child(mAuth.getCurrentUser().getUid()).child("phoneNumber").setValue(binding.userPhoneNumberTV.getText().toString());
+
+        Toast.makeText(SettingsActivity.this, "Profile Updated!", Toast.LENGTH_SHORT).show();
+
+        getUserData();
 
     }
 
