@@ -15,6 +15,8 @@
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? <b>Sign up</b></string>
 
     <string-array name="year">
+        <item>Year</item>
+        <item>2022</item>
         <item>2021</item>
         <item>2020</item>
         <item>2019</item>
@@ -30,7 +32,6 @@
 
     <string-array name="user_type">
         <item>Individual</item>
-        <item>Business</item>
         <item>Trust</item>
     </string-array>
 </resources>
