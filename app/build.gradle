@@ -85,6 +85,10 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-scalars:2.1.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:3.8.0'
     implementation 'com.squareup.okhttp3:okhttp-urlconnection:3.4.1'
+    //facebook
+    implementation 'com.facebook.android:facebook-login:+'
+    implementation 'com.facebook.android:facebook-android-sdk:[5,6)'
+
 
     // Stripe Android SDK
     implementation 'com.stripe:stripe-android:16.1.1'

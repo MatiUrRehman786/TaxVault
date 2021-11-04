@@ -42,6 +42,8 @@ public class TaxVaultFragment extends Fragment {
                              Bundle savedInstanceState) {
         binding = FragmentTaxVaultBinding.inflate(inflater, container, false);
 
+        UIUpdate.GetUIUpdate(getActivity()).destroy();
+
         setListeners();
 
         getMyProfile();
