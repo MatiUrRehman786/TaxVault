@@ -65,7 +65,7 @@ public class Login extends BaseActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    private final static int RC_SIGN_IN=123;
+    private final static int RC_SIGN_IN = 123;
 
     //faccebook
 
@@ -79,6 +79,7 @@ public class Login extends BaseActivity {
         super.onCreate(savedInstanceState);
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
         setContentView(view);
 
@@ -267,6 +268,10 @@ public class Login extends BaseActivity {
 
     private void loginUserNow() {
 
+        UIUpdate.GetUIUpdate(this).destroy();
+
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
+
         String email = binding.emailET.getText().toString();
 
         String password = binding.passwordET.getText().toString();
@@ -274,23 +279,27 @@ public class Login extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if (!task.isSuccessful()) {
+                .addOnCompleteListener(Login.this, task -> {
 
-                            showMessage("Invalid Email or Password!");
+                    UIUpdate.GetUIUpdate(Login.this).dismissProgressDialog();
 
-                        } else {
+                    if (!task.isSuccessful()) {
 
+                        if (task.getException() != null) {
 
-                            setRemember();
-
-                            startMainActivity();
-
+                            UIUpdate.GetUIUpdate(Login.this).showAlertDialog("Alert",
+                                    task.getException().getLocalizedMessage());
 
                         }
+
+                    } else {
+
+
+                        setRemember();
+
+                        startMainActivity();
+
                     }
                 });
 
@@ -309,15 +318,6 @@ public class Login extends BaseActivity {
 
     private void setRemember() {
 
-        if (binding.rememberMeCB.isChecked()) {
-
-//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("true");
-
-        } else {
-
-//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("false");
-
-        }
 
     }
 

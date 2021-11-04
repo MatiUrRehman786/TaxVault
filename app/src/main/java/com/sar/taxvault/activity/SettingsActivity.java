@@ -1,23 +1,18 @@
 package com.sar.taxvault.activity;
 
-import androidx.appcompat.app.AppCompatActivity;
-
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sar.taxvault.Model.UserModel;
-import com.sar.taxvault.databinding.ActivityRemidersBinding;
 import com.sar.taxvault.databinding.ActivitySettingsBinding;
-import com.sar.taxvault.databinding.ActivitySignupBinding;
 import com.williammora.snackbar.Snackbar;
 
 public class SettingsActivity extends BaseActivity {
@@ -81,7 +76,7 @@ public class SettingsActivity extends BaseActivity {
 
                 UserModel user = dataSnapshot.getValue(UserModel.class);
 
-                setUSetData(user);
+                setUserData(user);
 
             }
 
@@ -94,7 +89,7 @@ public class SettingsActivity extends BaseActivity {
 
     }
 
-    private void setUSetData(UserModel user) {
+    private void setUserData(UserModel user) {
 
         binding.userNameTV.setText(user.getFirstName() + " " + user.getLastName());
 

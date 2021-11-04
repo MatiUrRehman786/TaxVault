@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.R;
 import com.sar.taxvault.databinding.ActivitySignupBinding;
+import com.sar.taxvault.utils.UIUpdate;
 import com.williammora.snackbar.Snackbar;
 
 public class Signup extends BaseActivity {
@@ -34,9 +35,11 @@ public class Signup extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_signup);
 
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
 
         initFireBase();
@@ -50,6 +53,8 @@ public class Signup extends BaseActivity {
     }
 
     private void initFireBase() {
+
+        UIUpdate.GetUIUpdate(this).destroy();
 
         rootNode = FirebaseDatabase.getInstance();
 
@@ -159,9 +164,14 @@ public class Signup extends BaseActivity {
 
         String password = binding.passwordET.getText().toString();
 
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
+
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
+                UIUpdate.GetUIUpdate(Signup.this).dismissProgressDialog();
+
                 if (task.isSuccessful()) {
 
                     String currentID = mAuth.getCurrentUser().getUid();
@@ -188,12 +198,12 @@ public class Signup extends BaseActivity {
 
                 } else {
 
-                    showMessage("User Already Exist OR try another Email!");
+                    if (task.getException() != null)
+
+                        UIUpdate.GetUIUpdate(Signup.this).showAlertDialog("Alert", task.getException().getLocalizedMessage());
 
                 }
-
             }
-
         });
 
     }
