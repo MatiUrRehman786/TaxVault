@@ -187,9 +187,7 @@ public class TaxVaultFragment extends Fragment {
 
         binding.remindersCL.setOnClickListener(view -> {
 
-            Intent intent = new Intent(getActivity(), RemindersActivity.class);
-
-            startActivity(intent);
+            RemindersActivity.startActivity(getActivity());
 
             getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 

@@ -25,8 +25,6 @@ import com.google.firebase.messaging.FirebaseMessaging;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.R;
 import com.sar.taxvault.databinding.ActivityMainBinding;
-import com.sar.taxvault.fragments.FilesFragment;
-import com.sar.taxvault.fragments.NotificationsFragment;
 import com.sar.taxvault.fragments.PremiumFeatureFragment;
 import com.sar.taxvault.fragments.TaxVaultFragment;
 
@@ -144,11 +142,9 @@ public class Main extends BaseActivity {
 
         binding.navView.notificationTV.setOnClickListener(v -> {
 
-            binding.includeView.titleTV.setText("Notifications");
-
             checkOpenOrCloseDrawer();
 
-            loadFragment(new NotificationsFragment());
+            RemindersActivity.startActivity(this);
 
             binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
 

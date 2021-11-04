@@ -16,33 +16,33 @@ import com.sar.taxvault.activity.Login;
 import com.sar.taxvault.adapters.RecyclerViewAdapterNotifications;
 import com.sar.taxvault.databinding.FragmentNotificationsBinding;
 import com.sar.taxvault.databinding.FragmentProfileBinding;
-
-public class NotificationsFragment extends Fragment {
-
-    private FragmentNotificationsBinding binding;
-
-    @Override
-    public void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-    }
-
-    @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
-
-        initRecyclerViewNotifications();
-        return binding.getRoot();
-    }
-
-    private void initRecyclerViewNotifications(){
-        LinearLayoutManager layoutManager5 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
-        binding.notificationsRV.setLayoutManager(layoutManager5);
-
-        RecyclerViewAdapterNotifications adapter = new RecyclerViewAdapterNotifications(getActivity(),null);
-        binding.notificationsRV.setItemAnimator( new DefaultItemAnimator());
-        binding.notificationsRV.setAdapter(adapter);
-    }
-
-}
+//
+//public class NotificationsFragment extends Fragment {
+//
+//    private FragmentNotificationsBinding binding;
+//
+//    @Override
+//    public void onCreate(Bundle savedInstanceState) {
+//        super.onCreate(savedInstanceState);
+//
+//    }
+//
+//    @Override
+//    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+//                             Bundle savedInstanceState) {
+//        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+//
+//        initRecyclerViewNotifications();
+//        return binding.getRoot();
+//    }
+//
+//    private void initRecyclerViewNotifications(){
+//        LinearLayoutManager layoutManager5 = new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false);
+//        binding.notificationsRV.setLayoutManager(layoutManager5);
+//
+//        RecyclerViewAdapterNotifications adapter = new RecyclerViewAdapterNotifications(getActivity(),null);
+//        binding.notificationsRV.setItemAnimator( new DefaultItemAnimator());
+//        binding.notificationsRV.setAdapter(adapter);
+//    }
+//
+//}
