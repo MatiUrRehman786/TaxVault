@@ -20,6 +20,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.view.View;
 import android.webkit.MimeTypeMap;
+import android.widget.AdapterView;
 import android.widget.CompoundButton;
 
 import com.google.android.gms.tasks.OnSuccessListener;
@@ -42,7 +43,9 @@ import com.sar.taxvault.utils.Utils;
 
 import java.io.File;
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -88,7 +91,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
     }
 
-    private void getData() {
+    private void getData(String date) {
 
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
@@ -100,7 +103,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
                         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
                         if (snapshot.getValue() != null)
-                            parseSnapshot(snapshot);
+                            parseSnapshot(snapshot,date);
                     }
 
                     @Override
@@ -130,7 +133,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
                             user = snapshot.getValue(UserModel.class);
 
-                            getData();
+                            getData("");
                         }
                     }
 
@@ -153,7 +156,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         valueEventListener = null;
     }
 
-    private void parseSnapshot(DataSnapshot snapshot) {
+    private void parseSnapshot(DataSnapshot snapshot,String date) {
 
         List<Document> documents = new ArrayList<>();
 
@@ -167,7 +170,15 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
                 if (document.belongsToCurrentUser()) {
 
-                    documents.add(document);
+                    if (date.equals("")){
+
+                        documents.add(document);
+
+                    } else if (document.getTime().contains(date)){
+
+                        documents.add(document);
+
+                    }
 
                 }
             }
@@ -175,6 +186,8 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         setAdapter(documents);
     }
+
+
 
     private void setAdapter(List<Document> documents) {
 
@@ -293,7 +306,27 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
     private void setListeners() {
 
         binding.includeView.backIV.setOnClickListener(view -> onBackPressed());
+
         binding.loginBtn3.setOnClickListener(view -> checkPermissions());
+
+        binding.includeView.yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                if(i!=0){
+
+                    getData(binding.includeView.yearSpinner.getSelectedItem().toString());
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
+
     }
 
     private void openFilePicker() {
