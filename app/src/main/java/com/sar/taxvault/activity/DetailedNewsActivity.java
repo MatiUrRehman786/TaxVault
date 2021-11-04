@@ -32,15 +32,14 @@ public class DetailedNewsActivity extends AppCompatActivity {
         binding = ActivityDetailedNewsBinding.inflate(getLayoutInflater());
         View view = binding.getRoot();
         setContentView(view);
-
         
         getDataFromIntent();
         
         setView();
         
         setListeners();
-        
     }
+
 
     private void getDataFromIntent() {
 

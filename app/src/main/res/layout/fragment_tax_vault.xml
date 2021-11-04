@@ -102,14 +102,48 @@
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_96sdp"
-        android:layout_height="@dimen/_96sdp"
-        android:src="@drawable/percent_35"
+    <com.mikhaellopez.circularprogressbar.CircularProgressBar
+        android:id="@+id/circularProgressBar"
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        app:cpb_background_progressbar_color="@color/gray"
+        app:cpb_background_progressbar_width="@dimen/_10sdp"
+        app:cpb_progress="0"
+        app:cpb_progress_direction="to_right"
+        app:cpb_progress_max="100"
+        app:cpb_progressbar_color="@color/red"
+        app:cpb_progressbar_width="10dp"
+        app:cpb_round_border="false"
         app:layout_constraintBottom_toTopOf="@id/upperCL"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@id/upperCL" />
+
+    <androidx.cardview.widget.CardView
+        android:layout_width="@dimen/_50sdp"
+        android:layout_height="@dimen/_50sdp"
+        app:cardCornerRadius="@dimen/_25sdp"
+        app:cardBackgroundColor="@color/red"
+        app:layout_constraintBottom_toBottomOf="@+id/circularProgressBar"
+        app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
+        app:layout_constraintStart_toStartOf="@+id/circularProgressBar"
+        app:layout_constraintTop_toTopOf="@+id/circularProgressBar">
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:fontFamily="@font/poppins_bold"
+            android:gravity="center"
+            android:id="@+id/percentTV"
+            android:maxLines="1"
+            android:text="100%"
+            android:padding="@dimen/_5sdp"
+            android:autoSizeTextType="uniform"
+            android:autoSizeMaxTextSize="@dimen/_12ssp"
+            android:textColor="@color/white"
+            android:textSize="@dimen/_12ssp" />
+
+    </androidx.cardview.widget.CardView>
 
     <ScrollView
         android:layout_width="match_parent"

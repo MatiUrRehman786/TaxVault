@@ -51,11 +51,11 @@ public class Signup extends BaseActivity {
 
     private void initFireBase() {
 
-        rootNode= FirebaseDatabase.getInstance();
+        rootNode = FirebaseDatabase.getInstance();
 
-        mDatabase=rootNode.getReference("User");
+        mDatabase = rootNode.getReference("User");
 
-        mAuth= FirebaseAuth.getInstance();
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -79,7 +79,7 @@ public class Signup extends BaseActivity {
 
             if (isValid()) {
 
-                if(isOnline()){
+                if (isOnline()) {
 
                     signUpUserNow();
 
@@ -94,11 +94,12 @@ public class Signup extends BaseActivity {
         });
 
     }
-    private boolean isValid(){
 
-        boolean chceck=false;
+    private boolean isValid() {
 
-        if (binding.firstNameET.getText().toString().trim().isEmpty()){
+        boolean chceck = false;
+
+        if (binding.firstNameET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter User First Name!");
 
@@ -106,7 +107,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.lastNameET.getText().toString().trim().isEmpty()){
+        if (binding.lastNameET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Last Name!");
 
@@ -114,7 +115,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.phoneNumberET.getText().toString().trim().isEmpty()){
+        if (binding.phoneNumberET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Phone Number!");
 
@@ -122,7 +123,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.emailET.getText().toString().trim().isEmpty()){
+        if (binding.emailET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Email!");
 
@@ -130,7 +131,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.passwordET.getText().toString().trim().isEmpty()){
+        if (binding.passwordET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Password!");
 
@@ -138,7 +139,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        chceck= true;
+        chceck = true;
 
         return chceck;
 
@@ -151,11 +152,12 @@ public class Signup extends BaseActivity {
                 .show(Signup.this);
 
     }
+
     private void signUpUserNow() {
 
-        String email=binding.emailET.getText().toString();
+        String email = binding.emailET.getText().toString();
 
-        String password=binding.passwordET.getText().toString();
+        String password = binding.passwordET.getText().toString();
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
@@ -164,7 +166,7 @@ public class Signup extends BaseActivity {
 
                     String currentID = mAuth.getCurrentUser().getUid();
 
-                    UserModel user=new UserModel();
+                    UserModel user = new UserModel();
 
                     user.setFirstName(binding.firstNameET.getText().toString());
                     user.setLastName(binding.lastNameET.getText().toString());
@@ -172,22 +174,13 @@ public class Signup extends BaseActivity {
                     user.setEmail(binding.emailET.getText().toString());
                     user.setPassword(binding.passwordET.getText().toString());
                     user.setUserType(binding.userTypeSpinner.getSelectedItem().toString());
-
-                    if(binding.rememberMeCBSignup.isChecked()){
-
-                        user.setRememberMe("true");
-
-                    } else {
-
-                        user.setRememberMe("false");
-
-                    }
+                    user.setRememberMe(binding.rememberMeCBSignup.isChecked());
 
                     mDatabase.child(currentID).setValue(user);
 
                     finish();
 
-                    startActivity(new Intent(Signup.this,Main.class)
+                    startActivity(new Intent(Signup.this, Main.class)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
 
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
