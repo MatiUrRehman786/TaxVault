@@ -2,31 +2,38 @@ package com.sar.taxvault.Model;
 
 public class UserModel {
 
-    String firstName="";
-    String lastName="";
-    String phoneNumber="";
-    String email="";
-    String password="";
-    String userType="Individual";
-    String rememberMe="true";
-    String token="";
-    String maxPost="10";
-    String postCount="0";
+    String firstName = "";
+    String lastName = "";
+    String phoneNumber = "";
+    String email = "";
+    String password = "";
+    String userType = "individual";
+    Boolean rememberMe = true;
+    String token = "";
+    int maxPost = 10;
+    int postCount = 0;
 
+    public Boolean getRememberMe() {
+        return rememberMe;
+    }
 
-    public String getMaxPost() {
+    public void setRememberMe(Boolean rememberMe) {
+        this.rememberMe = rememberMe;
+    }
+
+    public int getMaxPost() {
         return maxPost;
     }
 
-    public void setMaxPost(String maxPost) {
+    public void setMaxPost(int maxPost) {
         this.maxPost = maxPost;
     }
 
-    public String getPostCount() {
+    public int getPostCount() {
         return postCount;
     }
 
-    public void setPostCount(String postCount) {
+    public void setPostCount(int postCount) {
         this.postCount = postCount;
     }
 
@@ -86,11 +93,18 @@ public class UserModel {
         this.userType = userType;
     }
 
-    public String getRememberMe() {
-        return rememberMe;
+    public boolean isAllowedToPost() {
+
+        if (postCount < maxPost)
+            return true;
+
+        return false;
     }
 
-    public void setRememberMe(String rememberMe) {
-        this.rememberMe = rememberMe;
+    public int getPercentShared() {
+
+        double percent = (postCount * 100 / maxPost);
+
+        return new Double(percent).intValue();
     }
 }
