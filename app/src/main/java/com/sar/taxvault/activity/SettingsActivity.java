@@ -14,6 +14,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.databinding.ActivitySettingsBinding;
+import com.sar.taxvault.utils.UIUpdate;
 import com.williammora.snackbar.Snackbar;
 
 public class SettingsActivity extends BaseActivity {
@@ -67,6 +68,9 @@ public class SettingsActivity extends BaseActivity {
     private void getUserData() {
 
 
+        UIUpdate.GetUIUpdate(this).destroy();
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
+
         DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
 
         DatabaseReference usersRef = rootRef.child("User").child(mAuth.getCurrentUser().getUid());
@@ -74,6 +78,7 @@ public class SettingsActivity extends BaseActivity {
         ValueEventListener valueEventListener = new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                UIUpdate.GetUIUpdate(SettingsActivity.this).dismissProgressDialog();
 
                 UserModel user = dataSnapshot.getValue(UserModel.class);
 

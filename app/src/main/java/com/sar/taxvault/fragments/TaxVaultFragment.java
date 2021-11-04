@@ -294,6 +294,7 @@ public class TaxVaultFragment extends Fragment {
 
         MyEphemeralKeyProvider.cusId = "1";
 
+        UIUpdate.GetUIUpdate(getActivity()).destroy();
         UIUpdate.GetUIUpdate(getActivity()).setProgressDialog();
 
         RequestBody requestBody = new MultipartBody.Builder()

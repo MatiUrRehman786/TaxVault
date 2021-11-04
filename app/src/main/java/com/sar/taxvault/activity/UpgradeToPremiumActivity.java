@@ -208,7 +208,7 @@ public class UpgradeToPremiumActivity extends BaseActivity {
                                                     if (jsonObject.getJSONObject("return_data").getInt("error") == 0){
 
                                                         ConfirmPaymentIntentParams confirmParams = ConfirmPaymentIntentParams
-                                                                .create(clientSecret);
+                                                                .create(orderClientSecret);
                                                         ;
                                                         stripe = new Stripe(
                                                                 UpgradeToPremiumActivity.this,
