@@ -25,6 +25,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.sar.taxvault.R;
 import com.sar.taxvault.databinding.ActivityLoginBinding;
 import com.sar.taxvault.databinding.DialogForgotPasswordBinding;
+import com.sar.taxvault.utils.UIUpdate;
 import com.williammora.snackbar.Snackbar;
 
 public class Login extends BaseActivity {
@@ -39,15 +40,17 @@ public class Login extends BaseActivity {
 
     private GoogleSignInClient mGoogleSignInClient;
 
-    private final static int RC_SIGN_IN=123;
+    private final static int RC_SIGN_IN = 123;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_login);
 
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
 
         initFireBase();
@@ -57,8 +60,6 @@ public class Login extends BaseActivity {
         setContentView(view);
 
         setView();
-
-       // createRequest();
 
         setListeners();
 
@@ -117,7 +118,7 @@ public class Login extends BaseActivity {
 
         binding.forgotPasswordTV.setOnClickListener(v -> showForgotDialog());
 
-      //  binding.googleBtn.setOnClickListener(v -> googleSgnIn());
+        //  binding.googleBtn.setOnClickListener(v -> googleSgnIn());
 
     }
 
@@ -201,6 +202,10 @@ public class Login extends BaseActivity {
 
     private void loginUserNow() {
 
+        UIUpdate.GetUIUpdate(this).destroy();
+
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
+
         String email = binding.emailET.getText().toString();
 
         String password = binding.passwordET.getText().toString();
@@ -208,23 +213,27 @@ public class Login extends BaseActivity {
         mAuth = FirebaseAuth.getInstance();
 
         mAuth.signInWithEmailAndPassword(email, password)
-                .addOnCompleteListener(Login.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
 
-                        if (!task.isSuccessful()) {
+                .addOnCompleteListener(Login.this, task -> {
 
-                            showMessage("Invalid Email or Password!");
+                    UIUpdate.GetUIUpdate(Login.this).dismissProgressDialog();
 
-                        } else {
+                    if (!task.isSuccessful()) {
 
+                        if (task.getException() != null) {
 
-                            setRemember();
-
-                            startMainActivity();
-
+                            UIUpdate.GetUIUpdate(Login.this).showAlertDialog("Alert",
+                                    task.getException().getLocalizedMessage());
 
                         }
+
+                    } else {
+
+
+                        setRemember();
+
+                        startMainActivity();
+
                     }
                 });
 
@@ -243,51 +252,23 @@ public class Login extends BaseActivity {
 
     private void setRemember() {
 
-        if (binding.rememberMeCB.isChecked()) {
-
-//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("true");
-
-        } else {
-
-//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("rememberMe").setValue("false");
-
-        }
 
     }
 
     private void sendForgotEmail() {
 
         FirebaseAuth.getInstance().sendPasswordResetEmail(binding.emailET.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
 
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                .addOnCompleteListener(task -> {
 
-                        if (task.isSuccessful()) {
+                    if (task.isSuccessful()) {
 
-                            finish();
+                        finish();
 
-                            Toast.makeText(Login.this, "Email has been sent on your Email!", Toast.LENGTH_SHORT).show();
+                        Toast.makeText(Login.this, "Email has been sent on your Email!", Toast.LENGTH_SHORT).show();
 
-                        }
                     }
                 });
     }
-
-
-//    private void createRequest() {
-//        GoogleSignInOptions gso = new GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-//                .requestIdToken("889465372712-nr74k8212lfpgr1e97a1hhi7tfnk47bn.apps.googleusercontent.com")
-//                .requestEmail()
-//                .build();
-//        mGoogleSignInClient = GoogleSignIn.getClient(this, gso);
-//    }
-//
-//
-//    private void googleSgnIn() {
-//        Intent signInIntent = mGoogleSignInClient.getSignInIntent();
-//        startActivityForResult(signInIntent, RC_SIGN_IN);
-//    }
-
 
 }

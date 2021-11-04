@@ -85,6 +85,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         setListeners();
 
         getCurrentUser();
+
     }
 
     private void getData() {
@@ -117,13 +118,16 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
         FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+
                 .addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
                         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
                         if (snapshot.getValue() != null) {
+
                             user = snapshot.getValue(UserModel.class);
 
                             getData();
@@ -201,6 +205,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         accessIV.setOnClickListener(view -> accessSwitch.setChecked(!accessSwitch.isChecked()));
         accessTV.setOnClickListener(view -> accessSwitch.setChecked(!accessSwitch.isChecked()));
+
         accessSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
             document.setHasAccessToShare(b);
             FirebaseDatabase.getInstance().getReference("Files").child(category).child(document.getId()).setValue(document);
@@ -235,11 +240,13 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
         FirebaseDatabase.getInstance().getReference("Files").child(category).child(document.getId()).removeValue()
+
                 .addOnCompleteListener(task -> {
 
                     StorageReference reference = FirebaseStorage.getInstance().getReferenceFromUrl(document.getUrl());
 
                     if (!task.isSuccessful() && task.getException() != null)
+
                         UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", task.getException().getLocalizedMessage());
 
                     reference.delete().addOnCompleteListener(task1 -> {
@@ -247,7 +254,11 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
                         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
                         if (!task1.isSuccessful() && task.getException() != null)
-                            UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog("Alert", task.getException().getLocalizedMessage());
+
+                            UIUpdate.GetUIUpdate(VaultActivity.this).showAlertDialog(
+                                    "Alert",
+                                    task.getException().getLocalizedMessage()
+                            );
 
                     });
                 });
@@ -408,13 +419,16 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         if (hasStoragePermissions()) {
             // Have permission, do the thing!
             check(user);
+
         } else {
             // Ask for one permission
             EasyPermissions.requestPermissions(
                     this,
                     "Please provide storage permissions to continue",
                     RC_FILE_PICKER_PERMISSIONS,
-                    Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                    Manifest.permission.READ_EXTERNAL_STORAGE,
+                    Manifest.permission.WRITE_EXTERNAL_STORAGE
+            );
         }
     }
 
@@ -515,9 +529,11 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
             UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
             Intent intentShareFile = new Intent(Intent.ACTION_SEND);
+
             Uri photoURI = FileProvider.getUriForFile(VaultActivity.this, getApplicationContext().getPackageName() + ".provider", f);
 
             intentShareFile.setType("text/*");
+
             intentShareFile.putExtra(Intent.EXTRA_STREAM, photoURI);
             intentShareFile.putExtra(Intent.EXTRA_SUBJECT, "MyApp File Share: " + f.getName());
             intentShareFile.putExtra(Intent.EXTRA_TEXT, "MyApp File Share: " + f.getName());
@@ -589,13 +605,17 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
             Long percentUsed = (bytes * 100) / GB;
 
             double sizeInMB = new Long(bytes).doubleValue() / 1048576;
+
             double sizeInGB = new Long(GB).doubleValue() / 1048576;
 
             openFilePicker();
 
         } else {
 
-            UIUpdate.GetUIUpdate(this).showAlertDialog("Alert", "You've reached max upload limit. Purchase premium to get unlimited uploads.");
+            UIUpdate.GetUIUpdate(this).showAlertDialog(
+                    "Alert",
+                    "You've reached max upload limit. Purchase premium to get unlimited uploads."
+            );
 
         }
     }

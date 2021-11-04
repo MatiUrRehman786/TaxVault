@@ -27,14 +27,36 @@ public class VaultTypeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
 
         binding = ActivityVaultTypeBinding.inflate(getLayoutInflater());
+
         setContentView(binding.getRoot());
 
         initView();
 
         getCurrentUser();
+
+        setListeners();
+    }
+
+    private void setListeners() {
+
+        binding.includeView.backIV.setOnClickListener(view -> onBackPressed());
+
+    }
+
+
+    @Override
+    public void onBackPressed() {
+
+        super.onBackPressed();
+
+        finish();
+
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
     }
 
     private void initView() {
@@ -46,7 +68,9 @@ public class VaultTypeActivity extends AppCompatActivity {
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
         FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+
                 .addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
@@ -86,16 +110,19 @@ public class VaultTypeActivity extends AppCompatActivity {
 
         } else {
 
-            selectedCategory = "trust-categories";
+            selectedCategory = "trusts-categories";
 
         }
 
         FirebaseDatabase.getInstance().getReference(selectedCategory)
+
                 .addListenerForSingleValueEvent(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
                         if (snapshot.getValue() != null)
+
                             parseSnapshot(snapshot);
                     }
 
@@ -113,6 +140,7 @@ public class VaultTypeActivity extends AppCompatActivity {
         for (DataSnapshot child : snapshot.getChildren()) {
 
             if (child.getValue() != null)
+
                 categories.add(child.getValue().toString());
         }
 
