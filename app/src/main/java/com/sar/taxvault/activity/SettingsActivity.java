@@ -110,6 +110,8 @@ public class SettingsActivity extends BaseActivity {
 
     private void setView() {
 
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         binding.includeView.titleTV.setText("Profile");
 
     }
