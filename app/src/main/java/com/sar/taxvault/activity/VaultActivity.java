@@ -103,7 +103,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
                         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
                         if (snapshot.getValue() != null)
-                            parseSnapshot(snapshot,date);
+                            parseSnapshot(snapshot, date);
                     }
 
                     @Override
@@ -156,7 +156,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         valueEventListener = null;
     }
 
-    private void parseSnapshot(DataSnapshot snapshot,String date) {
+    private void parseSnapshot(DataSnapshot snapshot, String date) {
 
         List<Document> documents = new ArrayList<>();
 
@@ -170,11 +170,11 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
                 if (document.belongsToCurrentUser()) {
 
-                    if (date.equals("")){
+                    if (date.equals("")) {
 
                         documents.add(document);
 
-                    } else if (document.getTime().contains(date)){
+                    } else if (document.getTime().contains(date)) {
 
                         documents.add(document);
 
@@ -186,7 +186,6 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         setAdapter(documents);
     }
-
 
 
     private void setAdapter(List<Document> documents) {
@@ -313,7 +312,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
             @Override
             public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
 
-                if(i!=0){
+                if (i != 0) {
 
                     getData(binding.includeView.yearSpinner.getSelectedItem().toString());
 
@@ -633,13 +632,8 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
-        if (bytes < GB) {
 
-            Long percentUsed = (bytes * 100) / GB;
-
-            double sizeInMB = new Long(bytes).doubleValue() / 1048576;
-
-            double sizeInGB = new Long(GB).doubleValue() / 1048576;
+        if (bytes < GB || hasSubscription()) {
 
             openFilePicker();
 
@@ -651,6 +645,39 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
             );
 
         }
+    }
+
+    private Boolean hasSubscription() {
+
+        if (user.getCurrentPackage() != null) {
+
+            Long ts = user.getPurchasedTSp();
+
+            int diffInDays = (int) ((ts - new Date().getTime())
+                    / (1000 * 60 * 60 * 24));
+
+            if (user.getCurrentPackage().equalsIgnoreCase("monthly")) {
+
+                if (diffInDays < 30) {
+                    return true;
+                }
+
+            }
+
+
+            if (user.getCurrentPackage().equalsIgnoreCase("yearly")) {
+
+                if (diffInDays < 365) {
+
+                    return true;
+                }
+
+            }
+
+        }
+
+        return false;
+
     }
 
 }

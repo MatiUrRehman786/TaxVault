@@ -9,6 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sar.taxvault.Model.Remainder;
 import com.sar.taxvault.databinding.LayoutItemsNotificationsBinding;
+import com.sar.taxvault.utils.UIUpdate;
 
 import java.util.List;
 
@@ -52,6 +53,16 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
         viewHolder.binding.notificationTitleTV.setText(remainder.getTitle());
 
         viewHolder.binding.notificationDetailTV.setText(remainder.getMsg());
+
+        viewHolder.binding.getRoot().setOnClickListener(view -> expandRemainder(remainder));
+
+    }
+
+    private void expandRemainder(Remainder remainder) {
+
+        UIUpdate.GetUIUpdate(mContext).destroy();
+
+        UIUpdate.GetUIUpdate(mContext).showAlertDialog(remainder.getTitle(), remainder.getMsg());
 
     }
 
