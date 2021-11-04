@@ -220,7 +220,7 @@ public class Main extends BaseActivity {
 
                 UserModel user = dataSnapshot.getValue(UserModel.class);
 
-                binding.navView.userNameTV.setText(user.getFirstName()+" "+user.getLastName());
+                binding.navView.userNameTV.setText(user.getFirstName() + " " + user.getLastName());
 
                 binding.navView.userEmailTV.setText(user.getEmail());
 
@@ -240,26 +240,23 @@ public class Main extends BaseActivity {
     private void updateFireBaseToken() {
 
         FirebaseMessaging.getInstance().getToken()
-                .addOnCompleteListener(new OnCompleteListener<String>() {
-                    @Override
-                    public void onComplete(@NonNull Task<String> task) {
+                .addOnCompleteListener(task -> {
 
-                        if (!task.isSuccessful()) {
+                    if (!task.isSuccessful()) {
 
-                            Log.w("FireBase Token", "Fetching FCM registration token failed", task.getException());
+                        Log.w("FireBase Token", "Fetching FCM registration token failed", task.getException());
 
-                            return;
+                        return;
 
-                        }else{
+                    } else {
 
-                            String token = task.getResult();
+                        String token = task.getResult();
 
-                            addTokenToDB(token);
+                        addTokenToDB(token);
 
-                            Log.d("FireBase Token", token);
-                        }
-
+                        Log.d("FireBase Token", token);
                     }
+
                 });
     }
 
