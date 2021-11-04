@@ -18,6 +18,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.R;
 import com.sar.taxvault.databinding.ActivitySignupBinding;
+import com.sar.taxvault.utils.UIUpdate;
 import com.williammora.snackbar.Snackbar;
 
 public class Signup extends BaseActivity {
@@ -34,9 +35,11 @@ public class Signup extends BaseActivity {
     protected void onCreate(Bundle savedInstanceState) {
 
         super.onCreate(savedInstanceState);
+
         setContentView(R.layout.activity_signup);
 
         binding = ActivitySignupBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
 
         initFireBase();
@@ -51,11 +54,13 @@ public class Signup extends BaseActivity {
 
     private void initFireBase() {
 
-        rootNode= FirebaseDatabase.getInstance();
+        UIUpdate.GetUIUpdate(this).destroy();
 
-        mDatabase=rootNode.getReference("User");
+        rootNode = FirebaseDatabase.getInstance();
 
-        mAuth= FirebaseAuth.getInstance();
+        mDatabase = rootNode.getReference("User");
+
+        mAuth = FirebaseAuth.getInstance();
 
     }
 
@@ -79,7 +84,7 @@ public class Signup extends BaseActivity {
 
             if (isValid()) {
 
-                if(isOnline()){
+                if (isOnline()) {
 
                     signUpUserNow();
 
@@ -94,11 +99,12 @@ public class Signup extends BaseActivity {
         });
 
     }
-    private boolean isValid(){
 
-        boolean chceck=false;
+    private boolean isValid() {
 
-        if (binding.firstNameET.getText().toString().trim().isEmpty()){
+        boolean chceck = false;
+
+        if (binding.firstNameET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter User First Name!");
 
@@ -106,7 +112,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.lastNameET.getText().toString().trim().isEmpty()){
+        if (binding.lastNameET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Last Name!");
 
@@ -114,7 +120,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.phoneNumberET.getText().toString().trim().isEmpty()){
+        if (binding.phoneNumberET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Phone Number!");
 
@@ -122,7 +128,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.emailET.getText().toString().trim().isEmpty()){
+        if (binding.emailET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Email!");
 
@@ -130,7 +136,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.passwordET.getText().toString().trim().isEmpty()){
+        if (binding.passwordET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Password!");
 
@@ -138,7 +144,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        chceck= true;
+        chceck = true;
 
         return chceck;
 
@@ -151,20 +157,26 @@ public class Signup extends BaseActivity {
                 .show(Signup.this);
 
     }
+
     private void signUpUserNow() {
 
-        String email=binding.emailET.getText().toString();
+        String email = binding.emailET.getText().toString();
 
-        String password=binding.passwordET.getText().toString();
+        String password = binding.passwordET.getText().toString();
+
+        UIUpdate.GetUIUpdate(this).setProgressDialog();
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
+
+                UIUpdate.GetUIUpdate(Signup.this).dismissProgressDialog();
+
                 if (task.isSuccessful()) {
 
                     String currentID = mAuth.getCurrentUser().getUid();
 
-                    UserModel user=new UserModel();
+                    UserModel user = new UserModel();
 
                     user.setFirstName(binding.firstNameET.getText().toString());
                     user.setLastName(binding.lastNameET.getText().toString());
@@ -172,22 +184,13 @@ public class Signup extends BaseActivity {
                     user.setEmail(binding.emailET.getText().toString());
                     user.setPassword(binding.passwordET.getText().toString());
                     user.setUserType(binding.userTypeSpinner.getSelectedItem().toString());
-
-                    if(binding.rememberMeCBSignup.isChecked()){
-
-                        user.setRememberMe("true");
-
-                    } else {
-
-                        user.setRememberMe("false");
-
-                    }
+                    user.setRememberMe(binding.rememberMeCBSignup.isChecked());
 
                     mDatabase.child(currentID).setValue(user);
 
                     finish();
 
-                    startActivity(new Intent(Signup.this,Main.class)
+                    startActivity(new Intent(Signup.this, Main.class)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
 
                     overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
@@ -195,12 +198,12 @@ public class Signup extends BaseActivity {
 
                 } else {
 
-                    showMessage("User Already Exist OR try another Email!");
+                    if (task.getException() != null)
+
+                        UIUpdate.GetUIUpdate(Signup.this).showAlertDialog("Alert", task.getException().getLocalizedMessage());
 
                 }
-
             }
-
         });
 
     }
