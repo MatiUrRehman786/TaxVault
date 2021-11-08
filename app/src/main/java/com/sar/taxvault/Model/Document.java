@@ -2,6 +2,7 @@ package com.sar.taxvault.Model;
 
 import com.google.firebase.auth.FirebaseAuth;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 public class Document {
@@ -90,6 +91,7 @@ public class Document {
     public void setUrl(String url) {
         this.url = url;
     }
+
     public Boolean getHasAccessToShare() {
         return accessToUsers;
     }
@@ -110,7 +112,9 @@ public class Document {
 
         Date date = new Date(timeStamp);
 
-        return  date.toString();
+        SimpleDateFormat spf = new SimpleDateFormat("dd-M-yyyy hh:mm:ss");
+
+        return spf.format(date);
     }
 
     public boolean belongsToCurrentUser() {

@@ -171,19 +171,21 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
                 document.setId(child.getKey());
 
-                if (document.belongsToCurrentUser()) {
+                if (document.getType().equalsIgnoreCase(category))
 
-                    if (date.equals("")) {
+                    if (document.belongsToCurrentUser()) {
 
-                        documents.add(document);
+                        if (date.equals("")) {
 
-                    } else if (document.getTime().contains(date)) {
+                            documents.add(document);
 
-                        documents.add(document);
+                        } else if (document.getTime().contains(date)) {
+
+                            documents.add(document);
+
+                        }
 
                     }
-
-                }
             }
         }
 
@@ -423,7 +425,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         document.setType(category);
 
-        document.setUserName(user.getFirstName()+" "+user.getLastName());
+        document.setUserName(user.getFirstName() + " " + user.getLastName());
 
         reference.child(key).setValue(document);
 
@@ -604,9 +606,15 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
 
                         if (snapshot.getValue() != null)
+
                             parseSnapshotBytesCalculation(snapshot);
-                        else
+
+                        else {
+
+                            openFilePicker();
+
                             UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+                        }
 
                     }
 
@@ -623,8 +631,6 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
     private void parseSnapshotBytesCalculation(DataSnapshot snapshot) {
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
         Long bytes = 0l;
 
         for (DataSnapshot child : snapshot.getChildren()) {
@@ -632,10 +638,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
             Document document = child.getValue(Document.class);
             document.setId(child.getKey());
 
-//            if (document.getUserId().equalsIgnoreCase(userId)) {
-
-                bytes = bytes + document.getSize();
-//            }
+            bytes = bytes + document.getSize();
         }
 
         long GB = 1073741824;
@@ -653,7 +656,6 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
                     "Alert",
                     "You've reached max upload limit. Purchase premium to get unlimited uploads."
             );
-
         }
     }
 

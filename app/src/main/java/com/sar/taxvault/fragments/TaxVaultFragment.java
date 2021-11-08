@@ -72,14 +72,16 @@ public class TaxVaultFragment extends Fragment {
         UIUpdate.GetUIUpdate(getActivity()).setProgressDialog();
 
         FirebaseDatabase.getInstance().getReference("Files")
+                .child(user.getBusinessId())
+                .child(user.getUserId())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
                         UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
 
-                      //  if (snapshot.getValue() != null)
-                           // parseSnapshot(snapshot);
+                        if (snapshot.getValue() != null)
+                            parseSnapshot(snapshot);
                     }
 
                     @Override
@@ -101,15 +103,15 @@ public class TaxVaultFragment extends Fragment {
 
         for (DataSnapshot child : snapshot.getChildren()) {
 
-            for (DataSnapshot documentSnapshot : child.getChildren()) {
+//            for (DataSnapshot documentSnapshot : child.getChildren()) {
 
-                Document document = documentSnapshot.getValue(Document.class);
+                Document document = child.getValue(Document.class);
 
-                if (document.getUserId().equalsIgnoreCase(userId)) {
+//                if (document.getUserId().equalsIgnoreCase(userId)) {
 
                     bytes = bytes + document.getSize();
-                }
-            }
+//                }
+//            }
         }
 
         long GB = 1073741824;
@@ -170,6 +172,7 @@ public class TaxVaultFragment extends Fragment {
                         if (snapshot.getValue() != null) {
 
                             user = snapshot.getValue(UserModel.class);
+                            user.setUserId(snapshot.getKey());
 
                             getData(user);
 

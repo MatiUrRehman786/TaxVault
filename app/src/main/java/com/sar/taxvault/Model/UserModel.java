@@ -15,6 +15,7 @@ public class UserModel implements Parcelable {
     String userType = "individual";
     Boolean rememberMe = true;
     String token = "";
+    int status = 0;
     int maxPost = 10;
     String customerId;
     String clientSecret;
