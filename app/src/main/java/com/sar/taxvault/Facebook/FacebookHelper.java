@@ -2,6 +2,7 @@ package com.sar.taxvault.Facebook;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.media.FaceDetector;
 import android.os.Bundle;
 import android.util.Log;
 
@@ -13,6 +14,7 @@ import com.facebook.GraphRequest;
 import com.facebook.GraphResponse;
 import com.facebook.login.LoginManager;
 import com.facebook.login.LoginResult;
+import com.sar.taxvault.utils.UIUpdate;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -20,6 +22,8 @@ import org.json.JSONObject;
 import java.util.Arrays;
 
 public class FacebookHelper {
+
+    public String TAG = FacebookHelper.class.getSimpleName();
 
     private FacebookUser user;
 
@@ -84,7 +88,13 @@ public class FacebookHelper {
             @Override
 
             public void onError(FacebookException e) {
-//                CustomAlertDialog.showErrorAlert(context,e.getLocalizedMessage()+e.getMessage());
+
+                Log.d(TAG, "onError: FB Exception"+e.getLocalizedMessage());
+
+                UIUpdate.GetUIUpdate(context).destroy();
+
+                UIUpdate.GetUIUpdate(context).showAlertDialog("Alert",e.getLocalizedMessage());
+
                 mListener.onFbSignTnFail();
 
             }

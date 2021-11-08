@@ -65,6 +65,7 @@ public class RemindersActivity extends AppCompatActivity {
                         UIUpdate.GetUIUpdate(RemindersActivity.this).dismissProgressDialog();
 
                         if (snapshot.getValue() != null)
+
                             parseSnapshot(snapshot);
                     }
 
@@ -95,14 +96,20 @@ public class RemindersActivity extends AppCompatActivity {
     }
 
     private void setView() {
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         binding.includeView.titleTV.setText("Reminders");
     }
 
     private void setListeners() {
+
         binding.includeView.backIV.setOnClickListener(view -> {
+
             finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+
         });
     }
 
@@ -123,7 +130,7 @@ public class RemindersActivity extends AppCompatActivity {
 
         finish();
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

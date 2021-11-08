@@ -75,7 +75,7 @@ public class NewsActivity extends BaseActivity {
 
         binding.includeView.backIV.setOnClickListener(view -> {
             finish();
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         });
 
     }
@@ -139,7 +139,7 @@ public class NewsActivity extends BaseActivity {
 
         finish();
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }
 }

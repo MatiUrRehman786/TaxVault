@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Toast;
+
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
@@ -157,7 +158,7 @@ public class Login extends BaseActivity {
 
             startActivity(intent);
 
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 
@@ -313,7 +314,7 @@ public class Login extends BaseActivity {
 
         startActivity(intent);
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     private void setRemember() {
@@ -423,7 +424,7 @@ public class Login extends BaseActivity {
 
                     } else {
 
-                        Log.d("googleExcwption",  task.getException().toString());
+                        Log.d("googleExcwption", task.getException().toString());
 
                         Toast.makeText(Login.this, "Try Again With Google" + task.getException().toString(), Toast.LENGTH_LONG).show();
 
@@ -439,69 +440,69 @@ public class Login extends BaseActivity {
         mDatabase
                 .child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
 
-                if (snapshot.exists()) {
+                        if (snapshot.exists()) {
 
-                    UserModel user= snapshot.getValue(UserModel.class);
+                            UserModel user = snapshot.getValue(UserModel.class);
 
-                    if(user.getBusinessId().equals("")){
+                            if (user.getBusinessId().isEmpty()) {
 
-                        Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
+                                Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
 
-                        intent.putExtra("type","social");
+                                intent.putExtra("type", "social");
 
-                        startActivity(intent);
+                                startActivity(intent);
 
-                    }else{
+                            } else {
 
-                        Intent intent = new Intent(Login.this, Main.class);
+                                Intent intent = new Intent(Login.this, Main.class);
 
-                        startActivity(intent);
+                                startActivity(intent);
 
-                        finish();
+                                finish();
+
+                            }
+
+
+                        } else {
+
+                            UserModel user = new UserModel();
+
+                            user.setEmail(account.getEmail());
+
+                            user.setFirstName(account.getDisplayName());
+
+                            user.setLastName("");
+
+                            user.setPassword("");
+
+                            user.setToken("");
+
+                            user.setPhoneNumber("");
+
+                            mDatabase
+                                    .child(currentUser.getUid())
+                                    .setValue(user);
+
+                            finish();
+
+                            Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
+
+                            intent.putExtra("type", "social");
+
+                            startActivity(intent);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
                     }
 
-
-                } else {
-
-                    UserModel user = new UserModel();
-
-                    user.setEmail(account.getEmail());
-
-                    user.setFirstName(account.getDisplayName());
-
-                    user.setLastName("");
-
-                    user.setPassword("");
-
-                    user.setToken("");
-
-                    user.setPhoneNumber("");
-
-                    mDatabase
-                            .child(currentUser.getUid())
-                            .setValue(user);
-
-                    finish();
-
-                    Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
-
-                    intent.putExtra("type","social");
-
-                    startActivity(intent);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
+                });
 
     }
 
@@ -513,7 +514,7 @@ public class Login extends BaseActivity {
 
         callbackManager = CallbackManager.Factory.create();
 
-        facebookHelper=new FacebookHelper(response,"id,name",this);
+        facebookHelper = new FacebookHelper(response, "id,name", this);
 
     }
 
@@ -522,7 +523,7 @@ public class Login extends BaseActivity {
         @Override
         public void onFbSignTnFail() {
 
-            Toast.makeText(getApplicationContext(),"Try Again With Facebook", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Try Again With Facebook", Toast.LENGTH_LONG).show();
 
         }
 
@@ -534,7 +535,7 @@ public class Login extends BaseActivity {
         @Override
         public void onFbSignOut() {
 
-            Toast.makeText(getApplicationContext(),"Sign out Successful", Toast.LENGTH_LONG).show();
+            Toast.makeText(getApplicationContext(), "Sign out Successful", Toast.LENGTH_LONG).show();
 
         }
 
@@ -543,7 +544,7 @@ public class Login extends BaseActivity {
 
             AccessToken accessToken = AccessToken.getCurrentAccessToken();
 
-            facebookUser.token=accessToken;
+            facebookUser.token = accessToken;
 
             accessToken.getDeclinedPermissions();
 
@@ -567,7 +568,7 @@ public class Login extends BaseActivity {
 
                     } else {
 
-                        Toast.makeText(getApplicationContext(),"Try Again With Facebook", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Try Again With Facebook", Toast.LENGTH_LONG).show();
 
                     }
 
@@ -582,70 +583,68 @@ public class Login extends BaseActivity {
         mDatabase
                 .child(currentUser.getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot snapshot) {
+                    @Override
+                    public void onDataChange(DataSnapshot snapshot) {
 
-                if (snapshot.exists()) {
+                        if (snapshot.exists()) {
 
-                    finish();
+                            finish();
 
-                    UserModel user= snapshot.getValue(UserModel.class);
+                            UserModel user = snapshot.getValue(UserModel.class);
 
-                    if(user.getBusinessId().equals("")){
+                            if (user.getBusinessId().isEmpty()) {
 
-                        Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
+                                Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
 
-                        intent.putExtra("type","social");
+                                intent.putExtra("type", "social");
 
-                        startActivity(intent);
+                                startActivity(intent);
 
-                    }else{
+                            } else {
 
-                        Intent intent = new Intent(Login.this, Main.class);
+                                Intent intent = new Intent(Login.this, Main.class);
 
-                        startActivity(intent);
+                                startActivity(intent);
+
+                            }
+
+
+                        } else {
+
+
+                            UserModel user = new UserModel();
+
+                            user.setEmail(facebookUser.email);
+
+                            user.setFirstName(facebookUser.name);
+
+                            user.setLastName("");
+
+                            user.setPassword("");
+
+                            user.setToken("");
+
+                            user.setPhoneNumber("");
+
+                            mDatabase
+                                    .child(currentUser.getUid())
+                                    .setValue(user);
+
+                            finish();
+
+                            Intent intent = new Intent(Login.this, Main.class);
+
+                            startActivity(intent);
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull DatabaseError error) {
 
                     }
 
-
-
-
-                } else {
-
-
-                    UserModel user = new UserModel();
-
-                    user.setEmail(facebookUser.email);
-
-                    user.setFirstName(facebookUser.name);
-
-                    user.setLastName("");
-
-                    user.setPassword("");
-
-                    user.setToken("");
-
-                    user.setPhoneNumber("");
-
-                    mDatabase
-                            .child(currentUser.getUid())
-                            .setValue(user);
-
-                    finish();
-
-                    Intent intent = new Intent(Login.this, Main.class);
-
-                    startActivity(intent);
-
-                }
-            }
-
-            @Override
-            public void onCancelled(@NonNull DatabaseError error) {
-
-            }
-
-        });
+                });
 
     }
 

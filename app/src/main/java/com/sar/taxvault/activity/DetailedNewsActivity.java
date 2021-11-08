@@ -96,7 +96,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
             
             finish();
 
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
             
         });
         
@@ -108,7 +108,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
         
         finish();
         
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         
     }
 }

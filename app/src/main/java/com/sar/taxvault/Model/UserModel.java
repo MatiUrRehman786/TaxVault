@@ -68,6 +68,10 @@ public class UserModel implements Parcelable {
     }
 
     public String getBusinessId() {
+
+        if (businessId == null)
+            return "";
+
         return businessId;
     }
 

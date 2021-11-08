@@ -97,7 +97,9 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
         valueEventListener = FirebaseDatabase.getInstance().getReference("Files").child(user.getBusinessId()).child(user.getUserId())
+
                 .addValueEventListener(new ValueEventListener() {
+
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
@@ -224,8 +226,11 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
         accessTV.setOnClickListener(view -> accessSwitch.setChecked(!accessSwitch.isChecked()));
 
         accessSwitch.setOnCheckedChangeListener((compoundButton, b) -> {
+
             document.setHasAccessToShare(b);
+
             FirebaseDatabase.getInstance().getReference("Files").child(category).child(document.getId()).setValue(document);
+
         });
 
         AppCompatTextView shareTV = dialog.findViewById(R.id.shareTV);
@@ -504,7 +509,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         finish();
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
     }
 
     @Override

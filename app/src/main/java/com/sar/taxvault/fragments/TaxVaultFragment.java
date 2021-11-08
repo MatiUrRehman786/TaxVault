@@ -240,7 +240,7 @@ public class TaxVaultFragment extends Fragment {
 
             startActivity(intent);
 
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 
@@ -250,7 +250,7 @@ public class TaxVaultFragment extends Fragment {
 
             startActivity(intent);
 
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 
@@ -258,7 +258,7 @@ public class TaxVaultFragment extends Fragment {
 
             RemindersActivity.startActivity(getActivity());
 
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 
@@ -268,7 +268,7 @@ public class TaxVaultFragment extends Fragment {
 
             startActivity(intent);
 
-            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 

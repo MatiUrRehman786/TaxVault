@@ -38,7 +38,7 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
 
     public DatabaseReference mDatabase;
 
-    String type="normal";
+    String type = "normal";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -67,11 +67,11 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
 
     private void getDataFromIntent() {
 
-        Intent intent=getIntent();
+        Intent intent = getIntent();
 
-        type=intent.getStringExtra("type");
+        type = intent.getStringExtra("type");
 
-        if(!type.equals("social")){
+        if (!type.equals("social")) {
 
             binding.userTypeLabel.setVisibility(View.GONE);
 
@@ -117,15 +117,17 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
 
                     for (DataSnapshot ds : dataSnapshot.getChildren()) {
 
-                        try{
+                        try {
 
                             UserModel user = ds.getValue(UserModel.class);
 
                             user.setUserId(ds.getKey());
 
-                            if(user.getUserType().equals("bussiness"))
+                            if (user.getUserType().equals("bussiness"))
+
                                 businessList.add(user);
-                        }catch (Exception e){
+
+                        } catch (Exception e) {
 
                         }
 
@@ -151,7 +153,7 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
         LinearLayoutManager layoutManager5 = new LinearLayoutManager(this);
         binding.businessRV.setLayoutManager(layoutManager5);
 
-        RecyclerViewAdapterBusiness adapter = new RecyclerViewAdapterBusiness(this, businessList,this);
+        RecyclerViewAdapterBusiness adapter = new RecyclerViewAdapterBusiness(this, businessList, this);
 
         binding.businessRV.setItemAnimator(new DefaultItemAnimator());
 
@@ -160,9 +162,9 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
     }
 
     @Override
-    public void onItemClick(String businessId,String businessName) {
+    public void onItemClick(String businessId, String businessName) {
 
-        if(type.equals("social")){
+        if (type.equals("social")) {
 
             mDatabase.child(mAuth.getCurrentUser().getUid()).child("businessId").setValue(businessId);
             mDatabase.child(mAuth.getCurrentUser().getUid()).child("userType")
@@ -173,11 +175,11 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
 
             finish();
 
-        }else{
+        } else {
 
-            Signup.businessId=businessId;
+            Signup.businessId = businessId;
 
-            Signup.businessName=businessName;
+            Signup.businessName = businessName;
 
             finish();
 

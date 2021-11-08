@@ -305,7 +305,7 @@ public class Main extends BaseActivity {
 
             startActivity(intent);
 
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
 
             binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
@@ -343,7 +343,7 @@ public class Main extends BaseActivity {
 
             startActivity(intent);
 
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 

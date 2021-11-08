@@ -123,7 +123,7 @@ public class SettingsActivity extends BaseActivity {
 
             finish();
 
-            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
         });
 
@@ -169,7 +169,7 @@ public class SettingsActivity extends BaseActivity {
 
         startActivity(intent);
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }
 
@@ -188,7 +188,7 @@ public class SettingsActivity extends BaseActivity {
 
         finish();
 
-        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
     }
 }
