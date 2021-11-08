@@ -13,6 +13,8 @@ public class Document {
     Boolean accessToUsers;
     String userId;
     String id;
+    String type;
+    String userName;
 
     public Document(String name, Long timeStamp, Long size, String url) {
 
@@ -25,6 +27,21 @@ public class Document {
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getUserName() {
+        return userName;
+    }
+
+    public void setUserName(String userName) {
+        this.userName = userName;
+    }
 
     public String getId() {
         return id;

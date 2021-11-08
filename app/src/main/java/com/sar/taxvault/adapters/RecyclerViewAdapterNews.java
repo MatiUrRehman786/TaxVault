@@ -56,7 +56,7 @@ public class RecyclerViewAdapterNews extends RecyclerView.Adapter<RecyclerViewAd
 
         viewHolder.binding.securityCodeTV.setText(newsModel.getSecurityCode());
 
-        viewHolder.binding.timeTV.setText(getTime(newsModel.getTime()));
+        viewHolder.binding.timeTV.setText(getTime(String.valueOf(newsModel.getTime())));
 
         viewHolder.binding.descriptionTV.setText(newsModel.getDescription());
 
