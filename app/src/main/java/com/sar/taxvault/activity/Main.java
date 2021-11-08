@@ -11,12 +11,15 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.View;
 import android.view.WindowManager;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -78,6 +81,8 @@ public class Main extends BaseActivity {
 
     Dialog bottomSheetDialog;
 
+    public double amount = 0;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -101,44 +106,10 @@ public class Main extends BaseActivity {
 
 //        Todo: Create customer
 
-        createCustomer();
+//        createCustomer();
     }
 
-    private void createCustomer() {
 
-//        MyEphemeralKeyProvider.cusId = "1";
-//
-//        RequestBody requestBody = new MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                .addFormDataPart("name", Constants.currentUser.getName())
-//                .addFormDataPart("email", Constants.currentUser.getEmail())
-//                .addFormDataPart("cus_id", "")
-//                .build();
-//        Controller.getApi().createCustomer(requestBody)
-//                .enqueue(new Callback<String>() {
-//                    @Override
-//                    public void onResponse(Call<String> call, Response<String> response) {
-//                        if (response.body() != null) {
-//                            try {
-//                                try {
-//                                    JSONObject jsonObject = new JSONObject(response.body());
-//                                    customerId = jsonObject.getString("cus_id");
-//                                    clientSecret = jsonObject.getString("key");
-//                                    EmpeheralKeyProvider.cusId = customerId;
-//                                } catch (Exception e) {
-//                                    e.printStackTrace();
-//                                }
-//                            } catch (Exception e) {
-//                                e.printStackTrace();
-//                            }
-//                        }
-//                    }
-//
-//                    @Override
-//                    public void onFailure(Call<String> call, Throwable t) {
-//                    }
-//                });
-    }
 //
 //    private void setUpStripe() {
 //
@@ -248,6 +219,7 @@ public class Main extends BaseActivity {
 //                                        }
 //                                    });
 //                        } else {
+
 //                            if (paymentMethod != null) {
 //
 //                                paymentSession.presentPaymentMethodSelection(MyEphemeralKeyProvider.cusId);
@@ -262,35 +234,6 @@ public class Main extends BaseActivity {
 //                }
 //        );
 //    }
-
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (data != null && !readyToCharge) {
-            paymentSession.handlePaymentData(requestCode, resultCode, data);
-        }
-        if (readyToCharge)
-            stripe.onPaymentResult(requestCode, data, new PaymentResultCallback(Main.this));
-    }
-
-    public void showSuccessMessage() {
-//        PaymentFinished paymentFinished = new PaymentFinished();
-        Toast.makeText(Main.this, "Escrow Successfully", Toast.LENGTH_SHORT).show();
-    }
-
-    public void showError(String msg) {
-        if(errorDialog!=null && errorDialog.isShowing()){
-            return;
-        }
-        errorDialog =  new AlertDialog.Builder(Main.this)
-                .setMessage(msg)
-                .setTitle("Alert")
-                .setPositiveButton("OK",(dialog,a)->{
-                    dialog.dismiss();
-                })
-                .create();
-        errorDialog.show();
-    }
 
     private void initFireBase() {
 

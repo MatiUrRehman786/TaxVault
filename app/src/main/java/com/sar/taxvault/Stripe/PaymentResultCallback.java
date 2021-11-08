@@ -6,6 +6,7 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.sar.taxvault.activity.Main;
+import com.sar.taxvault.activity.UpgradeToPremiumActivity;
 import com.stripe.android.ApiResultCallback;
 import com.stripe.android.PaymentIntentResult;
 import com.stripe.android.model.PaymentIntent;
@@ -16,15 +17,15 @@ import java.util.Objects;
 
 public class PaymentResultCallback  implements ApiResultCallback<PaymentIntentResult> {
     @NonNull
-    private final WeakReference<Main> activityRef;
+    private final WeakReference<UpgradeToPremiumActivity> activityRef;
 
-    public PaymentResultCallback(@NonNull Main activity) {
+    public PaymentResultCallback(@NonNull UpgradeToPremiumActivity activity) {
         activityRef = new WeakReference<>(activity);
     }
 
     @Override
     public void onSuccess(@NonNull PaymentIntentResult result) {
-        final Main activity = activityRef.get();
+        final UpgradeToPremiumActivity activity = activityRef.get();
         if (activity == null) {
             return;
         }
@@ -51,7 +52,7 @@ public class PaymentResultCallback  implements ApiResultCallback<PaymentIntentRe
 
     @Override
     public void onError(@NonNull Exception e) {
-        final Main activity = activityRef.get();
+        final UpgradeToPremiumActivity activity = activityRef.get();
         if (activity == null) {
             return;
         }

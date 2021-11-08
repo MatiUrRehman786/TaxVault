@@ -54,6 +54,7 @@ public class RemindersActivity extends AppCompatActivity {
 
     private void getData() {
 
+        UIUpdate.GetUIUpdate(this).destroy();
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
         valueEventListener = FirebaseDatabase.getInstance().getReference("Remainders").child(getCurrentUserId())

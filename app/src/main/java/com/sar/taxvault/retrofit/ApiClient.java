@@ -31,11 +31,11 @@ public interface ApiClient {
     Call<String> linkAccount(@Body RequestBody requestBody);
 
     @Headers("Accept: application/json")
-    @POST("/bandy/Api/firststep")
+    @POST("/bandy/Api/taxvaultfirststep")
     Call<String> createCustomer(@Body RequestBody requestBody);
 
     @Headers("Accept: application/json")
-    @POST("/bandy/Api/accoutpayment")
+    @POST("/bandy/Api/taxvaultaccoutpayment")
     Call<String> accountPayment(@Body RequestBody requestBody);
 
     @Headers("Accept: application/json")

@@ -25,7 +25,7 @@
         android:lineSpacingMultiplier="1.1"
         android:textSize="@dimen/_14ssp"
         android:textStyle="bold"
-        android:text="Upgrade \nYour Plan just - $499"
+        android:text="Upgrade \nYour Plan in just - $5/mo\nOR 60$/year"
         android:textAlignment="center"
         app:layout_constraintBottom_toTopOf="@id/uploadUnlimitedLabel"
         android:layout_marginBottom="@dimen/_12sdp"

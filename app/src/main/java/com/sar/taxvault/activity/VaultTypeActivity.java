@@ -71,6 +71,7 @@ public class VaultTypeActivity extends AppCompatActivity {
 
     private void getCurrentUser() {
 
+        UIUpdate.GetUIUpdate(this).destroy();
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
         FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())

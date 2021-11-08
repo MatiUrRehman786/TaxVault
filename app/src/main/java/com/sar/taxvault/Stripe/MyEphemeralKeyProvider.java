@@ -24,13 +24,13 @@ public class MyEphemeralKeyProvider implements EphemeralKeyProvider {
     public void createEphemeralKey(
             @NonNull @Size(min = 4) String apiVersion,
             @NonNull final EphemeralKeyUpdateListener keyUpdateListener) {
-        JSONObject jsonObject = new JSONObject();
-        try {
-            jsonObject.put("api_version", apiVersion);
-            jsonObject.put("cus_id", cusId);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+//        JSONObject jsonObject = new JSONObject();
+//        try {
+//            jsonObject.put("api_version", apiVersion);
+//            jsonObject.put("cus_id", cusId);
+//        } catch (JSONException e) {
+//            e.printStackTrace();
+//        }
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart("api_version", apiVersion)
