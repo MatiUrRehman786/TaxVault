@@ -18,6 +18,7 @@ import android.graphics.drawable.ColorDrawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
@@ -95,7 +96,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
-        valueEventListener = FirebaseDatabase.getInstance().getReference("Files").child(category)
+        valueEventListener = FirebaseDatabase.getInstance().getReference("Files").child(user.getBusinessId()).child(user.getUserId())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -132,6 +133,8 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
                         if (snapshot.getValue() != null) {
 
                             user = snapshot.getValue(UserModel.class);
+
+                            user.setUserId(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
                             getData("");
                         }
@@ -414,9 +417,14 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         Document document = new Document(name, timeStamp, sizeBytes, uri.toString());
 
-        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Files").child(category);
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference("Files")
+                .child(user.getBusinessId()).child(user.getUserId());
 
         String key = reference.push().getKey();
+
+        document.setType(category);
+
+        document.setUserName(user.getFirstName()+" "+user.getLastName());
 
         reference.child(key).setValue(document);
 

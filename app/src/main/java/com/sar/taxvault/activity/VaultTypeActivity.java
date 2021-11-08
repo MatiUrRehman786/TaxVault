@@ -42,6 +42,7 @@ public class VaultTypeActivity extends AppCompatActivity {
         setListeners();
     }
 
+
     private void setListeners() {
 
         binding.includeView.backIV.setOnClickListener(view -> onBackPressed());
@@ -61,7 +62,11 @@ public class VaultTypeActivity extends AppCompatActivity {
     }
 
     private void initView() {
+
+        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
+
         binding.includeView.titleTV.setText("Categories");
+
     }
 
     private void getCurrentUser() {
@@ -149,17 +154,10 @@ public class VaultTypeActivity extends AppCompatActivity {
     }
 
     private void setAdapter(List<String> categories) {
+
         binding.vaultRV.setLayoutManager(new LinearLayoutManager(this));
+
         binding.vaultRV.setAdapter(new RecyclerViewAdapterCategories(this, categories));
-    }
-
-    private void setView() {
-
-        getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
-
-        binding.includeView.titleTV.setText("Vault Category");
-
-        binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
 
     }
 

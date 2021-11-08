@@ -4,9 +4,8 @@
     <string name="fb_login_protocol_scheme">fb769175430530158</string>
 
 
-
-<!--    copy this from firbase json file-->
-<!--    <string name="default_web_client_id">889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com</string>-->
+<!--        copy this from firbase json file-->
+<!--        <string name="default_web_client_id">889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com</string>-->
 
     <string name="app_name">Tax Vault</string>
     <string name="type_here">Type Here</string>
@@ -31,7 +30,7 @@
     </string-array>
 
     <string-array name="user_type">
-        <item>Individual</item>
-        <item>Trust</item>
+        <item>individual</item>
+        <item>trust</item>
     </string-array>
 </resources>

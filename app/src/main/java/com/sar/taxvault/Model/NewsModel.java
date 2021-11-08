@@ -6,7 +6,7 @@ public class NewsModel implements Serializable {
 
     String id;
     String title="";
-    String time="";
+    long time;
     String securityCode="";
     String imageUrl="";
     String description="";
@@ -27,11 +27,11 @@ public class NewsModel implements Serializable {
         this.title = title;
     }
 
-    public String getTime() {
+    public long getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(long time) {
         this.time = time;
     }
 

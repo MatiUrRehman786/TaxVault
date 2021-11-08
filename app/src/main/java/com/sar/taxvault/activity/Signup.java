@@ -31,6 +31,8 @@ public class Signup extends BaseActivity {
 
     public DatabaseReference mDatabase;
 
+    public static String businessName = "", businessId = "";
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
 
@@ -98,6 +100,13 @@ public class Signup extends BaseActivity {
 
         });
 
+        binding.selectBusinessBtn.setOnClickListener(v -> {
+
+            startActivity(new Intent(Signup.this, SelectBusinessActivity.class)
+                    .putExtra("type", "normal"));
+
+        });
+
     }
 
     private boolean isValid() {
@@ -139,6 +148,13 @@ public class Signup extends BaseActivity {
         if (binding.passwordET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Password!");
+
+            return chceck;
+
+        }
+        if (binding.businessNameTV.getText().toString().trim().isEmpty()) {
+
+            showMessage("Select Business!");
 
             return chceck;
 
@@ -185,6 +201,7 @@ public class Signup extends BaseActivity {
                     user.setPassword(binding.passwordET.getText().toString());
                     user.setUserType(binding.userTypeSpinner.getSelectedItem().toString());
                     user.setRememberMe(binding.rememberMeCBSignup.isChecked());
+                    user.setBusinessId(businessId);
 
                     mDatabase.child(currentID).setValue(user);
 
@@ -205,6 +222,20 @@ public class Signup extends BaseActivity {
                 }
             }
         });
+
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+
+        if (businessName != "") {
+
+            binding.businessNameTV.setText(businessName);
+
+            businessName = "";
+
+        }
 
     }
 

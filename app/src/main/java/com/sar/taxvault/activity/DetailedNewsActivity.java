@@ -70,7 +70,7 @@ public class DetailedNewsActivity extends AppCompatActivity {
 
         binding.securityCodeTV.setText(newsModel.getSecurityCode());
 
-        binding.timeTV.setText(getTime(newsModel.getTime()));
+        binding.timeTV.setText(getTime(String.valueOf(newsModel.getTime())));
 
         binding.descriptionTV.setText(newsModel.getDescription());
     }

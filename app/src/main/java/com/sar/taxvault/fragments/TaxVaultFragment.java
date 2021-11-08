@@ -63,8 +63,8 @@ public class TaxVaultFragment extends Fragment {
 
                         UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
 
-                        if (snapshot.getValue() != null)
-                            parseSnapshot(snapshot);
+                      //  if (snapshot.getValue() != null)
+                           // parseSnapshot(snapshot);
                     }
 
                     @Override
@@ -139,6 +139,7 @@ public class TaxVaultFragment extends Fragment {
                         UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
 
                         if (snapshot.getValue() != null) {
+
                             UserModel user = snapshot.getValue(UserModel.class);
 
                             getData(user);

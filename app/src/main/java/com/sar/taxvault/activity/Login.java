@@ -444,11 +444,26 @@ public class Login extends BaseActivity {
 
                 if (snapshot.exists()) {
 
-                    finish();
+                    UserModel user= snapshot.getValue(UserModel.class);
 
-                    Intent intent = new Intent(Login.this, Main.class);
+                    if(user.getBusinessId().equals("")){
 
-                    startActivity(intent);
+                        Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
+
+                        intent.putExtra("type","social");
+
+                        startActivity(intent);
+
+                    }else{
+
+                        Intent intent = new Intent(Login.this, Main.class);
+
+                        startActivity(intent);
+
+                        finish();
+
+                    }
+
 
                 } else {
 
@@ -472,7 +487,9 @@ public class Login extends BaseActivity {
 
                     finish();
 
-                    Intent intent = new Intent(Login.this, Main.class);
+                    Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
+
+                    intent.putExtra("type","social");
 
                     startActivity(intent);
 
@@ -572,9 +589,25 @@ public class Login extends BaseActivity {
 
                     finish();
 
-                    Intent intent = new Intent(Login.this, Main.class);
+                    UserModel user= snapshot.getValue(UserModel.class);
 
-                    startActivity(intent);
+                    if(user.getBusinessId().equals("")){
+
+                        Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
+
+                        intent.putExtra("type","social");
+
+                        startActivity(intent);
+
+                    }else{
+
+                        Intent intent = new Intent(Login.this, Main.class);
+
+                        startActivity(intent);
+
+                    }
+
+
 
 
                 } else {
