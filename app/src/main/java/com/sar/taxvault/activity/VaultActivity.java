@@ -589,11 +589,15 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
     }
 
 
-    private void check(UserModel user) {
+    private void
+
+    check(UserModel user) {
 
         UIUpdate.GetUIUpdate(VaultActivity.this).setProgressDialog();
 
         FirebaseDatabase.getInstance().getReference("Files")
+                .child(user.getBusinessId())
+                .child(user.getUserId())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -625,15 +629,13 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         for (DataSnapshot child : snapshot.getChildren()) {
 
-            for (DataSnapshot documentSnapshot : child.getChildren()) {
+            Document document = child.getValue(Document.class);
+            document.setId(child.getKey());
 
-                Document document = documentSnapshot.getValue(Document.class);
+//            if (document.getUserId().equalsIgnoreCase(userId)) {
 
-                if (document.getUserId().equalsIgnoreCase(userId)) {
-
-                    bytes = bytes + document.getSize();
-                }
-            }
+                bytes = bytes + document.getSize();
+//            }
         }
 
         long GB = 1073741824;
