@@ -52,7 +52,7 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
 
         viewHolder.binding.notificationTitleTV.setText(remainder.getTitle());
 
-        viewHolder.binding.notificationDetailTV.setText(remainder.getMsg());
+        viewHolder.binding.notificationDetailTV.setText(remainder.getBody());
 
         viewHolder.binding.getRoot().setOnClickListener(view -> expandRemainder(remainder));
 
@@ -62,7 +62,7 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
 
         UIUpdate.GetUIUpdate(mContext).destroy();
 
-        UIUpdate.GetUIUpdate(mContext).showAlertDialog(remainder.getTitle(), remainder.getMsg());
+        UIUpdate.GetUIUpdate(mContext).showAlertDialog(remainder.getTitle(), remainder.getBody());
 
     }
 

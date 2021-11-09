@@ -36,7 +36,7 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:text="Used 35%"
+            android:text="          "
             android:textColor="@color/white"
             android:textSize="@dimen/_12ssp"
             app:layout_constraintStart_toStartOf="parent"

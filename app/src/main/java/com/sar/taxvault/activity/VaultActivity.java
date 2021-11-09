@@ -107,6 +107,9 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
                         if (snapshot.getValue() != null)
                             parseSnapshot(snapshot, date);
+                        else
+                            setAdapter(new ArrayList<>());
+
                     }
 
                     @Override
@@ -261,7 +264,7 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
 
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
-        FirebaseDatabase.getInstance().getReference("Files").child(category).child(document.getId()).removeValue()
+        FirebaseDatabase.getInstance().getReference("Files").child(user.getBusinessId()).child(user.getUserId()).child(document.getId()).removeValue()
 
                 .addOnCompleteListener(task -> {
 
@@ -274,6 +277,8 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
                     reference.delete().addOnCompleteListener(task1 -> {
 
                         UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+
+                        getData("");
 
                         if (!task1.isSuccessful() && task.getException() != null)
 

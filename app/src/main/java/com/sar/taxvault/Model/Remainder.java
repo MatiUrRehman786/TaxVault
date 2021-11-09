@@ -4,19 +4,30 @@ public class Remainder {
 
     private String id;
     private String userId;
-    private String msg;
+    private String body;
+    private Long time;
     private String title;
+
+    public String getBody() {
+        return body;
+    }
+
+    public void setBody(String body) {
+        this.body = body;
+    }
+
+    public Long getTime() {
+        return time;
+    }
+
+    public void setTime(Long time) {
+        this.time = time;
+    }
 
     public Remainder() {
 
     }
 
-    public Remainder(String id, String userId, String msg, String title) {
-        this.id = id;
-        this.userId = userId;
-        this.msg = msg;
-        this.title = title;
-    }
 
     public String getId() {
         return id;
@@ -32,18 +43,6 @@ public class Remainder {
 
     public void setUserId(String userId) {
         this.userId = userId;
-    }
-
-    public String getMsg() {
-
-        if (msg == null)
-            return "";
-
-        return msg;
-    }
-
-    public void setMsg(String msg) {
-        this.msg = msg;
     }
 
     public String getTitle() {

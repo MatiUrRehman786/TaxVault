@@ -57,7 +57,7 @@ public class RemindersActivity extends AppCompatActivity {
         UIUpdate.GetUIUpdate(this).destroy();
         UIUpdate.GetUIUpdate(this).setProgressDialog();
 
-        valueEventListener = FirebaseDatabase.getInstance().getReference("Remainders").child(getCurrentUserId())
+        valueEventListener = FirebaseDatabase.getInstance().getReference("Remainders")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
@@ -86,6 +86,8 @@ public class RemindersActivity extends AppCompatActivity {
         for (DataSnapshot remainderSnapshot : snapshot.getChildren()) {
 
             Remainder remainder = remainderSnapshot.getValue(Remainder.class);
+
+            remainder.setId(snapshot.getKey());
 
             list.add(remainder);
 
