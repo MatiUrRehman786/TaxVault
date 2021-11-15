@@ -1,63 +1,24 @@
 package com.sar.taxvault.activity;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
+import android.app.Dialog;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.View;
+import android.view.WindowManager;
+
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.app.Activity;
-import android.app.AlertDialog;
-import android.app.Dialog;
-import android.content.Context;
-import android.content.DialogInterface;
-import android.content.Intent;
-import android.graphics.Color;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.Gravity;
-import android.view.View;
-import android.view.WindowManager;
-import android.widget.TextView;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.Constants;
 import com.google.firebase.messaging.FirebaseMessaging;
-import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.R;
-import com.sar.taxvault.Stripe.MyEphemeralKeyProvider;
-import com.sar.taxvault.Stripe.PaymentResultCallback;
 import com.sar.taxvault.databinding.ActivityMainBinding;
-import com.sar.taxvault.fragments.PremiumFeatureFragment;
 import com.sar.taxvault.fragments.TaxVaultFragment;
-import com.sar.taxvault.retrofit.Controller;
-import com.stripe.android.CustomerSession;
-import com.stripe.android.PaymentConfiguration;
 import com.stripe.android.PaymentSession;
-import com.stripe.android.PaymentSessionConfig;
-import com.stripe.android.PaymentSessionData;
 import com.stripe.android.Stripe;
-import com.stripe.android.model.ConfirmPaymentIntentParams;
-import com.stripe.android.model.PaymentMethod;
-
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import nl.psdcompany.duonavigationdrawer.widgets.DuoDrawerToggle;
-import okhttp3.MultipartBody;
-import okhttp3.RequestBody;
-import retrofit2.Call;
-import retrofit2.Callback;
-import retrofit2.Response;
 
 public class Main extends BaseActivity {
 
@@ -258,109 +219,109 @@ public class Main extends BaseActivity {
     }
 
     private void setDrawer() {
-
-        DuoDrawerToggle drawerToggle = new DuoDrawerToggle(this, binding.drawer,
-                R.string.navigation_drawer_open,
-                R.string.navigation_drawer_close);
-
-        binding.drawer.setDrawerListener(drawerToggle);
-
-        drawerToggle.syncState();
+//
+//        DuoDrawerToggle drawerToggle = new DuoDrawerToggle(this, binding.drawer,
+//                R.string.navigation_drawer_open,
+//                R.string.navigation_drawer_close);
+//
+//        binding.drawer.setDrawerListener(drawerToggle);
+//
+//        drawerToggle.syncState();
 
     }
 
     private void setListeners() {
+//
+//        binding.includeView.menuIV.setOnClickListener(v -> {
+//
+//            checkOpenOrCloseDrawer();
+//
+//        });
 
-        binding.includeView.menuIV.setOnClickListener(v -> {
-
-            checkOpenOrCloseDrawer();
-
-        });
-
-        binding.navView.drawerMenuIV.setOnClickListener(v -> {
-
-            checkOpenOrCloseDrawer();
-
-        });
-
-        binding.navView.homeTV.setOnClickListener(v -> {
-
-            binding.includeView.titleTV.setText("Tax Vault");
-
-            checkOpenOrCloseDrawer();
-
-            startActivity(new Intent(this, VaultTypeActivity.class));
-
-            binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
-
-        });
-
-        binding.navView.filesTV.setOnClickListener(v -> {
-
-//            binding.includeView.titleTV.setText("");
-
-            checkOpenOrCloseDrawer();
-
-            Intent intent = new Intent(Main.this, VaultTypeActivity.class);
-
-            startActivity(intent);
-
-//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-
-            binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
-
-        });
-
-        binding.navView.notificationTV.setOnClickListener(v -> {
-
-            checkOpenOrCloseDrawer();
-
-            RemindersActivity.startActivity(this);
-
-            binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
-
-        });
-
-
-        binding.navView.upgradeTV.setOnClickListener(v -> {
-
-            binding.includeView.titleTV.setText("Premium Feature");
-
-            checkOpenOrCloseDrawer();
-
-            loadFragment(new PremiumFeatureFragment());
-
-            binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
-
-        });
-
-        binding.navView.settingsTV.setOnClickListener(v -> {
-
-            checkOpenOrCloseDrawer();
-
-            Intent intent = new Intent(this, SettingsActivity.class);
-
-            startActivity(intent);
-
-//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
-        });
+//        binding.navView.drawerMenuIV.setOnClickListener(v -> {
+//
+//            checkOpenOrCloseDrawer();
+//
+//        });
+//
+//        binding.navView.homeTV.setOnClickListener(v -> {
+//
+//            binding.includeView.titleTV.setText("Tax Vault");
+//
+//            checkOpenOrCloseDrawer();
+//
+//            startActivity(new Intent(this, VaultTypeActivity.class));
+//
+//            binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
+//
+//        });
+//
+//        binding.navView.filesTV.setOnClickListener(v -> {
+//
+////            binding.includeView.titleTV.setText("");
+//
+//            checkOpenOrCloseDrawer();
+//
+//            Intent intent = new Intent(Main.this, VaultTypeActivity.class);
+//
+//            startActivity(intent);
+//
+////            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//
+//
+//            binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
+//
+//        });
+//
+//        binding.navView.notificationTV.setOnClickListener(v -> {
+//
+//            checkOpenOrCloseDrawer();
+//
+//            RemindersActivity.startActivity(this);
+//
+//            binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
+//
+//        });
+//
+//
+//        binding.navView.upgradeTV.setOnClickListener(v -> {
+//
+//            binding.includeView.titleTV.setText("Premium Feature");
+//
+//            checkOpenOrCloseDrawer();
+//
+//            loadFragment(new PremiumFeatureFragment());
+//
+//            binding.includeView.yearSpinner.setVisibility(View.INVISIBLE);
+//
+//        });
+//
+//        binding.navView.settingsTV.setOnClickListener(v -> {
+//
+//            checkOpenOrCloseDrawer();
+//
+//            Intent intent = new Intent(this, SettingsActivity.class);
+//
+//            startActivity(intent);
+//
+////            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
+//
+//        });
 
     }
 
-    private void checkOpenOrCloseDrawer() {
-
-        if (binding.drawer.isDrawerOpen()) {
-
-            binding.drawer.closeDrawer(Gravity.LEFT);
-
-        } else {
-
-            binding.drawer.openDrawer(Gravity.LEFT);
-
-        }
-    }
+//    private void checkOpenOrCloseDrawer() {
+//
+//        if (binding.drawer.isDrawerOpen()) {
+//
+//            binding.drawer.closeDrawer(Gravity.LEFT);
+//
+//        } else {
+//
+//            binding.drawer.openDrawer(Gravity.LEFT);
+//
+//        }
+//    }
 
     private void loadFragment(Fragment fragment) {
 
@@ -377,31 +338,31 @@ public class Main extends BaseActivity {
     }
 
     private void getUserData() {
+//
+//        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
+//
+//        DatabaseReference usersRef = rootRef.child("User").child(mAuth.getCurrentUser().getUid());
+//
+//        ValueEventListener valueEventListener = new ValueEventListener() {
+//            @Override
+//            public void onDataChange(DataSnapshot dataSnapshot) {
+//
+//                UserModel user = dataSnapshot.getValue(UserModel.class);
+//
+////                binding.navView.userNameTV.setText(user.getFirstName() + " " + user.getLastName());
+////
+////                binding.navView.userEmailTV.setText(user.getEmail());
+//
+//            }
+//
+//            @Override
+//            public void onCancelled(DatabaseError databaseError) {
+//                Log.d("userDataResponse", databaseError.getMessage());
+//            }
+//
+//        };
 
-        DatabaseReference rootRef = FirebaseDatabase.getInstance().getReference();
-
-        DatabaseReference usersRef = rootRef.child("User").child(mAuth.getCurrentUser().getUid());
-
-        ValueEventListener valueEventListener = new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-
-                UserModel user = dataSnapshot.getValue(UserModel.class);
-
-                binding.navView.userNameTV.setText(user.getFirstName() + " " + user.getLastName());
-
-                binding.navView.userEmailTV.setText(user.getEmail());
-
-            }
-
-            @Override
-            public void onCancelled(DatabaseError databaseError) {
-                Log.d("userDataResponse", databaseError.getMessage());
-            }
-
-        };
-
-        usersRef.addListenerForSingleValueEvent(valueEventListener);
+//        usersRef.addListenerForSingleValueEvent(valueEventListener);
 
     }
 

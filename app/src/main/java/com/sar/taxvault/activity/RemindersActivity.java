@@ -4,10 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.DefaultItemAnimator;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.DatePicker;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -23,6 +25,7 @@ import com.sar.taxvault.databinding.ActivityVaultBinding;
 import com.sar.taxvault.utils.UIUpdate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 public class RemindersActivity extends AppCompatActivity {
@@ -124,7 +127,24 @@ public class RemindersActivity extends AppCompatActivity {
         binding.notificationsRV.setItemAnimator(new DefaultItemAnimator());
 
         binding.notificationsRV.setAdapter(adapter);
+
+//        binding.openCalendar.setOnClickListener(view -> {
+//            new DatePickerDialog(this, date, myCalendar
+//                    .get(Calendar.YEAR), myCalendar.get(Calendar.MONTH),
+//                    myCalendar.get(Calendar.DAY_OF_MONTH)).show();
+//        });
     }
+
+
+    final Calendar myCalendar = Calendar.getInstance();
+
+    DatePickerDialog.OnDateSetListener date = (view, year, monthOfYear, dayOfMonth) -> {
+        // TODO Auto-generated method stub
+        myCalendar.set(Calendar.YEAR, year);
+        myCalendar.set(Calendar.MONTH, monthOfYear);
+        myCalendar.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+//            updateLabel();
+    };
 
     @Override
     public void onBackPressed() {

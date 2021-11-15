@@ -2,19 +2,17 @@ package com.sar.taxvault.fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
-
-import androidx.fragment.app.Fragment;
-
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+
+import androidx.fragment.app.Fragment;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.messaging.Constants;
 import com.sar.taxvault.Model.Document;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.Stripe.MyEphemeralKeyProvider;
@@ -22,7 +20,6 @@ import com.sar.taxvault.activity.NewsActivity;
 import com.sar.taxvault.activity.RemindersActivity;
 import com.sar.taxvault.activity.SettingsActivity;
 import com.sar.taxvault.activity.UpgradeToPremiumActivity;
-import com.sar.taxvault.activity.VaultActivity;
 import com.sar.taxvault.activity.VaultTypeActivity;
 import com.sar.taxvault.databinding.FragmentTaxVaultBinding;
 import com.sar.taxvault.retrofit.Controller;
@@ -30,9 +27,7 @@ import com.sar.taxvault.utils.UIUpdate;
 
 import org.json.JSONObject;
 
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -103,59 +98,83 @@ public class TaxVaultFragment extends Fragment {
 
         for (DataSnapshot child : snapshot.getChildren()) {
 
-//            for (DataSnapshot documentSnapshot : child.getChildren()) {
+            Document document = child.getValue(Document.class);
 
-                Document document = child.getValue(Document.class);
+            bytes = bytes + document.getSize();
 
-//                if (document.getUserId().equalsIgnoreCase(userId)) {
-
-                    bytes = bytes + document.getSize();
-//                }
-//            }
         }
 
         long GB = 1073741824;
+        int maxSizeGB = 1;
 
-        if (bytes < GB) {
+        String currentPackage = user.getCurrentPackage();
+
+        if (currentPackage != null) {
+
+            if (user.getPurchasedTSp() != null) {
+
+                Long ts = user.getPurchasedTSp();
+
+                int diffInDays = (int) ((ts - new Date().getTime())
+                        / (1000 * 60 * 60 * 24));
+
+                if (user.getCurrentPackage().equalsIgnoreCase("monthly")) {
+
+                    if (diffInDays < 30) {
+
+                        maxSizeGB = 3;
+                    }
+
+                }
+
+
+                if (user.getCurrentPackage().equalsIgnoreCase("yearly")) {
+
+                    if (diffInDays < 365) {
+
+                        maxSizeGB = 3;
+                    }
+
+                }
+            }
+        }
+
+        if (bytes < (GB * maxSizeGB)) {
 
             Long percentUsed = (bytes * 100) / GB;
 
             double sizeInMB = new Long(bytes).doubleValue() / 1048576;
-            double sizeInGB = new Long(GB).doubleValue() / 1048576;
 
             binding.circularProgressBar.setProgress(new Long(percentUsed).intValue());
 
             binding.usedTV.setText("Used " + percentUsed.intValue() + "%");
             binding.percentTV.setText(percentUsed.intValue() + "%");
 
-            if (user.getCurrentPackage() ==  null)
-
-                binding.pointsTV.setText(round(sizeInMB, 5) + "MB / " + round(sizeInGB, 5) + "MB");
-
-            else
-
-                binding.pointsTV.setText("Unlimited");
+            binding.pointsTV.setText(roundAndConvertInGB(sizeInMB, 5) + "GB / " + maxSizeGB + "GB");
 
         } else {
             binding.circularProgressBar.setProgress(100);
 
             binding.usedTV.setText("Used " + 100 + "%");
             binding.percentTV.setText(100 + "%");
-            if (user.getCurrentPackage() ==  null)
-
-                binding.pointsTV.setText(1024 + "MB / " + 1024 + "MB");
-
+            if (user.getCurrentPackage() == null)
+                binding.pointsTV.setText(1 + "GB / " + 1 + "GB");
             else
-
                 binding.pointsTV.setText("Unlimited");
-
-
         }
     }
 
     public double round(double value, int precision) {
         int scale = (int) Math.pow(10, precision);
         return (double) Math.round(value * scale) / scale;
+    }
+
+    public String roundAndConvertInGB(double value, int precision) {
+
+        double gb = value / 1024;
+
+        return String.format("%.5f", gb);
+
     }
 
     private void getMyProfile() {
@@ -205,10 +224,10 @@ public class TaxVaultFragment extends Fragment {
                 if (diffInDays < 30) {
 
                     binding.upgradeIV.setVisibility(View.INVISIBLE);
-                    binding.percentTV.setVisibility(View.INVISIBLE);
+//                    binding.percentTV.setVisibility(View.INVISIBLE);
 //                    binding.circularProgressBar.setVisibility(View.INVISIBLE);
                     binding.upgradeTV.setVisibility(View.INVISIBLE);
-                    binding.pointsTV.setText("Unlimited");
+//                    binding.pointsTV.setText("Unlimited");
                     binding.freeMembershipTV.setText("Monthly");
                 }
 
@@ -220,9 +239,9 @@ public class TaxVaultFragment extends Fragment {
                 if (diffInDays < 365) {
 
                     binding.upgradeIV.setVisibility(View.INVISIBLE);
-                    binding.percentTV.setVisibility(View.INVISIBLE);
+//                    binding.percentTV.setVisibility(View.INVISIBLE);
                     binding.upgradeTV.setVisibility(View.INVISIBLE);
-                    binding.pointsTV.setText("Unlimited");
+//                    binding.pointsTV.setText("Unlimited");
                     binding.freeMembershipTV.setText("Yearly");
                 }
 

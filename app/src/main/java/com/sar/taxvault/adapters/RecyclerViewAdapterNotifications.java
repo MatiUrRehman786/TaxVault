@@ -1,8 +1,12 @@
 package com.sar.taxvault.adapters;
 
+import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+import android.widget.DatePicker;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -11,6 +15,8 @@ import com.sar.taxvault.Model.Remainder;
 import com.sar.taxvault.databinding.LayoutItemsNotificationsBinding;
 import com.sar.taxvault.utils.UIUpdate;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 
@@ -20,9 +26,9 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
 
     private List<Remainder> list;
 
-    private Context mContext;
+    private Activity mContext;
 
-    public RecyclerViewAdapterNotifications(Context mContext, List<Remainder> list) {
+    public RecyclerViewAdapterNotifications(Activity mContext, List<Remainder> list) {
 
         this.list = list;
 
@@ -62,8 +68,27 @@ public class RecyclerViewAdapterNotifications extends RecyclerView.Adapter<Recyc
 
         UIUpdate.GetUIUpdate(mContext).destroy();
 
-        UIUpdate.GetUIUpdate(mContext).showAlertDialog(remainder.getTitle(), remainder.getBody());
+        final Calendar newCalendar = Calendar.getInstance();
 
+        Date date = new Date();
+        date.setTime(remainder.getTime() * 1000L);
+        Log.d(TAG, "expandRemainder: +"+date.toString());
+
+        newCalendar.setTime(date);
+        Log.d(TAG, "expandRemainder: +"+newCalendar.toString());
+        Log.d(TAG, "expandRemainder: +"+newCalendar.getTime().getMonth());
+
+        final DatePickerDialog  StartTime = new DatePickerDialog(mContext, (view, year, monthOfYear, dayOfMonth) -> {
+            Calendar newDate = Calendar.getInstance();
+            newDate.set(year, monthOfYear, dayOfMonth);
+        }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
+
+        StartTime.getDatePicker().setMaxDate(remainder.getReminderFiringTime()*1000L);
+        StartTime.getDatePicker().setMinDate(remainder.getReminderFiringTime()*1000L);
+//        btn_checkin.setOnClickListener(new View.OnClickListener() {
+//            @Override   public void onClick(View v) {
+                StartTime.show();
+//            });
     }
 
     @Override

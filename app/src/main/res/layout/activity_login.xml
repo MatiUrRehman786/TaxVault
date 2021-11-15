@@ -13,16 +13,19 @@
     <androidx.appcompat.widget.AppCompatImageView
         android:layout_width="@dimen/_8sdp"
         android:layout_height="match_parent"
+        android:visibility="invisible"
         android:id="@+id/verticalLine"
         app:layout_constraintEnd_toEndOf="parent"
         android:background="@color/red"/>
 
     <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_32sdp"
-        android:layout_height="@dimen/_96sdp"
-        app:layout_constraintTop_toBottomOf="@id/includeView"
-        app:layout_constraintEnd_toStartOf="@id/verticalLine"
-        android:src="@drawable/side_icon"/>
+        android:layout_width="@dimen/_100sdp"
+        android:layout_height="@dimen/_100sdp"
+        android:layout_marginBottom="@dimen/_50sdp"
+        android:src="@drawable/tax_vault_logo"
+        app:layout_constraintBottom_toTopOf="@+id/emailLabel"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
 
     <androidx.appcompat.widget.AppCompatTextView

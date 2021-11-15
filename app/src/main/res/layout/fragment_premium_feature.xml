@@ -36,7 +36,7 @@
         android:layout_height="wrap_content"
         android:fontFamily="@font/poppins_medium"
         android:id="@+id/uploadUnlimitedLabel"
-        android:text="Upload unlimited documents \n Keep documents more than 3 years"
+        android:text="Upload up to 3 GB Data\n for up to 3 years"
         android:lineSpacingMultiplier="1.1"
         android:textColor="@color/gray"
         android:textSize="@dimen/_10ssp"

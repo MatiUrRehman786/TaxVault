@@ -3,13 +3,9 @@ package com.sar.taxvault.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
-import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.Gravity;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,11 +13,9 @@ import androidx.annotation.Nullable;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.gson.Gson;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.Stripe.MyEphemeralKeyProvider;
 import com.sar.taxvault.Stripe.PaymentResultCallback;
-import com.sar.taxvault.Stripe.response.StripeResponse;
 import com.sar.taxvault.databinding.FragmentPremiumFeatureBinding;
 import com.sar.taxvault.retrofit.Controller;
 import com.sar.taxvault.utils.Constants;
@@ -102,16 +96,8 @@ public class UpgradeToPremiumActivity extends BaseActivity {
         final CharSequence[] items = {"Choose Yearly", "Choose Monthly",
                 "Cancel"};
 
-//        TextView title = new TextView(this);
-//        title.setText("Add Photo!");
-//        title.setBackgroundColor(Color.BLACK);
-//        title.setPadding(10, 15, 15, 10);
-//        title.setGravity(Gravity.CENTER);
-//        title.setTextColor(Color.WHITE);
-//        title.setTextSize(22);
         androidx.appcompat.app.AlertDialog.Builder builder = new androidx.appcompat.app.AlertDialog.Builder(
                 this);
-//        builder.setCustomTitle(title);
 
         builder.setItems(items, (dialog, item) -> {
             if (items[item].equals("Choose Monthly")) {

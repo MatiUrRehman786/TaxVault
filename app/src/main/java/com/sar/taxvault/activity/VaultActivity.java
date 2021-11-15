@@ -651,10 +651,13 @@ public class VaultActivity extends AppCompatActivity implements EasyPermissions.
             bytes = bytes + document.getSize();
         }
 
+
         long GB = 1073741824;
 
-        UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
+        if(hasSubscription())
+            GB = GB * 3;
 
+        UIUpdate.GetUIUpdate(VaultActivity.this).dismissProgressDialog();
 
         if (bytes < GB || hasSubscription()) {
 

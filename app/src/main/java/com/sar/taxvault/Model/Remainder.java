@@ -8,6 +8,18 @@ public class Remainder {
     private Long time;
     private String title;
 
+    public Long getReminderFiringTime() {
+        if (reminderFiringTime == null)
+            return time;
+        return reminderFiringTime;
+    }
+
+    public void setReminderFiringTime(Long reminderFiringTime) {
+        this.reminderFiringTime = reminderFiringTime;
+    }
+
+    private Long reminderFiringTime;
+
     public String getBody() {
         return body;
     }
