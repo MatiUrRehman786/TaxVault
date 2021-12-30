@@ -41,6 +41,7 @@ import com.sar.taxvault.adapters.RecyclerViewAdapterFiles;
 import com.sar.taxvault.databinding.ActivityVaultBinding;
 import com.sar.taxvault.utils.UIUpdate;
 import com.sar.taxvault.utils.Utils;
+import com.sar.taxvault.vm.AuthViewModel;
 
 import java.io.File;
 import java.io.IOException;
@@ -57,6 +58,8 @@ import pub.devrel.easypermissions.EasyPermissions;
 public class VaultActivity extends AppCompatActivity implements EasyPermissions.PermissionCallbacks {
 
     ActivityVaultBinding binding;
+
+    AuthViewModel model;
 
     String category = "";
 

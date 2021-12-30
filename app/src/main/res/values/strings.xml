@@ -12,6 +12,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? <b>Sign up</b></string>
+    <string name="code_sent">A text message with code has been sent to your phone</string>
 
     <string-array name="year">
         <item>Year</item>

@@ -10,204 +10,238 @@
         android:id="@+id/includeView"
         layout="@layout/include_app_bar"/>
 
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_8sdp"
-        android:layout_height="match_parent"
-        android:visibility="invisible"
-        android:id="@+id/verticalLine"
-        app:layout_constraintEnd_toEndOf="parent"
-        android:background="@color/red"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_100sdp"
-        android:layout_height="@dimen/_100sdp"
-        android:layout_marginBottom="@dimen/_50sdp"
-        android:src="@drawable/tax_vault_logo"
-        app:layout_constraintBottom_toTopOf="@+id/emailLabel"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/emailLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:autoSizeMaxTextSize="@dimen/_10ssp"
-        android:autoSizeMinTextSize="@dimen/_9ssp"
-        android:autoSizeTextType="uniform"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Email Address"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_10ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/emailET"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/emailET"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:autoSizeMaxTextSize="@dimen/_12ssp"
-        android:autoSizeMinTextSize="@dimen/_9ssp"
-        android:autoSizeTextType="uniform"
-        android:background="@drawable/rectangle_background_light_gray"
-        android:fontFamily="@font/poppins_medium"
-        android:hint="@string/type_here"
-        android:imeOptions="actionNext"
-        android:maxLines="1"
-        android:paddingHorizontal="@dimen/_12sdp"
-        android:paddingVertical="@dimen/_8sdp"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_12ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailLabel"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/passwordLabel"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_10sdp"
-        android:autoSizeMaxTextSize="@dimen/_10ssp"
-        android:autoSizeMinTextSize="@dimen/_9ssp"
-        android:autoSizeTextType="uniform"
-        android:fontFamily="@font/poppins_medium"
-        android:text="Password"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_10ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/emailET"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <androidx.appcompat.widget.AppCompatEditText
-        android:id="@+id/passwordET"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_5sdp"
-        android:autoSizeMaxTextSize="@dimen/_12ssp"
-        android:autoSizeMinTextSize="@dimen/_9ssp"
-        android:autoSizeTextType="uniform"
-        android:background="@drawable/rectangle_background_light_gray"
-        android:fontFamily="@font/poppins_medium"
-        android:hint="@string/type_here"
-        android:imeOptions="actionDone"
-        android:inputType="textPassword"
-        android:maxLines="1"
-        android:paddingHorizontal="@dimen/_12sdp"
-        android:paddingVertical="@dimen/_8sdp"
-        android:singleLine="true"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_12ssp"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/passwordLabel"
-        app:layout_constraintWidth_percent="0.8" />
-
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/layoutOptions"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toTopOf="@id/loginBtn"
-        app:layout_constraintTop_toBottomOf="@id/passwordET"
-        app:layout_constraintWidth_percent="0.8">
-
-        <androidx.appcompat.widget.AppCompatCheckBox
-            android:id="@+id/rememberMeCB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:autoSizeMaxTextSize="@dimen/_10ssp"
-            android:autoSizeMinTextSize="@dimen/_9ssp"
-            android:autoSizeTextType="uniform"
-            android:checked="false"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Remember Me"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintBottom_toBottomOf="@id/layoutOptions"
-            app:layout_constraintStart_toStartOf="@id/layoutOptions" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/forgotPasswordTV"
-            android:layout_width="wrap_content"
-            android:layout_height="0dp"
-            android:gravity="center"
-            android:autoSizeMaxTextSize="@dimen/_10ssp"
-            android:autoSizeMinTextSize="@dimen/_9ssp"
-            android:autoSizeTextType="uniform"
-            android:fontFamily="@font/poppins_medium"
-            android:text="Forgot Password?"
-            android:textColor="@color/black"
-            android:textSize="@dimen/_10ssp"
-            app:layout_constraintBottom_toBottomOf="@id/layoutOptions"
-            app:layout_constraintEnd_toEndOf="@id/layoutOptions"
-            app:layout_constraintTop_toTopOf="@id/layoutOptions" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
-
-    <androidx.appcompat.widget.AppCompatTextView
-        android:id="@+id/loginBtn"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/_16sdp"
-        android:text="LOGIN"
-        android:textColor="@color/white"
-        android:background="@drawable/rectangle_background_blue"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/layoutOptions"
-        app:layout_constraintBottom_toTopOf="@id/facebookBtn"
-        app:layout_constraintWidth_percent="0.8"
-        android:textAlignment="center"
-        android:elevation="@dimen/_1sdp"
-        android:paddingVertical="@dimen/_12sdp"
-        android:layout_marginBottom="@dimen/_24sdp"/>
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:id="@+id/facebookBtn"
-        app:layout_constraintBottom_toTopOf="@id/signUpTV"
-        app:layout_constraintStart_toStartOf="@id/loginBtn"
-        app:layout_constraintEnd_toStartOf="@+id/googleBtn"
-        android:background="@drawable/rectangle_background_light_gray"
-        android:padding="@dimen/_8sdp"
-        android:src="@drawable/facebook_icon"
-        android:layout_marginBottom="@dimen/_16sdp"/>
-
-
-
-    <androidx.appcompat.widget.AppCompatImageView
-        android:layout_width="@dimen/_40sdp"
-        android:layout_height="@dimen/_40sdp"
-        android:id="@+id/googleBtn"
-        app:layout_constraintBottom_toTopOf="@id/signUpTV"
-        app:layout_constraintStart_toEndOf="@+id/facebookBtn"
-        app:layout_constraintEnd_toEndOf="@id/loginBtn"
-        android:background="@drawable/rectangle_background_light_gray"
-        android:padding="@dimen/_8sdp"
-        android:src="@drawable/google_icon"
-        android:layout_marginBottom="@dimen/_16sdp"/>
-
-    <TextView
-        android:id="@+id/signUpTV"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="@dimen/_24sdp"
-        android:autoSizeMaxTextSize="@dimen/_14ssp"
-        android:autoSizeMinTextSize="@dimen/_12ssp"
-        android:autoSizeTextType="uniform"
-        android:text="@string/don_t_have_an_account_sign_up"
-        android:textColor="@color/black"
-        android:textSize="@dimen/_12ssp"
-        android:fontFamily="@font/poppins_medium"
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"/>
+        app:layout_constraintTop_toBottomOf="@+id/includeView">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/verticalLine"
+                    android:layout_width="@dimen/_8sdp"
+                    android:layout_height="match_parent"
+                    android:background="@color/red"
+                    android:visibility="invisible"
+                    app:layout_constraintEnd_toEndOf="parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/_100sdp"
+                    android:layout_height="@dimen/_100sdp"
+                    android:layout_marginBottom="@dimen/_50sdp"
+                    android:src="@drawable/tax_vault_logo"
+                    app:layout_constraintBottom_toTopOf="@+id/emailLabel"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/emailLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_10ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Email Address"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintBottom_toTopOf="@id/emailET"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintWidth_percent="0.8" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/emailET"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:autoSizeMaxTextSize="@dimen/_12ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/rectangle_background_light_gray"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="@string/type_here"
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/emailLabel"
+                    app:layout_constraintWidth_percent="0.8" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/passwordLabel"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:autoSizeMaxTextSize="@dimen/_10ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="Password"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_10ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/emailET"
+                    app:layout_constraintWidth_percent="0.8" />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/passwordET"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_5sdp"
+                    android:autoSizeMaxTextSize="@dimen/_12ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:background="@drawable/rectangle_background_light_gray"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="@string/type_here"
+                    android:imeOptions="actionDone"
+                    android:inputType="textPassword"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/passwordLabel"
+                    app:layout_constraintWidth_percent="0.8" />
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/layoutOptions"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    app:layout_constraintBottom_toTopOf="@id/loginBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/passwordET"
+                    app:layout_constraintWidth_percent="0.8">
+
+                    <androidx.appcompat.widget.AppCompatCheckBox
+                        android:id="@+id/rememberMeCB"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:autoSizeMaxTextSize="@dimen/_10ssp"
+                        android:autoSizeMinTextSize="@dimen/_9ssp"
+                        android:autoSizeTextType="uniform"
+                        android:checked="false"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Remember Me"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintBottom_toBottomOf="@id/layoutOptions"
+                        app:layout_constraintStart_toStartOf="@id/layoutOptions" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/forgotPasswordTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="0dp"
+                        android:autoSizeMaxTextSize="@dimen/_10ssp"
+                        android:autoSizeMinTextSize="@dimen/_9ssp"
+                        android:autoSizeTextType="uniform"
+                        android:fontFamily="@font/poppins_medium"
+                        android:gravity="center"
+                        android:text="Forgot Password?"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_10ssp"
+                        app:layout_constraintBottom_toBottomOf="@id/layoutOptions"
+                        app:layout_constraintEnd_toEndOf="@id/layoutOptions"
+                        app:layout_constraintTop_toTopOf="@id/layoutOptions" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <ImageView
+                    android:id="@+id/biometricBtn"
+                    android:layout_width="@dimen/_50sdp"
+                    android:layout_marginBottom="@dimen/_10sdp"
+                    android:layout_height="@dimen/_50sdp"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:background="@drawable/rectangle_background_blue"
+                    android:elevation="@dimen/_1sdp"
+                    app:layout_constraintBottom_toTopOf="@+id/facebookBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintWidth_percent="0.8" />
+
+                <androidx.appcompat.widget.AppCompatTextView
+                    android:id="@+id/loginBtn"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_16sdp"
+                    android:layout_marginBottom="@dimen/_24sdp"
+                    android:background="@drawable/rectangle_background_blue"
+                    android:elevation="@dimen/_1sdp"
+                    android:paddingVertical="@dimen/_12sdp"
+                    android:text="LOGIN"
+                    android:textAlignment="center"
+                    android:textColor="@color/white"
+                    app:layout_constraintBottom_toTopOf="@id/biometricBtn"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/layoutOptions"
+                    app:layout_constraintWidth_percent="0.8" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/facebookBtn"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:background="@drawable/rectangle_background_light_gray"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/facebook_icon"
+                    app:layout_constraintBottom_toTopOf="@id/signUpTV"
+                    app:layout_constraintEnd_toStartOf="@+id/googleBtn"
+                    app:layout_constraintStart_toStartOf="@id/loginBtn" />
+
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/googleBtn"
+                    android:layout_width="@dimen/_40sdp"
+                    android:layout_height="@dimen/_40sdp"
+                    android:layout_marginBottom="@dimen/_16sdp"
+                    android:background="@drawable/rectangle_background_light_gray"
+                    android:padding="@dimen/_8sdp"
+                    android:src="@drawable/google_icon"
+                    app:layout_constraintBottom_toTopOf="@id/signUpTV"
+                    app:layout_constraintEnd_toEndOf="@id/loginBtn"
+                    app:layout_constraintStart_toEndOf="@+id/facebookBtn" />
+
+                <TextView
+                    android:id="@+id/signUpTV"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginBottom="@dimen/_24sdp"
+                    android:autoSizeMaxTextSize="@dimen/_14ssp"
+                    android:autoSizeMinTextSize="@dimen/_12ssp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/poppins_medium"
+                    android:text="@string/don_t_have_an_account_sign_up"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
+
+    </ScrollView>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

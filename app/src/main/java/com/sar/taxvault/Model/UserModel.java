@@ -16,12 +16,23 @@ public class UserModel implements Parcelable {
     Boolean rememberMe = true;
     String token = "";
     int status = 0;
+
+    public String getUniqueID() {
+
+        if(uniqueID == null)
+            return "";
+        return uniqueID;
+    }
+
+    String uniqueID;
     int maxPost = 10;
     String customerId;
     String clientSecret;
     String currentPackage;
     Long purchasedTSp;
     int postCount = 0;
+
+    public Boolean twoFactorAuthenticated = false;
 
     protected UserModel(Parcel in) {
         userId = in.readString();
@@ -30,6 +41,7 @@ public class UserModel implements Parcelable {
         phoneNumber = in.readString();
         email = in.readString();
         businessId = in.readString();
+        uniqueID = in.readString();
         password = in.readString();
         userType = in.readString();
         byte tmpRememberMe = in.readByte();
@@ -200,6 +212,10 @@ public class UserModel implements Parcelable {
     }
 
     public String getPassword() {
+
+        if(password == null)
+            return "";
+
         return password;
     }
 
@@ -223,6 +239,10 @@ public class UserModel implements Parcelable {
         return false;
     }
 
+    public void setStatus(int status) {
+        this.status = status;
+    }
+
     public int getPercentShared() {
 
         double percent = (postCount * 100 / maxPost);
@@ -243,6 +263,7 @@ public class UserModel implements Parcelable {
         parcel.writeString(phoneNumber);
         parcel.writeString(email);
         parcel.writeString(businessId);
+        parcel.writeString(uniqueID);
         parcel.writeString(password);
         parcel.writeString(userType);
         parcel.writeByte((byte) (rememberMe == null ? 0 : rememberMe ? 1 : 2));

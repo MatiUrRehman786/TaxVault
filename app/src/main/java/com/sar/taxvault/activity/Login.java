@@ -17,6 +17,9 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatDelegate;
+import androidx.biometric.BiometricPrompt;
+import androidx.core.content.ContextCompat;
+import androidx.lifecycle.ViewModelProvider;
 
 import com.facebook.AccessToken;
 import com.facebook.CallbackManager;
@@ -29,7 +32,6 @@ import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FacebookAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
@@ -44,15 +46,22 @@ import com.sar.taxvault.Facebook.FacebookResponse;
 import com.sar.taxvault.Facebook.FacebookUser;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.R;
+import com.sar.taxvault.classes.SessionManager;
 import com.sar.taxvault.databinding.ActivityLoginBinding;
 import com.sar.taxvault.databinding.DialogForgotPasswordBinding;
 import com.sar.taxvault.utils.UIUpdate;
+import com.sar.taxvault.vm.AuthViewModel;
 import com.williammora.snackbar.Snackbar;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.concurrent.Executor;
 
 public class Login extends BaseActivity {
+
+    AuthViewModel model;
+
+    Boolean shouldShowTwoFactor = false;
 
     private ActivityLoginBinding binding;
 
@@ -68,6 +77,13 @@ public class Login extends BaseActivity {
 
     private final static int RC_SIGN_IN = 123;
 
+    //bio metrics
+    private Executor executor;
+
+    private BiometricPrompt biometricPrompt;
+
+    private BiometricPrompt.PromptInfo promptInfo;
+
     //faccebook
 
     FacebookHelper facebookHelper;
@@ -82,7 +98,12 @@ public class Login extends BaseActivity {
         binding = ActivityLoginBinding.inflate(getLayoutInflater());
 
         View view = binding.getRoot();
+
         setContentView(view);
+
+        initExecutor();
+
+        setLiveData();
 
         printHashKey(Login.this);
 
@@ -99,6 +120,162 @@ public class Login extends BaseActivity {
         setupFacebook();
 
     }
+
+    private void setLiveData() {
+
+        model = new ViewModelProvider(this).get(AuthViewModel.class);
+
+        model.getLiveData().observe(Login.this, genericModelLiveData -> {
+
+            switch (genericModelLiveData.status) {
+
+                case error:
+
+                    UIUpdate.GetUIUpdate(Login.this).dismissProgressDialog();
+
+                    showErrorAlert(genericModelLiveData.errorMsg);
+
+                    break;
+
+                case loading:
+
+                    UIUpdate.GetUIUpdate(Login.this).setProgressDialog();
+
+                    break;
+
+                case success:
+
+                    UserModel userModel = (UserModel) genericModelLiveData.object;
+
+                    onAuthSucceeded(userModel);
+
+                    break;
+            }
+
+            shouldShowTwoFactor = false;
+
+        });
+    }
+
+    private void onAuthSucceeded(UserModel userModel) {
+
+        UIUpdate.GetUIUpdate(Login.this).dismissProgressDialog();
+
+        if (shouldShowTwoFactor)
+
+            handleTwoFactor(userModel);
+
+        else {
+
+            setRemember();
+
+            startMainActivity();
+        }
+
+    }
+
+    private void initExecutor() {
+
+        executor = ContextCompat.getMainExecutor(this);
+
+        setBiometricPrompt();
+    }
+
+    private void setBiometricPrompt() {
+
+        biometricPrompt = new BiometricPrompt(Login.this,
+                executor, biometricAuthCallback);
+
+        promptInfo = new BiometricPrompt.PromptInfo.Builder()
+                .setTitle("Biometric login for TAX VAULT")
+                .setSubtitle("Log in using your biometric credential")
+                .setNegativeButtonText("Use account password")
+                .build();
+
+        binding.biometricBtn
+                .setOnClickListener(view -> loginWithBiometric());
+
+    }
+
+    BiometricPrompt.AuthenticationCallback biometricAuthCallback = new BiometricPrompt.AuthenticationCallback() {
+        @Override
+        public void onAuthenticationError(int errorCode,
+                                          @NonNull CharSequence errString) {
+
+            super.onAuthenticationError(errorCode, errString);
+
+            showErrorAlert(errString.toString());
+
+        }
+
+        @Override
+        public void onAuthenticationSucceeded(
+                @NonNull BiometricPrompt.AuthenticationResult result) {
+            super.onAuthenticationSucceeded(result);
+
+            SessionManager.getInstance().getBiometricCredentials(user -> performLoginWithCredentials(user), Login.this);
+
+        }
+
+        @Override
+        public void onAuthenticationFailed() {
+            super.onAuthenticationFailed();
+
+            showErrorAlert("Authentication Failed");
+        }
+    };
+
+    private void performLoginWithCredentials(UserModel user) {
+
+        if (user == null) {
+
+            showErrorAlert("Please Sign in using password first.");
+
+            return;
+        }
+
+        if (user.getEmail().isEmpty() && user.getPassword() != null) {
+
+            model.authenticateWithEmailAndPassword(user.getEmail(), user.getPassword(), Login.this, null);
+
+        }
+
+    }
+
+    private void performLoginUsingUniqueCode(String email, String password) {
+
+        if (email != null && password != null) {
+
+            model = new ViewModelProvider(this).get(AuthViewModel.class);
+
+            model.loginWithUniqueCode(email, password, this);
+
+        }
+
+    }
+
+    private void handleTwoFactor(UserModel userModel) {
+
+        if (userModel != null) {
+
+            userModel.twoFactorAuthenticated = false;
+
+            SessionManager.getInstance().setUser(userModel, Login.this);
+
+            FirebaseAuth.getInstance().signOut();
+
+            startActivity(new Intent(Login.this, PhoneVerification.class));
+
+        }
+
+    }
+
+    void loginWithBiometric() {
+
+        biometricPrompt.authenticate(promptInfo);
+
+    }
+
 
     public static void printHashKey(Context pContext) {
         try {
@@ -158,8 +335,6 @@ public class Login extends BaseActivity {
 
             startActivity(intent);
 
-//            overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
-
         });
 
         binding.loginBtn.setOnClickListener(v -> {
@@ -168,7 +343,9 @@ public class Login extends BaseActivity {
 
                 if (isOnline()) {
 
-                    loginUserNow();
+                    shouldShowTwoFactor = true;
+
+                    model.loginWithUniqueCode(binding.emailET.getText().toString(), binding.passwordET.getText().toString(), Login.this);
 
                 } else {
 
@@ -235,13 +412,11 @@ public class Login extends BaseActivity {
 
     private boolean isValid() {
 
-        boolean chceck = false;
-
         if (binding.emailET.getText().toString().trim().isEmpty()) {
 
-            showMessage("Enter Email!");
+            showMessage("Enter Unique ID!");
 
-            return chceck;
+            return false;
 
         }
 
@@ -249,13 +424,11 @@ public class Login extends BaseActivity {
 
             showMessage("Enter Password!");
 
-            return chceck;
+            return false;
 
         }
 
-        chceck = true;
-
-        return chceck;
+        return true;
 
     }
 
@@ -296,10 +469,6 @@ public class Login extends BaseActivity {
 
                     } else {
 
-
-                        setRemember();
-
-                        startMainActivity();
 
                     }
                 });
@@ -629,6 +798,7 @@ public class Login extends BaseActivity {
                             mDatabase
                                     .child(currentUser.getUid())
                                     .setValue(user);
+
 
                             finish();
 
