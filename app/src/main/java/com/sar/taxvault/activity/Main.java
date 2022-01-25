@@ -30,26 +30,12 @@ public class Main extends BaseActivity {
 
     public DatabaseReference mDatabase;
 
-    Stripe stripe;
-
-    PaymentSession paymentSession;
-
-    Boolean readyToCharge = false;
-
-    String clientSecret;
-    String customerId;
-    String orderClientSecret;
-
-    Dialog bottomSheetDialog;
-
-    public double amount = 0;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
 
         binding = ActivityMainBinding.inflate(getLayoutInflater());
+
         View view = binding.getRoot();
         setContentView(view);
 
@@ -69,132 +55,6 @@ public class Main extends BaseActivity {
 
 //        createCustomer();
     }
-
-
-//
-//    private void setUpStripe() {
-//
-//        PaymentConfiguration.init(
-//                Main.this,
-//                Constants.stripePublishableKey
-//        );
-//
-//        stripe = new Stripe(Main.this, Constants.stripePublishableKey);
-//        CustomerSession.initCustomerSession(
-//                Main.this,
-//                new MyEphemeralKeyProvider()
-//        );
-//        paymentSession = new PaymentSession(
-//                Main.this,
-//                new PaymentSessionConfig.Builder()
-//                        .setShippingInfoRequired(false)
-//                        .setShippingMethodsRequired(false)
-//                        .setShippingInfoRequired(false)
-//                        .build()
-//        );
-//        paymentSession.init(
-//                new PaymentSession.PaymentSessionListener() {
-//                    @Override
-//                    public void onCommunicatingStateChanged(
-//                            boolean isCommunicating
-//                    ) {
-//                    }
-//
-//                    @Override
-//                    public void onError(
-//                            int errorCode,
-//                            @Nullable String errorMessage
-//                    ) {
-//                        Log.d("EmpheralKey", "onError: " + errorMessage);
-//                        showError(errorMessage);
-//                    }
-//
-//                    @Override
-//                    public void onPaymentSessionDataChanged(
-//                            @NonNull PaymentSessionData data
-//                    ) {
-//                        final PaymentMethod paymentMethod = data.getPaymentMethod();
-//                        if (data.getUseGooglePay()) {
-//                        } else {
-//                            Log.d("Order", "elsse: ");
-//                        }
-//                        readyToCharge = false;
-//                        if (data.isPaymentReadyToCharge()) {
-//                            readyToCharge = true;
-//
-//                            Stripe stripe;
-//
-//
-////                    PaymentMethodCreateParams params = cardInputWidget.getPaymentMethodCreateParams();
-////                    if (params != null) {
-//
-//
-//                            Toast.makeText(Main.this, "Ready to charge", Toast.LENGTH_SHORT).show();
-//
-//                            RequestBody requestBody = new MultipartBody.Builder()
-//                                    .setType(MultipartBody.FORM)
-////                                    .addFormDataPart("amount", ((int) amount)*100 +"")//stripeval
-//                                    .addFormDataPart("pm_id", paymentMethod.id)
-//                                    .addFormDataPart("cus_id", customerId)
-//                                    .build();
-//                            Controller.getApi().accountPayment(requestBody)
-//                                    .enqueue(new Callback<String>() {
-//                                        @Override
-//                                        public void onResponse(Call<String> call, Response<String> response) {
-//                                            if (response.body() != null) {
-//                                                try {
-//                                                    JSONObject jsonObject = new JSONObject(response.body());
-//                                                    orderClientSecret = jsonObject.getJSONObject("return_data").getString("key");
-//                                                    if (jsonObject.getJSONObject("return_data").getInt("error") == 0){
-//
-//                                                        ConfirmPaymentIntentParams confirmParams = ConfirmPaymentIntentParams
-//                                                                .create(list.get(i).getOrderClientSecret());
-//                                                        final Context context = mContext;
-//                                                        stripe = new Stripe(
-//                                                                context,
-//                                                                Constants.stripePublishableKey
-//                                                        );
-//                                                        stripe.confirmPayment((Activity) Main.this, confirmParams);
-//                                                    }
-//                                                    else{
-//                                                        showErrorAlert("Transaction failed, please contact service provider or admin!");
-//                                                    }
-//                                                } catch (JSONException e) {
-//                                                    e.printStackTrace();
-//                                                }
-////                                                StripeResponse stripeResponse = new Gson().fromJson(response.body(), StripeResponse.class);
-////                                                stripe.confirmPayment(Booking.this,
-////                                                        ConfirmPaymentIntentParams.createWithPaymentMethodId(
-////                                                                paymentMethod.id,
-////                                                                stripeResponse.getPaymentintentId().getClientSecret(),
-////                                                                "https://api.stripe.com" + stripeResponse.getPaymentintentId().getCharges()
-////                                                                        .getUrl()
-////                                                        )
-////                                                );
-//
-//                                            }
-//                                        }
-//
-//                                        @Override
-//                                        public void onFailure(Call<String> call, Throwable t) {
-//                                        }
-//                                    });
-//                        } else {
-
-//                            if (paymentMethod != null) {
-//
-//                                paymentSession.presentPaymentMethodSelection(MyEphemeralKeyProvider.cusId);
-//                                Log.d("Order", "Ready: ");
-//
-//                            } else {
-//                                paymentSession.presentPaymentMethodSelection(MyEphemeralKeyProvider.cusId);
-//                            }
-//                        }
-//
-//                    }
-//                }
-//        );
-//    }
 
     private void initFireBase() {
 

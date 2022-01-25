@@ -2,10 +2,15 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.sar.taxvault">
     <!-- Internet -->
+
     <uses-permission android:name="android.permission.INTERNET" /> <!-- File Picker -->
+
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
     <uses-permission android:name="android.permission.USE_BIOMETRIC" />
 
     <application
@@ -13,38 +18,79 @@
         android:icon="@drawable/app_icon"
         android:label="@string/app_name"
         android:roundIcon="@drawable/app_icon"
+        android:name=".MyApplication"
+        android:largeHeap="true" android:usesCleartextTraffic="true"
         android:supportsRtl="true"
         android:theme="@style/Theme.TaxVault">
+
+        <activity android:name=".activity.CustomDocumentActivity"
+            android:exported="true"/>
+
+        <activity
+            android:name=".activity.PhoneVerification"
+            android:exported="true" />
+
         <activity
             android:name=".activity.SelectBusinessActivity"
             android:exported="true" />
+
         <activity
             android:name=".activity.VaultTypeActivity"
             android:exported="true" />
+
+        <activity android:name=".activity.BusinessUser"
+            android:exported="true"/>
+
         <activity android:name=".activity.SettingsActivity" />
+
         <activity android:name=".activity.RemindersActivity" />
+
         <activity android:name=".activity.VaultActivity" />
+
         <activity android:name=".activity.DetailedNewsActivity" />
+
         <activity android:name=".activity.NewsActivity" />
+
         <activity android:name=".activity.Main" />
+
         <activity android:name=".activity.Signup" />
+
         <activity android:name=".activity.Login">
+
             <intent-filter>
+
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
+
             </intent-filter>
+
         </activity>
 
-        <activity android:name=".activity.UpgradeToPremiumActivity"/>
+        <activity android:name=".activity.ChatActivity"/>
+
+        <activity android:name=".activity.ActivitySendMessage"/>
+
+        <activity android:name=".activity.PDFViewer"/>
+
+        <activity android:name=".activity.MainActivity" />
+
+        <activity android:name=".activity.MoveHereActivity"/>
+
+        <activity android:name=".activity.UpgradeToPremiumActivity" />
+
+        <activity android:name=".activity.ImagePreview"/>
+
         <provider
             android:name="androidx.core.content.FileProvider"
-            android:authorities="${applicationId}.provider"
+            android:authorities="com.sar.taxvault.provider"
             android:exported="false"
             android:grantUriPermissions="true">
+
             <meta-data
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/paths" />
+
         </provider>
 
         <meta-data
@@ -55,18 +101,29 @@
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
+
             <intent-filter>
+
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
+
                 <category android:name="android.intent.category.BROWSABLE" />
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
+
             </intent-filter>
+
         </activity>
+
+        <meta-data android:name="pdftron_license_key" android:value="${pdftronLicenseKey}"/>
+
+        <activity android:name="com.pdftron.pdf.controls.DocumentActivity" android:configChanges="keyboardHidden|orientation|screenSize|screenLayout|smallestScreenSize" android:windowSoftInputMode="adjustPan" android:theme="@style/PDFTronAppTheme"/>
+
     </application>
 
 </manifest>

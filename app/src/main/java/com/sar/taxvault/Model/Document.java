@@ -1,21 +1,26 @@
 package com.sar.taxvault.Model;
 
+import android.os.Parcel;
+import android.os.Parcelable;
+
 import com.google.firebase.auth.FirebaseAuth;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-public class Document {
+public class Document implements Parcelable {
 
     String name;
     Long timeStamp;
     Long size;
     String url;
-    Boolean accessToUsers;
+    Boolean hasAccessToShare;
+    String time;
     String userId;
     String id;
     String type;
     String userName;
+    String businessId;
 
     public Document(String name, Long timeStamp, Long size, String url) {
 
@@ -23,9 +28,64 @@ public class Document {
         this.timeStamp = timeStamp;
         this.size = size;
         this.url = url;
-        this.accessToUsers = true;
+        this.hasAccessToShare = true;
+
+        Date date = new Date();
+        date.setTime(timeStamp);
+
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy HH:mm:ss");
+
+        time = dateFormat.format(date);
 
         userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+    }
+
+    public Document() {
+
+
+    }
+
+    protected Document(Parcel in) {
+        name = in.readString();
+        if (in.readByte() == 0) {
+            timeStamp = null;
+        } else {
+            timeStamp = in.readLong();
+        }
+        if (in.readByte() == 0) {
+            size = null;
+        } else {
+            size = in.readLong();
+        }
+        url = in.readString();
+        byte tmpHasAccessToShare = in.readByte();
+        hasAccessToShare = tmpHasAccessToShare == 0 ? null : tmpHasAccessToShare == 1;
+        time = in.readString();
+        userId = in.readString();
+        id = in.readString();
+        type = in.readString();
+        userName = in.readString();
+        businessId = in.readString();
+    }
+
+    public static final Creator<Document> CREATOR = new Creator<Document>() {
+        @Override
+        public Document createFromParcel(Parcel in) {
+            return new Document(in);
+        }
+
+        @Override
+        public Document[] newArray(int size) {
+            return new Document[size];
+        }
+    };
+
+    public Boolean getHasAccessToShare() {
+        return hasAccessToShare;
+    }
+
+    public void setHasAccessToShare(Boolean hasAccessToShare) {
+        this.hasAccessToShare = hasAccessToShare;
     }
 
     public String getType() {
@@ -50,10 +110,6 @@ public class Document {
 
     public void setId(String id) {
         this.id = id;
-    }
-
-    public Document() {
-
     }
 
     public String getName() {
@@ -92,14 +148,6 @@ public class Document {
         this.url = url;
     }
 
-    public Boolean getHasAccessToShare() {
-        return accessToUsers;
-    }
-
-    public void setHasAccessToShare(Boolean accessToUsers) {
-        this.accessToUsers = accessToUsers;
-    }
-
     public String getUserId() {
         return userId;
     }
@@ -125,5 +173,41 @@ public class Document {
             return true;
 
         return false;
+    }
+
+    public void setBusinessId(String businessId) {
+
+        this.businessId = businessId;
+
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(name);
+        if (timeStamp == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(timeStamp);
+        }
+        if (size == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(size);
+        }
+        dest.writeString(url);
+        dest.writeByte((byte) (hasAccessToShare == null ? 0 : hasAccessToShare ? 1 : 2));
+        dest.writeString(time);
+        dest.writeString(userId);
+        dest.writeString(id);
+        dest.writeString(type);
+        dest.writeString(userName);
+        dest.writeString(businessId);
     }
 }

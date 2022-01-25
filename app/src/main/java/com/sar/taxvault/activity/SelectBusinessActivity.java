@@ -7,6 +7,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.AdapterView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -26,7 +27,7 @@ import org.bouncycastle.jcajce.provider.symmetric.ARC4;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SelectBusinessActivity extends BaseActivity implements BusinessIdCallback {
+public class SelectBusinessActivity extends BaseActivity {
 
     ActivitySelectBusinessBinding binding;
 
@@ -61,8 +62,45 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
 
     private void setListener() {
 
+        binding.signupBtn.setOnClickListener(v -> {
+
+            DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("");
+            mDatabase.child(mAuth.getCurrentUser().getUid()).child("businessType").setValue(binding.businessTypeSP3.getSelectedItem().toString());
+            mDatabase.child(mAuth.getCurrentUser().getUid()).child("userType")
+                    .setValue(binding.userTypeSpinner.getSelectedItem().toString());
+//
+            startActivity(new Intent(SelectBusinessActivity.this, Main.class)
+                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+
+            finish();
+        });
         binding.includeView.backIV.setOnClickListener(v -> finish());
 
+        binding.userTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+
+                if (position != 2) {
+
+                    binding.businessTypeSP3.setVisibility(View.INVISIBLE);
+                    binding.businessLabel.setVisibility(View.INVISIBLE);
+                    binding.businessTypeIV.setVisibility(View.INVISIBLE);
+
+                } else {
+
+                    binding.businessTypeIV.setVisibility(View.VISIBLE);
+                    binding.businessTypeSP3.setVisibility(View.VISIBLE);
+                    binding.businessLabel.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
+        });
     }
 
     private void getDataFromIntent() {
@@ -150,40 +188,36 @@ public class SelectBusinessActivity extends BaseActivity implements BusinessIdCa
 
     private void setRecyclerViewNews() {
 
-        LinearLayoutManager layoutManager5 = new LinearLayoutManager(this);
-        binding.businessRV.setLayoutManager(layoutManager5);
-
-        RecyclerViewAdapterBusiness adapter = new RecyclerViewAdapterBusiness(this, businessList, this);
-
-        binding.businessRV.setItemAnimator(new DefaultItemAnimator());
-
-        binding.businessRV.setAdapter(adapter);
-
     }
 
-    @Override
-    public void onItemClick(String businessId, String businessName) {
-
-        if (type.equals("social")) {
-
-            mDatabase.child(mAuth.getCurrentUser().getUid()).child("businessId").setValue(businessId);
-            mDatabase.child(mAuth.getCurrentUser().getUid()).child("userType")
-                    .setValue(binding.userTypeSpinner.getSelectedItem().toString());
-
-            startActivity(new Intent(SelectBusinessActivity.this, Main.class)
-                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-
-            finish();
-
-        } else {
-
-            Signup.businessId = businessId;
-
-            Signup.businessName = businessName;
-
-            finish();
-
-        }
-
-    }
+//    @Override
+//    public void onItemClick(String businessId, String businessName) {
+//
+//        if (type.equals("social")) {
+//
+//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("businessId").setValue(businessId);
+//            mDatabase.child(mAuth.getCurrentUser().getUid()).child("userType")
+//                    .setValue(binding.userTypeSpinner.getSelectedItem().toString());
+//
+//            startActivity(new Intent(SelectBusinessActivity.this, Main.class)
+//                    .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
+//
+//            finish();
+//
+//        } else {
+//
+//            Signup.businessId = businessId;
+//
+//            Signup.businessName = businessName;
+//
+//            finish();
+//
+//        }
+//
+//    }
+//
+//    @Override
+//    public void onUserSelected(UserModel user) {
+//
+//    }
 }

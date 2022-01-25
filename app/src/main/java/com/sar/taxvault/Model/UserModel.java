@@ -3,50 +3,48 @@ package com.sar.taxvault.Model;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+import com.google.firebase.database.Exclude;
+
 public class UserModel implements Parcelable {
 
-    String userId;
-    String firstName = "";
-    String lastName = "";
-    String phoneNumber = "";
-    String email = "";
-    String businessId = "";
-    String password = "";
-    String userType = "individual";
-    Boolean rememberMe = true;
-    String token = "";
-    int status = 0;
-
-    public String getUniqueID() {
-
-        if(uniqueID == null)
-            return "";
-        return uniqueID;
-    }
-
-    String uniqueID;
+    public String userId;
+    public String firstName = "";
+    public String lastName = "";
+    public String phoneNumber = "";
+    public String email = "";
+    public String businessId = "";
+    public String password = "";
+    public String businessType = "";
+    public Boolean rememberMe = true;
+    public String businessStatus;
+    public String token = "";
+    //    int status = 0;
+    public String uniqueID;
+    public String imageUrl;
     int maxPost = 10;
-    String customerId;
-    String clientSecret;
-    String currentPackage;
-    Long purchasedTSp;
-    int postCount = 0;
-
+    public String customerId;
+    public String clientSecret;
+    public String currentPackage;
+    public Long purchasedTSp;
+    public int postCount = 0;
     public Boolean twoFactorAuthenticated = false;
+    public String userType = "individual";
 
     protected UserModel(Parcel in) {
         userId = in.readString();
+        imageUrl = in.readString();
         firstName = in.readString();
         lastName = in.readString();
         phoneNumber = in.readString();
         email = in.readString();
         businessId = in.readString();
-        uniqueID = in.readString();
         password = in.readString();
-        userType = in.readString();
+        businessType = in.readString();
         byte tmpRememberMe = in.readByte();
         rememberMe = tmpRememberMe == 0 ? null : tmpRememberMe == 1;
+        businessStatus = in.readString();
         token = in.readString();
+        uniqueID = in.readString();
         maxPost = in.readInt();
         customerId = in.readString();
         clientSecret = in.readString();
@@ -57,6 +55,44 @@ public class UserModel implements Parcelable {
             purchasedTSp = in.readLong();
         }
         postCount = in.readInt();
+        byte tmpTwoFactorAuthenticated = in.readByte();
+        twoFactorAuthenticated = tmpTwoFactorAuthenticated == 0 ? null : tmpTwoFactorAuthenticated == 1;
+        userType = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(userId);
+        dest.writeString(imageUrl);
+        dest.writeString(firstName);
+        dest.writeString(lastName);
+        dest.writeString(phoneNumber);
+        dest.writeString(email);
+        dest.writeString(businessId);
+        dest.writeString(password);
+        dest.writeString(businessType);
+        dest.writeByte((byte) (rememberMe == null ? 0 : rememberMe ? 1 : 2));
+        dest.writeString(businessStatus);
+        dest.writeString(token);
+        dest.writeString(uniqueID);
+        dest.writeInt(maxPost);
+        dest.writeString(customerId);
+        dest.writeString(clientSecret);
+        dest.writeString(currentPackage);
+        if (purchasedTSp == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeLong(purchasedTSp);
+        }
+        dest.writeInt(postCount);
+        dest.writeByte((byte) (twoFactorAuthenticated == null ? 0 : twoFactorAuthenticated ? 1 : 2));
+        dest.writeString(userType);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public static final Creator<UserModel> CREATOR = new Creator<UserModel>() {
@@ -71,27 +107,22 @@ public class UserModel implements Parcelable {
         }
     };
 
-    public String getUserId() {
-        return userId;
+    public void setUniqueID(String uniqueID) {
+        this.uniqueID = uniqueID;
     }
 
-    public void setUserId(String userId) {
-        this.userId = userId;
+    public void setTwoFactorAuthenticated(Boolean twoFactorAuthenticated) {
+        this.twoFactorAuthenticated = twoFactorAuthenticated;
     }
 
-    public String getBusinessId() {
+    @Exclude
+    public String getUniqueID() {
 
-        if (businessId == null)
+        if(uniqueID == null)
             return "";
-
-        return businessId;
+        return uniqueID;
     }
-
-    public void setBusinessId(String businesId) {
-        this.businessId = businesId;
-    }
-
-    public UserModel(String firstName, String lastName, String phoneNumber, String email, String password, String userType, Boolean rememberMe, String token, int maxPost, String customerId, String clientSecret, String currentPackage, Long purchasedTSp, int postCount) {
+      public UserModel(String firstName, String lastName, String phoneNumber, String email, String password, String userType, Boolean rememberMe, String token, int maxPost, String customerId, String clientSecret, String currentPackage, Long purchasedTSp, int postCount) {
 
         this.firstName = firstName;
         this.lastName = lastName;
@@ -110,6 +141,28 @@ public class UserModel implements Parcelable {
     }
 
     public UserModel() {}
+
+    public String getUserId() {
+        return userId;
+    }
+
+    public void setUserId(String userId) {
+        this.userId = userId;
+    }
+
+    public String getBusinessId() {
+
+        if (businessId == null || businessId.equalsIgnoreCase("null"))
+
+            return "";
+
+        return businessId;
+    }
+
+    public void setBusinessId(String businesId) {
+        this.businessId = businesId;
+    }
+
 
     public String getClientSecret() {
         return clientSecret;
@@ -182,6 +235,17 @@ public class UserModel implements Parcelable {
     public void setFirstName(String firstName) {
         this.firstName = firstName;
     }
+    public String getBusinessType() {
+        return businessType;
+    }
+
+//    public int getStatus() {
+//        return status;
+//    }
+
+    public Boolean getTwoFactorAuthenticated() {
+        return twoFactorAuthenticated;
+    }
 
     public String getLastName() {
         return lastName;
@@ -239,9 +303,9 @@ public class UserModel implements Parcelable {
         return false;
     }
 
-    public void setStatus(int status) {
-        this.status = status;
-    }
+//    public void setStatus(int status) {
+//        this.status = status;
+//    }
 
     public int getPercentShared() {
 
@@ -250,34 +314,9 @@ public class UserModel implements Parcelable {
         return new Double(percent).intValue();
     }
 
-    @Override
-    public int describeContents() {
-        return 0;
-    }
 
-    @Override
-    public void writeToParcel(Parcel parcel, int i) {
-        parcel.writeString(userId);
-        parcel.writeString(firstName);
-        parcel.writeString(lastName);
-        parcel.writeString(phoneNumber);
-        parcel.writeString(email);
-        parcel.writeString(businessId);
-        parcel.writeString(uniqueID);
-        parcel.writeString(password);
-        parcel.writeString(userType);
-        parcel.writeByte((byte) (rememberMe == null ? 0 : rememberMe ? 1 : 2));
-        parcel.writeString(token);
-        parcel.writeInt(maxPost);
-        parcel.writeString(customerId);
-        parcel.writeString(clientSecret);
-        parcel.writeString(currentPackage);
-        if (purchasedTSp == null) {
-            parcel.writeByte((byte) 0);
-        } else {
-            parcel.writeByte((byte) 1);
-            parcel.writeLong(purchasedTSp);
-        }
-        parcel.writeInt(postCount);
+    public void setBusinessType(String businessType) {
+
+        this.businessType = businessType;
     }
 }

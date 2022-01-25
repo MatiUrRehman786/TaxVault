@@ -1,7 +1,5 @@
 package com.sar.taxvault.vm.mo;
 
-import com.sar.taxvault.Model.UserModel;
-
 public class GenericModelLiveData {
 
     public enum Status { loading, error, success}

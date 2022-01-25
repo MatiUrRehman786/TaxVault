@@ -146,12 +146,35 @@
                 android:fontFamily="@font/poppins_medium"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_12ssp"/>
+            <TextView
+                android:id="@+id/type"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:text="Type"
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/gray"
+                android:textSize="@dimen/_10ssp"
+                android:layout_marginTop="@dimen/_8sdp"/>
+            <TextView
+                android:id="@+id/typeTV"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_10ssp"
+                android:autoSizeTextType="uniform"
+                android:text=""
+                android:fontFamily="@font/poppins_medium"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"/>
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/updateBtn"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_16sdp"
+                android:layout_marginTop="@dimen/_5sdp"
                 android:text="Update"
                 android:textColor="@color/white"
                 android:background="@drawable/rectangle_background_blue"

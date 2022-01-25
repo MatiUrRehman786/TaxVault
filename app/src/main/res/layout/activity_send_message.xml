@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.Signup">
+
+    <include
+        android:id="@+id/includeView"
+        layout="@layout/include_app_bar" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/verticalLine"
+        android:visibility="gone"
+        android:layout_width="@dimen/_8sdp"
+        android:layout_height="match_parent"
+        android:background="@color/red"
+        app:layout_constraintEnd_toEndOf="parent" />
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/side_icon"
+        android:layout_width="@dimen/_32sdp"
+        android:layout_height="@dimen/_96sdp"
+        android:visibility="gone"
+        android:src="@drawable/side_icon"
+        app:layout_constraintEnd_toStartOf="@id/verticalLine"
+        app:layout_constraintTop_toBottomOf="@id/includeView" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/includeView">
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/uniqueIDACTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:autoSizeMaxTextSize="@dimen/_10ssp"
+            android:autoSizeMinTextSize="@dimen/_9ssp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="TO:     "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/toTV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/toTV" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/uniqueIDACTV2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:autoSizeMaxTextSize="@dimen/_10ssp"
+            android:autoSizeMinTextSize="@dimen/_9ssp"
+            android:autoSizeTextType="uniform"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="center"
+            android:text="From: "
+            android:textColor="@color/black"
+            android:textSize="@dimen/_15ssp"
+            app:layout_constraintBottom_toBottomOf="@+id/fromTV"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/fromTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/toTV"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:gravity="center_vertical"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:autoSizeMaxTextSize="@dimen/_12ssp"
+            android:autoSizeMinTextSize="@dimen/_9ssp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/rectangle_background_light_gray"
+            android:fontFamily="@font/poppins_medium"
+            android:singleLine="true"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/uniqueIDACTV"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/fromTV"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/_40sdp"
+            android:layout_marginStart="@dimen/_10sdp"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:autoSizeMaxTextSize="@dimen/_12ssp"
+            android:gravity="center_vertical"
+            android:autoSizeMinTextSize="@dimen/_9ssp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/rectangle_background_light_gray"
+            android:fontFamily="@font/poppins_medium"
+            android:maxLines="1"
+            android:paddingStart="@dimen/_10sdp"
+            android:paddingEnd="@dimen/_10sdp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@+id/uniqueIDACTV"
+            app:layout_constraintTop_toBottomOf="@+id/toTV" />
+
+        <androidx.appcompat.widget.AppCompatEditText
+            android:id="@+id/messageET"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:layout_marginEnd="@dimen/_20sdp"
+            android:autoSizeMaxTextSize="@dimen/_12ssp"
+            android:autoSizeMinTextSize="@dimen/_9ssp"
+            android:autoSizeTextType="uniform"
+            android:background="@drawable/rectangle_background_light_gray"
+            android:fontFamily="@font/poppins_medium"
+            android:gravity="top"
+            android:hint="Type your message here"
+            android:imeOptions="actionNext"
+            android:maxLines="1"
+            android:paddingHorizontal="@dimen/_12sdp"
+            android:paddingVertical="@dimen/_8sdp"
+            android:singleLine="true"
+            android:textColor="@color/black"
+            android:textSize="@dimen/_12ssp"
+            app:layout_constraintBottom_toTopOf="@+id/sendBt"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="@+id/uniqueIDACTV2"
+            app:layout_constraintTop_toBottomOf="@+id/fromTV" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/sendBt"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_20sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:background="@drawable/rectangle_background_blue"
+            android:elevation="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_12sdp"
+            android:text="SEND"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.8" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

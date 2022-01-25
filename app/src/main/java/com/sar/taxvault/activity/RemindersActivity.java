@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
-public class RemindersActivity extends AppCompatActivity {
+public class RemindersActivity extends BaseActivity {
 
     ActivityRemidersBinding binding;
 
@@ -58,14 +58,14 @@ public class RemindersActivity extends AppCompatActivity {
     private void getData() {
 
         UIUpdate.GetUIUpdate(this).destroy();
-        UIUpdate.GetUIUpdate(this).setProgressDialog();
+        showLoader();
 
         valueEventListener = FirebaseDatabase.getInstance().getReference("Remainders")
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
-                        UIUpdate.GetUIUpdate(RemindersActivity.this).dismissProgressDialog();
+                        hideLoader();
 
                         if (snapshot.getValue() != null)
 
@@ -75,7 +75,7 @@ public class RemindersActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(DatabaseError error) {
 
-                        UIUpdate.GetUIUpdate(RemindersActivity.this).dismissProgressDialog();
+                        hideLoader();
 
                         UIUpdate.GetUIUpdate(RemindersActivity.this).showAlertDialog("Alert", error.getMessage());
                     }

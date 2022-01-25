@@ -131,7 +131,7 @@ public class Login extends BaseActivity {
 
                 case error:
 
-                    UIUpdate.GetUIUpdate(Login.this).dismissProgressDialog();
+                    hideLoader();
 
                     showErrorAlert(genericModelLiveData.errorMsg);
 
@@ -139,7 +139,14 @@ public class Login extends BaseActivity {
 
                 case loading:
 
-                    UIUpdate.GetUIUpdate(Login.this).setProgressDialog();
+                    try {
+
+                        showLoader();
+
+                    } catch (Exception e) {
+
+
+                    }
 
                     break;
 
@@ -149,19 +156,36 @@ public class Login extends BaseActivity {
 
                     onAuthSucceeded(userModel);
 
+                    shouldShowTwoFactor = false;
+
                     break;
             }
 
-            shouldShowTwoFactor = false;
 
         });
     }
 
     private void onAuthSucceeded(UserModel userModel) {
 
-        UIUpdate.GetUIUpdate(Login.this).dismissProgressDialog();
+        hideLoader();
 
-        if (shouldShowTwoFactor)
+        if (userModel != null) {
+
+            if (binding.passwordET.getText().toString().length() >= 6) {
+
+                userModel.setPassword(binding.passwordET.getText().toString());
+
+            }
+
+            if (shouldShowTwoFactor)
+
+                userModel.twoFactorAuthenticated = false;
+
+            SessionManager.getInstance().setUser(userModel, Login.this);
+
+        }
+
+        if (shouldShowTwoFactor && (userModel != null && !userModel.twoFactorAuthenticated))
 
             handleTwoFactor(userModel);
 
@@ -184,7 +208,9 @@ public class Login extends BaseActivity {
     private void setBiometricPrompt() {
 
         biometricPrompt = new BiometricPrompt(Login.this,
-                executor, biometricAuthCallback);
+                executor,
+                biometricAuthCallback
+        );
 
         promptInfo = new BiometricPrompt.PromptInfo.Builder()
                 .setTitle("Biometric login for TAX VAULT")
@@ -234,9 +260,11 @@ public class Login extends BaseActivity {
             return;
         }
 
-        if (user.getEmail().isEmpty() && user.getPassword() != null) {
+        shouldShowTwoFactor = false;
 
-            model.authenticateWithEmailAndPassword(user.getEmail(), user.getPassword(), Login.this, null);
+        if (!user.getEmail().isEmpty() && !user.getPassword().isEmpty()) {
+
+            model.authenticateWithEmailAndPassword(user.getEmail(), user.getPassword(), Login.this);
 
         }
 
@@ -248,7 +276,7 @@ public class Login extends BaseActivity {
 
             model = new ViewModelProvider(this).get(AuthViewModel.class);
 
-            model.loginWithUniqueCode(email, password, this);
+//            model.loginWithUniqueCode(email, password, this);
 
         }
 
@@ -259,8 +287,6 @@ public class Login extends BaseActivity {
         if (userModel != null) {
 
             userModel.twoFactorAuthenticated = false;
-
-            SessionManager.getInstance().setUser(userModel, Login.this);
 
             FirebaseAuth.getInstance().signOut();
 
@@ -319,11 +345,11 @@ public class Login extends BaseActivity {
 
     private void checkLogin() {
 
-        if (mAuth.getCurrentUser() != null) {
+//        if (mAuth.getCurrentUser() != null) {
 
-            startMainActivity();
+//            startMainActivity();
 
-        }
+//        }
 
     }
 
@@ -345,7 +371,7 @@ public class Login extends BaseActivity {
 
                     shouldShowTwoFactor = true;
 
-                    model.loginWithUniqueCode(binding.emailET.getText().toString(), binding.passwordET.getText().toString(), Login.this);
+                    model.authenticateWithEmailAndPassword(binding.emailET.getText().toString(), binding.passwordET.getText().toString(), Login.this);
 
                 } else {
 
@@ -414,7 +440,7 @@ public class Login extends BaseActivity {
 
         if (binding.emailET.getText().toString().trim().isEmpty()) {
 
-            showMessage("Enter Unique ID!");
+            showMessage("Enter Email");
 
             return false;
 
@@ -422,7 +448,7 @@ public class Login extends BaseActivity {
 
         if (binding.passwordET.getText().toString().trim().isEmpty()) {
 
-            showMessage("Enter Password!");
+            showMessage("Enter Password");
 
             return false;
 
@@ -444,7 +470,7 @@ public class Login extends BaseActivity {
 
         UIUpdate.GetUIUpdate(this).destroy();
 
-        UIUpdate.GetUIUpdate(this).setProgressDialog();
+        showLoader();
 
         String email = binding.emailET.getText().toString();
 
@@ -456,7 +482,7 @@ public class Login extends BaseActivity {
 
                 .addOnCompleteListener(Login.this, task -> {
 
-                    UIUpdate.GetUIUpdate(Login.this).dismissProgressDialog();
+                    hideLoader();
 
                     if (!task.isSuccessful()) {
 
@@ -616,7 +642,7 @@ public class Login extends BaseActivity {
 
                             UserModel user = snapshot.getValue(UserModel.class);
 
-                            if (user.getBusinessId().isEmpty()) {
+                            if (user.getBusinessType() == null || user.getBusinessType().isEmpty() || user.getBusinessType().equalsIgnoreCase("null")) {
 
                                 Intent intent = new Intent(Login.this, SelectBusinessActivity.class);
 

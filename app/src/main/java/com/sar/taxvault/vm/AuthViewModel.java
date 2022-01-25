@@ -1,6 +1,7 @@
 package com.sar.taxvault.vm;
 
 import android.app.Activity;
+import android.util.Log;
 
 import androidx.annotation.NonNull;
 import androidx.lifecycle.LiveData;
@@ -13,21 +14,17 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sar.taxvault.Model.UserModel;
-import com.sar.taxvault.activity.Login;
 import com.sar.taxvault.vm.mo.GenericModelLiveData;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.util.Objects;
+
 public class AuthViewModel extends ViewModel {
 
+    String TAG = "AuthViewModel";
+
     private MutableLiveData<GenericModelLiveData> data;
-
-    public enum LoginStatus {
-
-        afterTwoFactor,
-        beforeTwoFactor
-
-    }
 
     public LiveData<GenericModelLiveData> getLiveData() {
 
@@ -40,7 +37,7 @@ public class AuthViewModel extends ViewModel {
         return data;
     }
 
-    public void authenticateWithEmailAndPassword(String email, String password, Activity c, UserModel userModel) {
+    public void authenticateWithEmailAndPassword(String email, String password, Activity c) {
 
         data.postValue(new GenericModelLiveData(null, GenericModelLiveData.Status.loading, null));
 
@@ -50,7 +47,7 @@ public class AuthViewModel extends ViewModel {
 
                     if (task.isSuccessful()) {
 
-                        data.postValue(new GenericModelLiveData(null, GenericModelLiveData.Status.success, null));
+                        getUserModel();
 
                     } else {
 
@@ -70,31 +67,25 @@ public class AuthViewModel extends ViewModel {
                 });
     }
 
-    public void loginWithUniqueCode(String code, String password, Activity c) {
-
-        data.postValue(new GenericModelLiveData(null, GenericModelLiveData.Status.loading, null));
+    private void getUserModel() {
 
         FirebaseDatabase.getInstance().getReference("User")
+                .child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                 .addListenerForSingleValueEvent(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
 
                         if (snapshot.exists()) {
 
-                            for (DataSnapshot child : snapshot.getChildren()) {
+                            try {
 
-                                UserModel userModel = child.getValue(UserModel.class);
+                                UserModel userModel = snapshot.getValue(UserModel.class);
 
-                                if (userModel != null) {
+                                data.postValue(new GenericModelLiveData(userModel, GenericModelLiveData.Status.success, null));
 
-                                    if (code.equalsIgnoreCase(userModel.getUniqueID())) {
+                            } catch (Exception e) {
 
-                                        authenticateWithEmailAndPassword(userModel.getEmail(), password, c, userModel);
-
-                                        return;
-                                    }
-
-                                }
+                                data.postValue(new GenericModelLiveData(null, GenericModelLiveData.Status.error, "User Not Found"));
 
                             }
 
@@ -110,4 +101,52 @@ public class AuthViewModel extends ViewModel {
                     }
                 });
     }
+//
+//    public void loginWithUniqueCode(String code, String password, Activity c) {
+//
+//        data.postValue(new GenericModelLiveData(null, GenericModelLiveData.Status.loading, null));
+//
+//        FirebaseDatabase.getInstance().getReference("User")
+//                .addListenerForSingleValueEvent(new ValueEventListener() {
+//                    @Override
+//                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+//
+//                        if (snapshot.exists()) {
+//
+//                            for (DataSnapshot child : snapshot.getChildren()) {
+//
+//                                try {
+//                                    UserModel userModel = child.getValue(UserModel.class);
+//
+//                                    if (userModel != null) {
+//
+//                                        if (code.equalsIgnoreCase(userModel.getUniqueID())) {
+//
+//                                            authenticateWithEmailAndPassword(userModel.getEmail(), password, c, userModel);
+//
+//                                            return;
+//                                        }
+//
+//                                    }
+//                                } catch (Exception e) {
+//
+//                                    Log.d(TAG, "onDataChange: " + child.getKey());
+//
+//                                }
+//
+//
+//                            }
+//
+//                        }
+//
+//                    }
+//
+//                    @Override
+//                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+//
+//                        data.postValue(new GenericModelLiveData(null, GenericModelLiveData.Status.error, error.getMessage()));
+//
+//                    }
+//                });
+//    }
 }

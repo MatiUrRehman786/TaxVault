@@ -138,7 +138,7 @@
                 android:background="@drawable/circular_background_blue"
                 android:padding="@dimen/_6sdp"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/accessIV"
+                app:layout_constraintTop_toBottomOf="@id/moveIV"
                 app:layout_constraintBottom_toBottomOf="parent"
                 android:layout_marginBottom="@dimen/_12sdp"/>
 
@@ -155,6 +155,31 @@
                 app:layout_constraintStart_toEndOf="@id/deleteIV"
                 app:layout_constraintTop_toTopOf="@id/deleteIV" />
 
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/moveIV"
+                android:layout_width="@dimen/_25sdp"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginTop="@dimen/_16sdp"
+                android:src="@drawable/delete"
+                android:background="@drawable/circular_background_blue"
+                android:padding="@dimen/_6sdp"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/accessIV"
+                android:layout_marginBottom="@dimen/_12sdp"/>
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/moveTV"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/_25sdp"
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:fontFamily="@font/poppins_medium"
+                android:gravity="center_vertical"
+                android:text="Move to Another Folder"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintBottom_toBottomOf="@+id/moveIV"
+                app:layout_constraintStart_toEndOf="@id/deleteIV"
+                app:layout_constraintTop_toTopOf="@+id/moveIV" />
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>

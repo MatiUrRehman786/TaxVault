@@ -1,5 +1,6 @@
 package com.sar.taxvault.fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -16,8 +17,12 @@ import com.google.firebase.database.ValueEventListener;
 import com.sar.taxvault.Model.Document;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.Stripe.MyEphemeralKeyProvider;
+import com.sar.taxvault.activity.ActivitySendMessage;
+import com.sar.taxvault.activity.BusinessUser;
+import com.sar.taxvault.activity.ChatActivity;
 import com.sar.taxvault.activity.NewsActivity;
 import com.sar.taxvault.activity.RemindersActivity;
+import com.sar.taxvault.activity.SelectBusinessActivity;
 import com.sar.taxvault.activity.SettingsActivity;
 import com.sar.taxvault.activity.UpgradeToPremiumActivity;
 import com.sar.taxvault.activity.VaultTypeActivity;
@@ -25,9 +30,11 @@ import com.sar.taxvault.databinding.FragmentTaxVaultBinding;
 import com.sar.taxvault.retrofit.Controller;
 import com.sar.taxvault.utils.UIUpdate;
 
+import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
 import java.util.Date;
+import java.util.Objects;
 
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
@@ -35,7 +42,7 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-public class TaxVaultFragment extends Fragment {
+public class TaxVaultFragment extends BaseFragment {
 
     private FragmentTaxVaultBinding binding;
 
@@ -48,7 +55,7 @@ public class TaxVaultFragment extends Fragment {
     }
 
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+    public View onCreateView(@NotNull LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         binding = FragmentTaxVaultBinding.inflate(inflater, container, false);
 
@@ -56,33 +63,36 @@ public class TaxVaultFragment extends Fragment {
 
         setListeners();
 
-        getMyProfile();
+//        getMyProfile();
 
         return binding.getRoot();
 
     }
 
+    ValueEventListener dataEventListener;
+
     private void getData(UserModel user) {
 
-        UIUpdate.GetUIUpdate(getActivity()).setProgressDialog();
+        UIUpdate.GetUIUpdate(getActivity()).destroy();
+        showLoader();
 
-        FirebaseDatabase.getInstance().getReference("Files")
-                .child(user.getBusinessId())
+        dataEventListener = FirebaseDatabase.getInstance().getReference("ManagerFiles")
                 .child(user.getUserId())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot snapshot) {
+                    public void onDataChange(@NotNull DataSnapshot snapshot) {
 
-                        UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
+                        hideLoader();
 
                         if (snapshot.getValue() != null)
+
                             parseSnapshot(snapshot);
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError error) {
+                    public void onCancelled(@NotNull DatabaseError error) {
 
-                        UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
+                        hideLoader();
 
                         UIUpdate.GetUIUpdate(getActivity()).showAlertDialog("Alert", error.getMessage());
                     }
@@ -90,77 +100,41 @@ public class TaxVaultFragment extends Fragment {
     }
 
 
+    @SuppressLint("SetTextI18n")
     private void parseSnapshot(DataSnapshot snapshot) {
 
-        String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
-
-        Long bytes = 0l;
+        long bytes = 0L;
 
         for (DataSnapshot child : snapshot.getChildren()) {
 
             Document document = child.getValue(Document.class);
 
-            bytes = bytes + document.getSize();
+            if (document != null) {
+                bytes = bytes + document.getSize();
+            }
 
         }
 
         long GB = 1073741824;
         int maxSizeGB = 1;
 
-        String currentPackage = user.getCurrentPackage();
-
-        if (currentPackage != null) {
-
-            if (user.getPurchasedTSp() != null) {
-
-                Long ts = user.getPurchasedTSp();
-
-                int diffInDays = (int) ((ts - new Date().getTime())
-                        / (1000 * 60 * 60 * 24));
-
-                if (user.getCurrentPackage().equalsIgnoreCase("monthly")) {
-
-                    if (diffInDays < 30) {
-
-                        maxSizeGB = 3;
-                    }
-
-                }
-
-
-                if (user.getCurrentPackage().equalsIgnoreCase("yearly")) {
-
-                    if (diffInDays < 365) {
-
-                        maxSizeGB = 3;
-                    }
-
-                }
-            }
-        }
-
         if (bytes < (GB * maxSizeGB)) {
 
-            Long percentUsed = (bytes * 100) / GB;
+            long percentUsed = (bytes * 100) / GB;
 
-            double sizeInMB = new Long(bytes).doubleValue() / 1048576;
+            double sizeInMB = Long.valueOf(bytes).doubleValue() / 1048576;
 
-            binding.circularProgressBar.setProgress(new Long(percentUsed).intValue());
+            binding.circularProgressBar.setProgress(Long.valueOf(percentUsed).intValue());
 
-            binding.usedTV.setText("Used " + percentUsed.intValue() + "%");
-            binding.percentTV.setText(percentUsed.intValue() + "%");
+            binding.usedTV.setText("Used " + (int) percentUsed + "%");
 
-            binding.pointsTV.setText(roundAndConvertInGB(sizeInMB, 5) + "GB / " + maxSizeGB + "GB");
+            binding.pointsTV.setText(roundAndConvertInGB(sizeInMB, 5) + "GB");
 
         } else {
+
             binding.circularProgressBar.setProgress(100);
 
             binding.usedTV.setText("Used " + 100 + "%");
-            binding.percentTV.setText(100 + "%");
-            if (user.getCurrentPackage() == null)
-                binding.pointsTV.setText(1 + "GB / " + 1 + "GB");
-            else
-                binding.pointsTV.setText("Unlimited");
         }
     }
 
@@ -169,6 +143,7 @@ public class TaxVaultFragment extends Fragment {
         return (double) Math.round(value * scale) / scale;
     }
 
+    @SuppressLint("DefaultLocale")
     public String roundAndConvertInGB(double value, int precision) {
 
         double gb = value / 1024;
@@ -177,21 +152,41 @@ public class TaxVaultFragment extends Fragment {
 
     }
 
+    @Override
+    public void onPause() {
+        super.onPause();
+
+        profileEventListener = null;
+        dataEventListener = null;
+
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        getMyProfile();
+    }
+
+    ValueEventListener profileEventListener;
+
     private void getMyProfile() {
 
-        UIUpdate.GetUIUpdate(getActivity()).setProgressDialog();
+        showLoader();
 
-        FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+        profileEventListener = FirebaseDatabase.getInstance().getReference("User").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
-                    public void onDataChange(DataSnapshot snapshot) {
+                    public void onDataChange(@NotNull DataSnapshot snapshot) {
 
-                        UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
+                        hideLoader();
 
                         if (snapshot.getValue() != null) {
 
                             user = snapshot.getValue(UserModel.class);
-                            user.setUserId(snapshot.getKey());
+                            if (user != null) {
+                                user.setUserId(snapshot.getKey());
+                            }
 
                             getData(user);
 
@@ -201,9 +196,9 @@ public class TaxVaultFragment extends Fragment {
                     }
 
                     @Override
-                    public void onCancelled(DatabaseError error) {
+                    public void onCancelled(@NotNull DatabaseError error) {
 
-                        UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
+                        hideLoader();
 
                         UIUpdate.GetUIUpdate(getActivity()).showAlertDialog("Alert", error.getMessage());
                     }
@@ -228,7 +223,7 @@ public class TaxVaultFragment extends Fragment {
 //                    binding.circularProgressBar.setVisibility(View.INVISIBLE);
                     binding.upgradeTV.setVisibility(View.INVISIBLE);
 //                    binding.pointsTV.setText("Unlimited");
-                    binding.freeMembershipTV.setText("Monthly");
+//                    binding.freeMembershipTV.setText("Monthly");
                 }
 
             }
@@ -242,7 +237,7 @@ public class TaxVaultFragment extends Fragment {
 //                    binding.percentTV.setVisibility(View.INVISIBLE);
                     binding.upgradeTV.setVisibility(View.INVISIBLE);
 //                    binding.pointsTV.setText("Unlimited");
-                    binding.freeMembershipTV.setText("Yearly");
+//                    binding.freeMembershipTV.setText("Yearly");
                 }
 
             }
@@ -275,7 +270,7 @@ public class TaxVaultFragment extends Fragment {
 
         binding.remindersCL.setOnClickListener(view -> {
 
-            RemindersActivity.startActivity(getActivity());
+            RemindersActivity.startActivity(requireActivity());
 
 //            getActivity().overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
@@ -291,7 +286,63 @@ public class TaxVaultFragment extends Fragment {
 
         });
 
+        binding.businessUserCL.setOnClickListener(v -> {
+
+            Intent intent = new Intent(getActivity(), BusinessUser.class);
+
+            startActivity(intent);
+
+        });
+
         binding.upgradeIV.setOnClickListener(view -> checkPackage());
+
+        binding.messagesCL.setOnClickListener(v -> {
+
+            checkManager();
+
+        });
+    }
+
+    private void checkManager() {
+
+        FirebaseDatabase.getInstance().getReference("User").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NotNull DataSnapshot snapshot) {
+
+                        if (snapshot.getValue() != null) {
+
+                            user = snapshot.getValue(UserModel.class);
+
+                            if (user != null) {
+
+                                user.setUserId(snapshot.getKey());
+
+
+                                if (user.businessId == null || user.businessId.equalsIgnoreCase("null")||user.businessId.isEmpty()) {
+
+                                    showErrorAlert("Please select manager first");
+
+                                } else if (user.businessStatus == null || user.businessStatus.equalsIgnoreCase("pending") || user.businessStatus.isEmpty()) {
+
+                                    showErrorAlert("Waiting for business manager approval. Once manager approves you will be able to send messages to him.");
+
+                                } else {
+
+                                    startActivity(new Intent(getActivity(), ChatActivity.class));
+
+                                }
+                            }
+
+
+                        }
+                    }
+
+                    @Override
+                    public void onCancelled(@NotNull DatabaseError error) {
+
+                    }
+                });
     }
 
     void checkPackage() {
@@ -317,7 +368,7 @@ public class TaxVaultFragment extends Fragment {
         MyEphemeralKeyProvider.cusId = "1";
 
         UIUpdate.GetUIUpdate(getActivity()).destroy();
-        UIUpdate.GetUIUpdate(getActivity()).setProgressDialog();
+        showLoader();
 
         RequestBody requestBody = new MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
@@ -330,7 +381,7 @@ public class TaxVaultFragment extends Fragment {
                     @Override
                     public void onResponse(Call<String> call, Response<String> response) {
 
-                        UIUpdate.GetUIUpdate(getActivity()).dismissProgressDialog();
+                        hideLoader();
 
                         if (response.body() != null) {
                             try {
@@ -340,7 +391,7 @@ public class TaxVaultFragment extends Fragment {
 
                                 MyEphemeralKeyProvider.cusId = customerId;
 
-                                String myId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                                String myId = Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid();
 
                                 user.setClientSecret(clientSecret);
                                 user.setCustomerId(customerId);

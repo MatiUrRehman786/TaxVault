@@ -14,6 +14,8 @@ import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthOptions;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.sar.taxvault.Model.UserModel;
+import com.sar.taxvault.MyApplication;
 import com.sar.taxvault.classes.SessionManager;
 import com.sar.taxvault.databinding.ActivityPhoneVerificationBinding;
 import com.sar.taxvault.utils.UIUpdate;
@@ -33,9 +35,6 @@ public class PhoneVerification extends BaseActivity {
     String mVerificationId;
 
     PhoneAuthProvider.ForceResendingToken mResendToken;
-
-    String phoneNumber;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,9 +56,18 @@ public class PhoneVerification extends BaseActivity {
 
     private void setListeners() {
 
+        binding.includeView.backIV.setOnClickListener(v -> onBackPressed());
+
         binding.submitBt.setOnClickListener(view -> verify());
     }
 
+    @Override
+    protected void onResume() {
+
+        MyApplication.enteredBackground = false;
+
+        super.onResume();
+    }
 
     private boolean validate() {
 
@@ -87,17 +95,32 @@ public class PhoneVerification extends BaseActivity {
 
     }
 
+    @Override
+    public void onBackPressed() {
+
+        FirebaseAuth.getInstance().signOut();
+
+        SessionManager.getInstance().setUser(null, this);
+
+        super.onBackPressed();
+    }
 
     public void setCallbacks() {
 
-        PhoneAuthOptions options =
-                PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
-                        .setPhoneNumber(phoneNumber)       // Phone number to verify
-                        .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
-                        .setActivity(this)                 // Activity (for callback binding)
-                        .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
-                        .build();
-        PhoneAuthProvider.verifyPhoneNumber(options);
+        SessionManager.getInstance().getBiometricCredentials(user -> {
+
+            PhoneAuthOptions options =
+                    PhoneAuthOptions.newBuilder(FirebaseAuth.getInstance())
+                            .setPhoneNumber(user.getPhoneNumber())       // Phone number to verify
+                            .setTimeout(60L, TimeUnit.SECONDS) // Timeout and unit
+                            .setActivity(PhoneVerification.this)                 // Activity (for callback binding)
+                            .setCallbacks(mCallbacks)          // OnVerificationStateChangedCallbacks
+                            .build();
+            PhoneAuthProvider.verifyPhoneNumber(options);
+
+        }, PhoneVerification.this);
+
+
     }
 
 
@@ -122,15 +145,15 @@ public class PhoneVerification extends BaseActivity {
             // for instance if the the phone number format is not valid.
 //            Log.w(TAG, "onVerificationFailed", e);
 
-            if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                // Invalid request
-                showErrorAlert(e.getLocalizedMessage());
+//            if (e instanceof FirebaseAuthInvalidCredentialsException) {
+            // Invalid request
+            showErrorAlert(e.getLocalizedMessage());
 
-            } else if (e instanceof FirebaseTooManyRequestsException) {
-                // The SMS quota for the project has been exceeded
-                showErrorAlert(e.getLocalizedMessage());
+//            } else if (e instanceof FirebaseTooManyRequestsException) {
+            // The SMS quota for the project has been exceeded
+            showErrorAlert(e.getLocalizedMessage());
 
-            }
+//            }
 
             // Show a message and update the UI
         }
@@ -161,7 +184,7 @@ public class PhoneVerification extends BaseActivity {
                         SessionManager.getInstance()
                                 .getBiometricCredentials(user -> {
 
-                                    model.loginWithUniqueCode(user.getUniqueID(), user.getPassword(), PhoneVerification.this);
+                                    model.authenticateWithEmailAndPassword(user.getEmail(), user.getPassword(), PhoneVerification.this);
 
                                 }, PhoneVerification.this);
 
@@ -193,7 +216,7 @@ public class PhoneVerification extends BaseActivity {
 
                 case error:
 
-                    UIUpdate.GetUIUpdate(PhoneVerification.this).dismissProgressDialog();
+                    hideLoader();
 
                     showErrorAlert(genericModelLiveData.errorMsg);
 
@@ -201,7 +224,7 @@ public class PhoneVerification extends BaseActivity {
 
                 case loading:
 
-                    UIUpdate.GetUIUpdate(PhoneVerification.this).setProgressDialog();
+                    showLoader();
 
                     break;
 
@@ -217,10 +240,19 @@ public class PhoneVerification extends BaseActivity {
 
     private void onAuthSucceeded() {
 
-        startActivity(new Intent(PhoneVerification.this, VaultActivity.class)
-        .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+        SessionManager.getInstance().getBiometricCredentials(user -> {
 
-        finish();
+            user.twoFactorAuthenticated = true;
+
+            SessionManager.getInstance().setUser(user, PhoneVerification.this);
+
+            startActivity(new Intent(PhoneVerification.this, Main.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+
+            finish();
+
+        }, PhoneVerification.this);
 
     }
+
 }

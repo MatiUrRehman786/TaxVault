@@ -8,16 +8,17 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/upperCL"
+        android:visibility="visible"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/_130sdp"
         android:layout_marginHorizontal="@dimen/_16sdp"
         android:layout_marginTop="@dimen/_64sdp"
-        android:background="@drawable/rectangle_background_blue"
         app:layout_constraintTop_toTopOf="parent">
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/usedIV"
             android:layout_width="@dimen/_28sdp"
+            android:visibility="invisible"
             android:layout_height="@dimen/_28sdp"
             android:layout_marginTop="@dimen/_16sdp"
             android:background="@drawable/circular_background_white"
@@ -30,6 +31,7 @@
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/usedTV"
             android:layout_width="wrap_content"
+            android:visibility="invisible"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_16sdp"
             android:layout_marginTop="@dimen/_4sdp"
@@ -45,6 +47,7 @@
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/upgradeIV"
             android:layout_width="@dimen/_28sdp"
+            android:visibility="invisible"
             android:layout_height="@dimen/_28sdp"
             android:layout_marginTop="@dimen/_16sdp"
             android:background="@drawable/circular_background_white"
@@ -59,6 +62,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/_4sdp"
+            android:visibility="invisible"
             android:layout_marginEnd="@dimen/_16sdp"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
@@ -73,34 +77,37 @@
             android:id="@+id/pointsTV"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginBottom="@dimen/_10sdp"
+            android:visibility="visible"
             android:fontFamily="@font/poppins_medium"
             android:gravity="center_vertical"
             android:maxLines="1"
-            android:text="0GB / 1GB"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_16ssp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/upgradeTV" />
-
-        <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/freeMembershipTV"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="@dimen/_16sdp"
-            android:fontFamily="@font/poppins_medium"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:text="Free Membership"
+            android:text=""
             android:textColor="@color/white"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/pointsTV" />
+            app:layout_constraintStart_toStartOf="parent"/>
 
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/appNameTV"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:elevation="@dimen/_10sdp"
+            android:fontFamily="@font/sitka_small_599"
+            android:gravity="center_vertical"
+            android:maxLines="1"
+            android:layout_marginBottom="10dp"
+            android:text="Tax Vault"
+            android:textColor="@color/red"
+            android:textSize="@dimen/_20ssp"
+            app:layout_constraintBottom_toTopOf="@+id/pointsTV"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
+
 
     <com.mikhaellopez.circularprogressbar.CircularProgressBar
         android:id="@+id/circularProgressBar"
@@ -120,28 +127,20 @@
         app:layout_constraintTop_toTopOf="@id/upperCL" />
 
     <androidx.cardview.widget.CardView
+        android:id="@+id/cardView2"
         android:layout_width="@dimen/_50sdp"
         android:layout_height="@dimen/_50sdp"
         app:cardCornerRadius="@dimen/_25sdp"
-        app:cardBackgroundColor="@color/red"
         app:layout_constraintBottom_toBottomOf="@+id/circularProgressBar"
         app:layout_constraintEnd_toEndOf="@+id/circularProgressBar"
         app:layout_constraintStart_toStartOf="@+id/circularProgressBar"
         app:layout_constraintTop_toTopOf="@+id/circularProgressBar">
 
-        <TextView
+        <ImageView
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:fontFamily="@font/poppins_bold"
-            android:gravity="center"
-            android:id="@+id/percentTV"
-            android:maxLines="1"
-            android:text="100%"
-            android:padding="@dimen/_5sdp"
-            android:autoSizeTextType="uniform"
-            android:autoSizeMaxTextSize="@dimen/_12ssp"
-            android:textColor="@color/white"
-            android:textSize="@dimen/_12ssp" />
+            android:layout_margin="@dimen/_4sdp"
+            android:src="@drawable/tax_vault_logo" />
 
     </androidx.cardview.widget.CardView>
 
@@ -155,9 +154,117 @@
         android:clipToPadding="false"
         android:paddingBottom="@dimen/_48sdp">
 
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
+            <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/messagesCL"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:background="@drawable/rectangle_background_light_gray"
+                    app:layout_constraintEnd_toEndOf="@+id/settingsCL"
+                    app:layout_constraintStart_toStartOf="@+id/settingsCL"
+                    app:layout_constraintTop_toBottomOf="@id/remindersCL">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/messagesIV"
+                        android:layout_width="@dimen/_56sdp"
+                        android:layout_height="@dimen/_56sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:background="@drawable/circular_background_white"
+                        android:padding="@dimen/_12sdp"
+                        android:src="@drawable/email"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/messagesTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Messages"
+                        android:textColor="@color/black"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/messagesIV" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Get Started"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_10ssp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/messagesTV" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:id="@+id/businessUserCL"
+                    android:layout_width="0dp"
+                    android:layout_marginTop="@dimen/_10sdp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/_6sdp"
+                    android:background="@drawable/rectangle_background_light_gray"
+                    app:layout_constraintEnd_toStartOf="@id/settingsCL"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/remindersCL">
+
+                    <androidx.appcompat.widget.AppCompatImageView
+                        android:id="@+id/businessUserIV"
+                        android:layout_width="@dimen/_56sdp"
+                        android:layout_height="@dimen/_56sdp"
+                        android:layout_marginTop="@dimen/_12sdp"
+                        android:background="@drawable/circular_background_white"
+                        android:padding="@dimen/_12sdp"
+                        android:src="@drawable/select"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toTopOf="parent" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:id="@+id/businessUserTV"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="@dimen/_10sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Business User"
+                        android:textColor="@color/black"
+                        android:layout_marginBottom="@dimen/_20sdp"
+                        android:textSize="@dimen/_12ssp"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/businessUserIV" />
+
+                    <androidx.appcompat.widget.AppCompatTextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginBottom="@dimen/_12sdp"
+                        android:fontFamily="@font/poppins_medium"
+                        android:text="Get Started"
+                        android:textColor="@color/gray"
+                        android:textSize="@dimen/_10ssp"
+                        android:visibility="invisible"
+                        app:layout_constraintBottom_toBottomOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintTop_toBottomOf="@id/businessUserTV" />
+
+                </androidx.constraintlayout.widget.ConstraintLayout>
 
             <androidx.constraintlayout.widget.ConstraintLayout
                 android:id="@+id/vaultCL"
@@ -368,6 +475,8 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </LinearLayout>
 
     </ScrollView>
 

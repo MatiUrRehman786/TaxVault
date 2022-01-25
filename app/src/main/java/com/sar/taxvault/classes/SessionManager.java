@@ -1,24 +1,10 @@
 package com.sar.taxvault.classes;
 
 import android.content.Context;
-
-import androidx.datastore.core.DataStore;
-import androidx.datastore.preferences.core.MutablePreferences;
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.preferences.core.PreferencesKeys;
-import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
-import androidx.datastore.rxjava3.RxDataStore;
+import android.content.SharedPreferences;
 
 import com.google.gson.Gson;
 import com.sar.taxvault.Model.UserModel;
-
-import org.reactivestreams.Subscription;
-
-import io.reactivex.rxjava3.annotations.NonNull;
-import io.reactivex.rxjava3.core.Flowable;
-import io.reactivex.rxjava3.core.FlowableSubscriber;
-import io.reactivex.rxjava3.core.Single;
-import io.reactivex.rxjava3.schedulers.Schedulers;
 
 public class SessionManager {
 
@@ -26,9 +12,13 @@ public class SessionManager {
 
     Gson gson = new Gson();
 
-    RxDataStore<Preferences> dataStore;
+    SharedPreferences sharedpreferences;
 
-    Preferences.Key AUTH_CREDENTIALS_BIOMETRICS = new Preferences.Key("AUTH_CREDENTIALS_BIOMETRICS");
+//    public static RxDataStore<Preferences> dataStore = null;
+
+//    public final static Preferences.Key AUTH_CREDENTIALS_BIOMETRICS = new Preferences.Key("AUTH_CREDENTIALS_BIOMETRICS");
+
+    public static final String AUTH_CREDENTIALS_BIOMETRICS = "AUTH_CREDENTIALS_BIOMETRICS";
 
     public static SessionManager getInstance() {
 
@@ -36,28 +26,23 @@ public class SessionManager {
 
             sessionManager = new SessionManager();
 
-
         return sessionManager;
 
     }
 
     public void setUser(UserModel userModel, Context context) {
 
+        sharedpreferences = context.getSharedPreferences("Prefs", Context.MODE_PRIVATE);
+
         String json = gson.toJson(userModel);
 
         initDataStore(context);
 
-        Single<Preferences> updateResult = dataStore.updateDataAsync(prefsIn -> {
+        SharedPreferences.Editor editor = sharedpreferences.edit();
 
-            MutablePreferences mutablePreferences = prefsIn.toMutablePreferences();
+        editor.putString(AUTH_CREDENTIALS_BIOMETRICS, json);
 
-            mutablePreferences.set(AUTH_CREDENTIALS_BIOMETRICS,
-                    json);
-
-            return Single.just(mutablePreferences);
-        });
-
-        updateResult.subscribe();
+        editor.commit();
 
     }
 
@@ -65,45 +50,23 @@ public class SessionManager {
 
         initDataStore(c);
 
-        Flowable<Object> objectFlowable =
-                dataStore.data().map(prefs -> prefs.get(AUTH_CREDENTIALS_BIOMETRICS));
+        String data = sharedpreferences.getString(AUTH_CREDENTIALS_BIOMETRICS, null);
 
-        objectFlowable.subscribeOn(Schedulers.newThread());
+        if(data == null) {
 
-        objectFlowable.subscribe(new FlowableSubscriber<Object>() {
-            @Override
-            public void onSubscribe(@NonNull Subscription s) {
+            callback.onUserFound(null);
 
-            }
+            return;
+        }
 
-            @Override
-            public void onNext(Object o) {
+        UserModel userModel  = new Gson().fromJson(data, UserModel.class);
 
-                UserModel userModel = gson.fromJson(o.toString(), UserModel.class);
-
-                callback.onUserFound(userModel);
-
-            }
-
-            @Override
-            public void onError(Throwable t) {
-
-                callback.onUserFound(null);
-
-            }
-
-            @Override
-            public void onComplete() {
-
-            }
-        });
-
+        callback.onUserFound(userModel);
     }
 
     private void initDataStore(Context context) {
 
-        dataStore =
-                new RxPreferenceDataStoreBuilder(context, /*name=*/ "settings").build();
+        sharedpreferences = context.getSharedPreferences("Prefs", Context.MODE_PRIVATE);
 
     }
 

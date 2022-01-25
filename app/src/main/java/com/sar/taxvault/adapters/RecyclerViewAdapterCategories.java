@@ -3,6 +3,7 @@ package com.sar.taxvault.adapters;
 import android.content.Context;
 import android.content.Intent;
 import android.view.LayoutInflater;
+import android.view.View;
 import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
@@ -17,11 +18,22 @@ import java.util.List;
 public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<RecyclerViewAdapterCategories.ViewHolder> {
 
     private List<String> list;
+
     private Context mContext;
 
-    public RecyclerViewAdapterCategories(Context mContext, List<String> list) {
+    OnMoveHereClickedListener listener;
+
+    Boolean showMoveHere;
+
+    public RecyclerViewAdapterCategories(Context mContext, List<String> list, Boolean showMoveHere) {
         this.list = list;
         this.mContext = mContext;
+
+        this.showMoveHere = showMoveHere;
+    }
+
+    public void setListener(OnMoveHereClickedListener listener) {
+        this.listener = listener;
     }
 
     @NonNull
@@ -40,7 +52,22 @@ public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<Recycler
 
             viewHolder.binding.titleTV.setText(name);
 
-            viewHolder.binding.getRoot().setOnClickListener(v -> moveToVaultsList(name));
+            if (!showMoveHere)
+                viewHolder.binding.getRoot().setOnClickListener(v -> moveToVaultsList(name));
+            else {
+
+                viewHolder.binding.moveHereBt.setVisibility(View.VISIBLE);
+
+                viewHolder.binding.moveHereBt.setOnClickListener(v -> {
+
+                    if(listener != null) {
+
+                        listener.onCategorySelected(name);
+
+                    }
+
+                });
+            }
         }
     }
 
@@ -48,7 +75,7 @@ public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<Recycler
 
         Intent i = new Intent(mContext, VaultActivity.class);
 
-        i.putExtra("category",name);
+        i.putExtra("category", name);
 
         mContext.startActivity(i);
     }
@@ -68,5 +95,11 @@ public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<Recycler
             this.binding = binding;
 
         }
+    }
+
+    public interface OnMoveHereClickedListener {
+
+        public void onCategorySelected(String category);
+
     }
 }

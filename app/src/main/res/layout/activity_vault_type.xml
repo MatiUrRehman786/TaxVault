@@ -8,14 +8,26 @@
 
     <include
         android:id="@+id/includeView"
-        layout="@layout/include_app_bar_with_back"/>
+        layout="@layout/include_app_bar_with_back" />
 
+    <TextView
+        android:id="@+id/moveHereDesc"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_marginStart="@dimen/_10sdp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/_10sdp"
+        android:textColor="@color/black"
+        app:layout_constraintTop_toBottomOf="@id/includeView" />
 
     <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/vaultRV"
+        android:layout_marginTop="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="0dp"
         android:padding="@dimen/_10sdp"
-        android:id="@+id/vaultRV"
-        app:layout_constraintTop_toBottomOf="@id/includeView"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/moveHereDesc" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -4,22 +4,27 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.WindowManager;
-import android.widget.Toast;
+import android.widget.AdapterView;
 
 import androidx.annotation.NonNull;
-import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.R;
+import com.sar.taxvault.classes.SessionManager;
 import com.sar.taxvault.databinding.ActivitySignupBinding;
 import com.sar.taxvault.utils.UIUpdate;
 import com.williammora.snackbar.Snackbar;
+
+import org.jetbrains.annotations.NotNull;
 
 public class Signup extends BaseActivity {
 
@@ -68,6 +73,8 @@ public class Signup extends BaseActivity {
 
     private void setView() {
 
+        binding.ccp.registerCarrierNumberEditText(binding.phoneNumberET);
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
@@ -88,7 +95,7 @@ public class Signup extends BaseActivity {
 
                 if (isOnline()) {
 
-                    signUpUserNow();
+                    checkBusinessID();
 
                 } else {
 
@@ -100,18 +107,100 @@ public class Signup extends BaseActivity {
 
         });
 
-        binding.selectBusinessBtn.setOnClickListener(v -> {
+        binding.userTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
-            startActivity(new Intent(Signup.this, SelectBusinessActivity.class)
-                    .putExtra("type", "normal"));
+                if(position != 2) {
 
+                    binding.businessTypeSP.setVisibility(View.INVISIBLE);
+                    binding.businessLabel.setVisibility(View.INVISIBLE);
+                    binding.businessTypeIV.setVisibility(View.INVISIBLE);
+
+                } else {
+
+                    binding.businessTypeIV.setVisibility(View.VISIBLE);
+                    binding.businessTypeSP.setVisibility(View.VISIBLE);
+                    binding.businessLabel.setVisibility(View.VISIBLE);
+
+                }
+
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+
+            }
         });
 
+//        binding.selectBusinessBtn.setOnClickListener(v -> {
+//
+//            startActivity(new Intent(Signup.this, SelectBusinessActivity.class)
+//                    .putExtra("type", "normal"));
+//
+//        });
+
+    }
+
+    void checkBusinessID() {
+
+        FirebaseDatabase.getInstance().getReference("User")
+                .addListenerForSingleValueEvent(new ValueEventListener() {
+                    @Override
+                    public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+                        if (snapshot.exists()) {
+
+                            for (DataSnapshot child : snapshot.getChildren()) {
+
+                                UserModel userModel = child.getValue(UserModel.class);
+
+                                if (userModel != null) {
+
+                                    if (binding.uniqueIDET.getText().toString().equalsIgnoreCase(userModel.getUniqueID())) {
+
+                                        showErrorAlert("Unique ID Already Exists. Please choose different one.");
+
+                                        return;
+                                    }
+
+                                }
+
+                            }
+
+                        }
+
+                        signUpUserNow();
+
+                    }
+
+                    @Override
+                    public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+
+                    }
+                });
     }
 
     private boolean isValid() {
 
         boolean chceck = false;
+
+        if (binding.uniqueIDET.getText().toString().trim().isEmpty()) {
+
+            showMessage("Unique ID Required");
+
+            return chceck;
+
+        }
+
+        if (binding.uniqueIDET.getText().toString().length() != 6) {
+
+            showMessage("Unique Should be 6 characters long");
+
+            return chceck;
+
+        }
 
         if (binding.firstNameET.getText().toString().trim().isEmpty()) {
 
@@ -129,7 +218,7 @@ public class Signup extends BaseActivity {
 
         }
 
-        if (binding.phoneNumberET.getText().toString().trim().isEmpty()) {
+        if (binding.ccp.getFullNumberWithPlus().isEmpty()) {
 
             showMessage("Enter Phone Number!");
 
@@ -148,13 +237,6 @@ public class Signup extends BaseActivity {
         if (binding.passwordET.getText().toString().trim().isEmpty()) {
 
             showMessage("Enter Password!");
-
-            return chceck;
-
-        }
-        if (binding.businessNameTV.getText().toString().trim().isEmpty()) {
-
-            showMessage("Select Business!");
 
             return chceck;
 
@@ -180,13 +262,13 @@ public class Signup extends BaseActivity {
 
         String password = binding.passwordET.getText().toString();
 
-        UIUpdate.GetUIUpdate(this).setProgressDialog();
+        showLoader();
 
         mAuth.createUserWithEmailAndPassword(email, password).addOnCompleteListener(new OnCompleteListener<AuthResult>() {
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
 
-                UIUpdate.GetUIUpdate(Signup.this).dismissProgressDialog();
+                hideLoader();
 
                 if (task.isSuccessful()) {
 
@@ -196,21 +278,33 @@ public class Signup extends BaseActivity {
 
                     user.setFirstName(binding.firstNameET.getText().toString());
                     user.setLastName(binding.lastNameET.getText().toString());
+                    user.setPhoneNumber(binding.ccp.getFullNumberWithPlus());
                     user.setPhoneNumber(binding.phoneNumberET.getText().toString());
                     user.setEmail(binding.emailET.getText().toString());
                     user.setPassword(binding.passwordET.getText().toString());
                     user.setUserType(binding.userTypeSpinner.getSelectedItem().toString());
+                    user.setUniqueID(binding.uniqueIDET.getText().toString());
+
+                    if (binding.userTypeSpinner.getSelectedItemPosition() == 2)
+
+                        user.setBusinessType(binding.businessTypeSP.getSelectedItem().toString());
+
+                    else
+                        user.businessType = "";
+
                     user.setRememberMe(binding.rememberMeCBSignup.isChecked());
                     user.setBusinessId(businessId);
+
+                    user.twoFactorAuthenticated = false;
+
+                    SessionManager.getInstance().setUser(user, Signup.this);
 
                     mDatabase.child(currentID).setValue(user);
 
                     finish();
 
-                    startActivity(new Intent(Signup.this, Main.class)
+                    startActivity(new Intent(Signup.this, PhoneVerification.class)
                             .setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK));
-
-//                    overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
 
 
                 } else {

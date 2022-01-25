@@ -19,7 +19,7 @@ import com.sar.taxvault.databinding.ActivityNewsBinding;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 
-public class DetailedNewsActivity extends AppCompatActivity {
+public class DetailedNewsActivity extends BaseActivity {
 
     ActivityDetailedNewsBinding binding;
     

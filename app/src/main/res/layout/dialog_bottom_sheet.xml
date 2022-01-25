@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    app:behavior_hideable="true"
+    app:behavior_peekHeight="@dimen/_300sdp"
+    app:layout_behavior="android.support.design.widget.BottomSheetBehavior"
+    android:layout_height="wrap_content"
+    tools:context=".activity.VaultTypeActivity">
+
+    <androidx.appcompat.widget.AppCompatTextView
+        android:id="@+id/titleTV"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/poppins_medium"
+        android:textColor="@color/black"
+        android:layout_marginTop="@dimen/_15sdp"
+        android:layout_marginBottom="@dimen/_15sdp"
+        android:textSize="@dimen/_12ssp"
+        app:layout_constraintBottom_toBottomOf="@+id/layoutCL"
+        app:layout_constraintEnd_toEndOf="@+id/layoutCL"
+        app:layout_constraintStart_toStartOf="@+id/layoutCL"
+        app:layout_constraintTop_toTopOf="@+id/layoutCL" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="@dimen/_10sdp"
+        android:id="@+id/vaultRV"
+        app:layout_constraintTop_toBottomOf="@id/includeView"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+</LinearLayout>

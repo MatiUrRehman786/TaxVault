@@ -2,6 +2,7 @@ package com.sar.taxvault.adapters;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.util.Log;
@@ -13,6 +14,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.sar.taxvault.Model.Document;
 import com.sar.taxvault.R;
+import com.sar.taxvault.activity.ImagePreview;
+import com.sar.taxvault.activity.PDFViewer;
 import com.sar.taxvault.activity.VaultActivity;
 import com.sar.taxvault.databinding.LayoutItemsFilesBinding;
 import com.sar.taxvault.databinding.LayoutItemsNotificationsBinding;
@@ -22,7 +25,7 @@ import java.text.NumberFormat;
 import java.util.List;
 
 
-public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewAdapterFiles.ViewHolder>  {
+public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewAdapterFiles.ViewHolder> {
 
     private static final String TAG = "RCA_Notifications";
 
@@ -37,8 +40,11 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
     }
 
     public RecyclerViewAdapterFiles(Context context, List<Document> documents) {
+
         this.list = documents;
+
         this.mContext = context;
+
     }
 
     @NonNull
@@ -57,15 +63,33 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
         viewHolder.binding.creationDateTV.setText(document.getTime());
         viewHolder.binding.documentTitleTV.setText(document.getName());
 
-        double sizeInMB = new Long(document.getSize()).doubleValue()/1048576;
+        double sizeInMB = new Long(document.getSize()).doubleValue() / 1048576;
 
         double size = round(sizeInMB, 3);
 
-        viewHolder.binding.fileSizeTV.setText("Total "+size+ " MB");
+        viewHolder.binding.fileSizeTV.setText("Total " + size + " MB");
         viewHolder.binding.moreOptionsIV.setImageResource(R.drawable.three_dots);
 
+        viewHolder.binding.getRoot().setOnClickListener(v -> {
+
+            if(document.getUrl().contains("pdf")) {
+
+                mContext.startActivity(new Intent(mContext, PDFViewer.class)
+                        .putExtra("document", document));
+
+            } else {
+
+                mContext.startActivity(new Intent(mContext, ImagePreview.class)
+                        .putExtra("document", document));
+
+            }
+
+        });
+
         viewHolder.binding.moreOptionsIV.setOnClickListener(view -> {
+
             if (callback != null)
+
                 callback.onEditPressed(document);
         });
     }
@@ -81,7 +105,7 @@ public class RecyclerViewAdapterFiles extends RecyclerView.Adapter<RecyclerViewA
         return list.size();
     }
 
-    public class ViewHolder extends RecyclerView.ViewHolder{
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
         LayoutItemsFilesBinding binding;
 

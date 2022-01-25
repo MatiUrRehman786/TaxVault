@@ -7,7 +7,6 @@
     tools:context=".activity.VaultActivity">
 
 
-
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent">
@@ -60,6 +59,17 @@
         app:layout_constraintEnd_toEndOf="@+id/userTypeSpinner"
         app:layout_constraintTop_toTopOf="@+id/userTypeSpinner" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/businessTypeIV"
+            android:layout_width="@dimen/_18sdp"
+            android:layout_height="@dimen/_18sdp"
+            android:layout_marginEnd="@dimen/_12sdp"
+            android:src="@drawable/spinner_arrow"
+            android:tint="@color/blue"
+            app:layout_constraintBottom_toBottomOf="@+id/businessTypeSP3"
+            app:layout_constraintEnd_toEndOf="@+id/userTypeSpinner"
+            app:layout_constraintTop_toBottomOf="@+id/businessLabel" />
+
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/businessLabel"
         android:layout_width="0dp"
@@ -77,17 +87,37 @@
         app:layout_constraintTop_toBottomOf="@+id/userTypeSpinner"
         app:layout_constraintWidth_percent="0.8" />
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/businessRV"
-        android:layout_width="match_parent"
-        android:layout_height="0dp"
-        android:layout_marginBottom="@dimen/_20sdp"
-        android:clipToPadding="false"
-        android:orientation="vertical"
-        android:paddingTop="@dimen/_10sdp"
-        android:paddingBottom="@dimen/_16sdp"
-        app:layout_constraintTop_toBottomOf="@id/businessLabel"
-        app:layout_constraintBottom_toBottomOf="parent" />
+
+        <Spinner
+            android:id="@+id/businessTypeSP3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:background="@drawable/rectangle_background_light_gray"
+            android:entries="@array/business_type"
+            android:paddingVertical="@dimen/_10sdp"
+            android:paddingStart="@dimen/_16sdp"
+            android:paddingEnd="@dimen/_56sdp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/businessLabel"
+            app:layout_constraintWidth_percent="0.8" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/signupBtn"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/_16sdp"
+            android:layout_marginBottom="@dimen/_24sdp"
+            android:background="@drawable/rectangle_background_blue"
+            android:elevation="@dimen/_1sdp"
+            android:paddingVertical="@dimen/_12sdp"
+            android:text="Set"
+            android:textAlignment="center"
+            android:textColor="@color/white"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintWidth_percent="0.8" />
 
 
     </androidx.constraintlayout.widget.ConstraintLayout>

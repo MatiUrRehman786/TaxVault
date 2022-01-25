@@ -26,7 +26,7 @@ import java.util.Calendar;
 
 public class UIUpdate {
 
-    private ProgressDialog progressDialog;
+//    private ProgressDialog progressDialog;
 
     Dialog customDialog;
     Context context;
@@ -76,25 +76,43 @@ public class UIUpdate {
     }
 
 
-    public void setProgressDialog() {
-        progressDialog = new ProgressDialog(context, R.style.MyAlertDialogStyle);
-        progressDialog.setProgressStyle(R.style.ProgressStyle);
-        progressDialog.setTitle("");
-        progressDialog.setMessage("Loading");
-        progressDialog.setCancelable(false);
-        progressDialog.show();
-    }
+//    public void setProgressDialog() {
+//
+//        try {
+//
+//            progressDialog = new ProgressDialog(context, R.style.MyAlertDialogStyle);
+//            progressDialog.setProgressStyle(R.style.ProgressStyle);
+//            progressDialog.setTitle("");
+//            progressDialog.setMessage("Loading");
+//            progressDialog.setCancelable(false);
+//            progressDialog.show();
+//
+//        } catch (Exception e) {
+//
+//
+//        }
+//
+//
+//    }
 
-    public void dismissProgressDialog() {
-
-        if (progressDialog != null)
-
-            if (progressDialog.isShowing())
-
-                progressDialog.dismiss();
-
-        progressDialog = null;
-    }
+//    public void dismissProgressDialog() {
+//
+//        try {
+//
+//            if (progressDialog != null)
+//
+//                if (progressDialog.isShowing())
+//
+//                    progressDialog.dismiss();
+//
+//            progressDialog = null;
+//
+//        } catch (Exception e) {
+//
+//
+//        }
+//
+//    }
 
     public void showToast(String message) {
         Toast.makeText(context, message, Toast.LENGTH_SHORT).show();
@@ -117,7 +135,7 @@ public class UIUpdate {
 
     public void destroy() {
 
-        destroyProgressDialog();
+//        destroyProgressDialog();
 
         destroyCustomDialog();
 
@@ -126,17 +144,17 @@ public class UIUpdate {
         uiUpdate = null;
 
     }
-
-    private void destroyProgressDialog() {
-
-        if (progressDialog != null) {
-
-            if (progressDialog.isShowing())
-                progressDialog.hide();
-
-            progressDialog = null;
-        }
-    }
+//
+//    private void destroyProgressDialog() {
+//
+//        if (progressDialog != null) {
+//
+//            if (progressDialog.isShowing())
+//                progressDialog.hide();
+//
+//            progressDialog = null;
+//        }
+//    }
 
     private void destroyMyDialog() {
 

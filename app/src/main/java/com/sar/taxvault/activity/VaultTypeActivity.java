@@ -20,7 +20,7 @@ import com.sar.taxvault.utils.UIUpdate;
 import java.util.ArrayList;
 import java.util.List;
 
-public class VaultTypeActivity extends AppCompatActivity {
+public class VaultTypeActivity extends BaseActivity {
 
     ActivityVaultTypeBinding binding;
 
@@ -72,7 +72,7 @@ public class VaultTypeActivity extends AppCompatActivity {
     private void getCurrentUser() {
 
         UIUpdate.GetUIUpdate(this).destroy();
-        UIUpdate.GetUIUpdate(this).setProgressDialog();
+        showLoader();
 
         FirebaseDatabase.getInstance().getReference("User").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
 
@@ -81,7 +81,7 @@ public class VaultTypeActivity extends AppCompatActivity {
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
-                        UIUpdate.GetUIUpdate(VaultTypeActivity.this).dismissProgressDialog();
+                        hideLoader();
 
                         if (snapshot.getValue() != null) {
 
@@ -94,7 +94,7 @@ public class VaultTypeActivity extends AppCompatActivity {
                     @Override
                     public void onCancelled(DatabaseError error) {
 
-                        UIUpdate.GetUIUpdate(VaultTypeActivity.this).dismissProgressDialog();
+                        hideLoader();
 
                         UIUpdate.GetUIUpdate(VaultTypeActivity.this).showAlertDialog("Alert", error.getMessage());
                     }
@@ -158,7 +158,7 @@ public class VaultTypeActivity extends AppCompatActivity {
 
         binding.vaultRV.setLayoutManager(new LinearLayoutManager(this));
 
-        binding.vaultRV.setAdapter(new RecyclerViewAdapterCategories(this, categories));
+        binding.vaultRV.setAdapter(new RecyclerViewAdapterCategories(this, categories, false));
 
     }
 

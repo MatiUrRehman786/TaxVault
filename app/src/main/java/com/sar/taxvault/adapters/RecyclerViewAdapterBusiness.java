@@ -10,6 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.sar.taxvault.Model.CustomUserModel;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.activity.DetailedNewsActivity;
@@ -24,13 +25,13 @@ import java.util.List;
 
 public class RecyclerViewAdapterBusiness extends RecyclerView.Adapter<RecyclerViewAdapterBusiness.ViewHolder> {
 
-    private List<UserModel> list;
+    private List<CustomUserModel> list;
 
     private Context mContext;
 
     BusinessIdCallback businessIdCallback;
 
-    public RecyclerViewAdapterBusiness(Context mContext, List<UserModel> list, BusinessIdCallback callback) {
+    public RecyclerViewAdapterBusiness(Context mContext, List<CustomUserModel> list, BusinessIdCallback callback) {
 
         this.list = list;
 
@@ -52,12 +53,12 @@ public class RecyclerViewAdapterBusiness extends RecyclerView.Adapter<RecyclerVi
     @Override
     public void onBindViewHolder(@NonNull final ViewHolder viewHolder, final int i) {
 
-        UserModel user = list.get(i);
+        CustomUserModel user = list.get(i);
 
         viewHolder.binding.nameTV.setText(user.getFirstName() + " " + user.getLastName());
 
-        viewHolder.binding.mainCL.setOnClickListener(v->{
-            businessIdCallback.onItemClick(user.getUserId(),user.getFirstName()+" "+user.getLastName());
+        viewHolder.binding.mainCL.setOnClickListener(v -> {
+            businessIdCallback.onUserSelected(user);
         });
 
     }

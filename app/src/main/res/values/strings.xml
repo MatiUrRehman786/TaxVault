@@ -4,8 +4,8 @@
     <string name="fb_login_protocol_scheme">fb769175430530158</string>
 
 
-<!--        copy this from firbase json file-->
-<!--        <string name="default_web_client_id">889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com</string>-->
+    <!--        copy this from firbase json file-->
+    <!--        <string name="default_web_client_id">889465372712-ot31m6cjebmirjpo3th8gb0th3au3bo9.apps.googleusercontent.com</string>-->
 
     <string name="app_name">Tax Vault</string>
     <string name="type_here">Type Here</string>
@@ -33,5 +33,29 @@
     <string-array name="user_type">
         <item>individual</item>
         <item>trust</item>
+        <item>business</item>
     </string-array>
+
+    <string-array name="business_type">
+        <item>1066</item>
+        <item>1120</item>
+        <item>1120-S</item>
+        <item>Single Member LCC</item>
+        <item>Sole Proprietor</item>
+    </string-array>
+    <string name="title_activity_business_user">BusinessUser</string>
+    <!-- Strings used for fragments for navigation -->
+    <string name="first_fragment_label">First Fragment</string>
+    <string name="second_fragment_label">Second Fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+
+    <string name="hello_first_fragment">Hello first fragment</string>
+    <string name="hello_second_fragment">Hello second fragment. Arg: %1$s</string>
+
+    <string name="qm_star">Star</string>
+    <string name="qm_custom_link">Link</string>
+    <string name="qm_custom_unlink">Unlink</string>
+    <string name="select_image">Select Image</string>
+
 </resources>

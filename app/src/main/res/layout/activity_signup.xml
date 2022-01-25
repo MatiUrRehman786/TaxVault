@@ -12,6 +12,7 @@
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/verticalLine"
+        android:visibility="gone"
         android:layout_width="@dimen/_8sdp"
         android:layout_height="match_parent"
         android:background="@color/red"
@@ -21,6 +22,7 @@
         android:id="@+id/side_icon"
         android:layout_width="@dimen/_32sdp"
         android:layout_height="@dimen/_96sdp"
+        android:visibility="gone"
         android:src="@drawable/side_icon"
         app:layout_constraintEnd_toStartOf="@id/verticalLine"
         app:layout_constraintTop_toBottomOf="@id/includeView" />
@@ -46,11 +48,12 @@
                 android:autoSizeTextType="uniform"
                 android:fontFamily="@font/poppins_medium"
                 android:text="First Name"
+
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/uniqueIDET"
                 app:layout_constraintWidth_percent="0.8" />
 
 
@@ -75,6 +78,47 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/firstNameLabel"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/uniqueIDACTV"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_2sdp"
+                android:autoSizeMaxTextSize="@dimen/_10ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:fontFamily="@font/poppins_medium"
+                android:text="Unique ID"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_10ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintWidth_percent="0.8" />
+
+
+            <androidx.appcompat.widget.AppCompatEditText
+                android:id="@+id/uniqueIDET"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/_5sdp"
+                android:autoSizeMaxTextSize="@dimen/_12ssp"
+                android:autoSizeMinTextSize="@dimen/_9ssp"
+                android:autoSizeTextType="uniform"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:fontFamily="@font/poppins_medium"
+                android:hint="6 characters long"
+                android:imeOptions="actionNext"
+                android:maxLines="1"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp"
+                android:singleLine="true"
+                android:textColor="@color/black"
+                android:textSize="@dimen/_12ssp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/uniqueIDACTV"
                 app:layout_constraintWidth_percent="0.8" />
 
             <androidx.appcompat.widget.AppCompatTextView
@@ -134,30 +178,55 @@
                 app:layout_constraintTop_toBottomOf="@+id/lastNameET"
                 app:layout_constraintWidth_percent="0.8" />
 
-            <androidx.appcompat.widget.AppCompatEditText
-                android:id="@+id/phoneNumberET"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/_5sdp"
-                android:autoSizeMaxTextSize="@dimen/_12ssp"
-                android:autoSizeMinTextSize="@dimen/_9ssp"
-                android:autoSizeTextType="uniform"
-                android:background="@drawable/rectangle_background_light_gray"
-                android:fontFamily="@font/poppins_medium"
-                android:hint="@string/type_here"
-                android:imeOptions="actionNext"
-                android:maxLines="1"
-                android:paddingHorizontal="@dimen/_12sdp"
-                android:paddingVertical="@dimen/_8sdp"
-                android:singleLine="true"
-                android:textColor="@color/black"
-                android:textSize="@dimen/_12ssp"
+
+            <LinearLayout
+                android:id="@+id/phoneLL"
+                android:gravity="center"
+                android:orientation="horizontal"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@+id/mobileNumberLabel"
-                app:layout_constraintWidth_percent="0.8" />
+                android:background="@drawable/rectangle_background_light_gray"
+                app:layout_constraintWidth_percent="0.8"
+                android:layout_width="0dp"
+                android:paddingHorizontal="@dimen/_12sdp"
+                android:paddingVertical="@dimen/_8sdp"
 
-            <androidx.appcompat.widget.AppCompatTextView
+                android:layout_height="wrap_content">
+
+                <com.hbb20.CountryCodePicker
+                    android:id="@+id/ccp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    app:ccp_countryPreference="us,in"
+                    />
+
+                <androidx.appcompat.widget.AppCompatEditText
+                    android:id="@+id/phoneNumberET"
+                    android:layout_width="0dp"
+                    android:layout_weight="1"
+                    android:background="@null"
+                    android:layout_height="wrap_content"
+                    android:autoSizeMaxTextSize="@dimen/_12ssp"
+                    android:autoSizeMinTextSize="@dimen/_9ssp"
+                    android:autoSizeTextType="uniform"
+                    android:fontFamily="@font/poppins_medium"
+                    android:hint="@string/type_here"
+                    android:inputType="phone"
+                    android:imeOptions="actionNext"
+                    android:maxLines="1"
+                    android:paddingHorizontal="@dimen/_12sdp"
+                    android:paddingVertical="@dimen/_8sdp"
+                    android:singleLine="true"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/_12ssp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/mobileNumberLabel"
+                    app:layout_constraintWidth_percent="0.8" />
+
+            </LinearLayout>
+           <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/emailLabel"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
@@ -171,7 +240,7 @@
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@+id/phoneNumberET"
+                app:layout_constraintTop_toBottomOf="@+id/phoneLL"
                 app:layout_constraintWidth_percent="0.8" />
 
             <androidx.appcompat.widget.AppCompatEditText
@@ -289,7 +358,7 @@
                 android:autoSizeMinTextSize="@dimen/_9ssp"
                 android:autoSizeTextType="uniform"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Business"
+                android:text="Business Type"
                 android:textColor="@color/black"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -300,6 +369,7 @@
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/businessNameTV"
                 android:layout_width="0dp"
+                android:visibility="invisible"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_5sdp"
                 android:autoSizeMaxTextSize="@dimen/_12ssp"
@@ -326,6 +396,7 @@
                 android:background="@drawable/rectangle_background_blue"
                 android:elevation="@dimen/_1sdp"
                 android:paddingVertical="@dimen/_12sdp"
+                android:visibility="invisible"
                 android:paddingLeft="@dimen/_10sdp"
                 android:paddingEnd="@dimen/_10sdp"
                 android:text="Select Business"
@@ -335,6 +406,32 @@
                 app:layout_constraintBottom_toBottomOf="@id/businessNameTV"
                 app:layout_constraintEnd_toEndOf="@id/businessNameTV"
                 app:layout_constraintTop_toTopOf="@id/businessNameTV" />
+
+
+            <Spinner
+                android:id="@+id/businessTypeSP"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/rectangle_background_light_gray"
+                android:entries="@array/business_type"
+                android:paddingVertical="@dimen/_10sdp"
+                android:paddingStart="@dimen/_16sdp"
+                android:paddingEnd="@dimen/_56sdp"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="@+id/businessNameTV"
+                app:layout_constraintWidth_percent="0.8" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/_18sdp"
+                android:layout_height="@dimen/_18sdp"
+                android:layout_marginEnd="@dimen/_12sdp"
+                android:src="@drawable/spinner_arrow"
+                android:tint="@color/blue"
+                android:id="@+id/businessTypeIV"
+                app:layout_constraintBottom_toBottomOf="@+id/businessTypeSP"
+                app:layout_constraintEnd_toEndOf="@+id/businessTypeSP"
+                app:layout_constraintTop_toTopOf="@+id/businessTypeSP" />
 
 
             <androidx.appcompat.widget.AppCompatCheckBox
