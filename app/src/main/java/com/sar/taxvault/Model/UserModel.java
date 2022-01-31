@@ -1,5 +1,6 @@
 package com.sar.taxvault.Model;
 
+import android.os.Build;
 import android.os.Parcel;
 import android.os.Parcelable;
 
@@ -11,7 +12,9 @@ public class UserModel implements Parcelable {
     public String firstName = "";
     public String lastName = "";
     public String phoneNumber = "";
+    public Long sessionTime = 0L;
     public String email = "";
+    public Boolean agreedToTerms;
     public String businessId = "";
     public String password = "";
     public String businessType = "";
@@ -32,7 +35,11 @@ public class UserModel implements Parcelable {
 
     protected UserModel(Parcel in) {
         userId = in.readString();
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            agreedToTerms = in.readBoolean();
+        }
         imageUrl = in.readString();
+        sessionTime = in.readLong();
         firstName = in.readString();
         lastName = in.readString();
         phoneNumber = in.readString();
@@ -63,7 +70,11 @@ public class UserModel implements Parcelable {
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(userId);
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            dest.writeBoolean(agreedToTerms);
+        }
         dest.writeString(imageUrl);
+        dest.writeLong(sessionTime);
         dest.writeString(firstName);
         dest.writeString(lastName);
         dest.writeString(phoneNumber);
@@ -318,5 +329,11 @@ public class UserModel implements Parcelable {
     public void setBusinessType(String businessType) {
 
         this.businessType = businessType;
+    }
+
+    public void setAgreedToTerms(boolean checked) {
+
+        agreedToTerms = checked;
+
     }
 }

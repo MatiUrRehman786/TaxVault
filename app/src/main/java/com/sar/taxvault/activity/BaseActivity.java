@@ -14,18 +14,26 @@ import android.view.View;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.sar.taxvault.MessageEvent;
+import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.MyApplication;
 import com.williammora.snackbar.Snackbar;
 
 import org.greenrobot.eventbus.EventBus;
 import org.greenrobot.eventbus.Subscribe;
 import org.greenrobot.eventbus.ThreadMode;
+import org.jetbrains.annotations.NotNull;
+
+import java.util.Date;
 
 public class BaseActivity extends AppCompatActivity {
 
@@ -49,7 +57,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void showLoader() {
 
-        if(BaseActivity.this.isFinishing() || BaseActivity.this.isDestroyed())
+        if (BaseActivity.this.isFinishing() || BaseActivity.this.isDestroyed())
 
             return;
 
@@ -67,7 +75,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void hideKeyboard(View view) {
 
-        InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
+        InputMethodManager inputMethodManager = (InputMethodManager) getSystemService(Activity.INPUT_METHOD_SERVICE);
 
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
 
@@ -77,11 +85,81 @@ public class BaseActivity extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
 
-        if(MyApplication.enteredBackground) {
+        checkSessionTimeout();
+    }
 
-            showSessionTimeoutAlert();
+    private void checkSessionTimeout() {
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            FirebaseDatabase.getInstance().getReference("User")
+                    .child(userId)
+                    .addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
+
+                            if (snapshot.exists()) {
+
+                                UserModel userModel = snapshot.getValue(UserModel.class);
+
+                                if (userModel != null) {
+
+                                    userModel.setUserId(snapshot.getKey());
+
+                                    if (userModel.sessionTime > 0) {
+
+                                        final long FIVE_MINUTES = 1000 * 60 * 10; //5 minutes in milliseconds
+
+                                        long currentTime = new Date().getTime();
+                                        long previousTime = userModel.sessionTime;
+                                        long differ = (currentTime - previousTime);
+
+                                        if (differ < FIVE_MINUTES && differ > -FIVE_MINUTES) {
+                                            // under +/-5 minutes, do the work
+                                        } else {
+
+                                            showSessionTimeoutAlert();
+
+                                        }
+
+
+                                    }
+                                }
+
+                            }
+
+                        }
+
+                        @Override
+                        public void onCancelled(@NonNull @NotNull DatabaseError error) {
+
+                        }
+                    });
 
         }
+
+
+    }
+
+
+    @Override
+    protected void onPause() {
+
+        super.onPause();
+
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+
+            String userId = FirebaseAuth.getInstance().getCurrentUser().getUid();
+
+            FirebaseDatabase.getInstance().getReference("User")
+                    .child(userId)
+                    .child("sessionTime")
+                    .setValue(new Date().getTime());
+
+        }
+
     }
 
     public boolean isOnline() {
@@ -89,7 +167,7 @@ public class BaseActivity extends AppCompatActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = connMgr.getActiveNetworkInfo();
 
-        if(!(networkInfo != null && networkInfo.isConnected())){
+        if (!(networkInfo != null && networkInfo.isConnected())) {
             Toast.makeText(getApplicationContext(), "No Internet Connection", Toast.LENGTH_SHORT).show();
         }
         return (networkInfo != null && networkInfo.isConnected());
@@ -115,7 +193,7 @@ public class BaseActivity extends AppCompatActivity {
 
     private void showSessionTimeoutAlert() {
 
-        if(errorDialog != null && errorDialog.isShowing())
+        if (errorDialog != null && errorDialog.isShowing())
             errorDialog.dismiss();
 
         AlertDialog.Builder builder = new AlertDialog.Builder(BaseActivity.this)
@@ -130,7 +208,7 @@ public class BaseActivity extends AppCompatActivity {
                     dialog.dismiss();
 
                     startActivity(new Intent(BaseActivity.this, Login.class)
-                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
+                            .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK | Intent.FLAG_ACTIVITY_CLEAR_TOP));
 
                     finish();
 
@@ -145,7 +223,7 @@ public class BaseActivity extends AppCompatActivity {
 
     public void hideLoader() {
 
-        if(BaseActivity.this.isDestroyed() || BaseActivity.this.isFinishing())
+        if (BaseActivity.this.isDestroyed() || BaseActivity.this.isFinishing())
 
             return;
 

@@ -1,7 +1,11 @@
 package com.sar.taxvault.activity;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.text.Spannable;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
 import android.view.View;
 import android.view.WindowManager;
 import android.widget.AdapterView;
@@ -73,6 +77,24 @@ public class Signup extends BaseActivity {
 
     private void setView() {
 
+        binding.rememberMeCBSignup.setMovementMethod(LinkMovementMethod.getInstance());
+
+        Spannable mySpannable = (Spannable)binding.rememberMeCBSignup.getText();
+
+        ClickableSpan myClickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View widget) {
+                /* do something */
+                String url = "https://www.websitepolicies.com/policies/view/VpvLy2tc";
+                Intent i = new Intent(Intent.ACTION_VIEW);
+                i.setData(Uri.parse(url));
+                startActivity(i);
+            }
+        };
+        mySpannable.setSpan(myClickableSpan, 11, binding.rememberMeCBSignup.getText().length(), Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
+        binding.rememberMeCBSignup.setText(mySpannable);
+
         binding.ccp.registerCarrierNumberEditText(binding.phoneNumberET);
 
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
@@ -88,6 +110,7 @@ public class Signup extends BaseActivity {
     }
 
     private void setListeners() {
+        https://www.websitepolicies.com/policies/view/VpvLy2tc
 
         binding.signupBtn.setOnClickListener(view -> {
 
@@ -106,6 +129,8 @@ public class Signup extends BaseActivity {
             }
 
         });
+
+
 
         binding.userTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
@@ -133,6 +158,7 @@ public class Signup extends BaseActivity {
             }
         });
 
+//        binding.rememberMeCBSignup.setOnClickListener();
 //        binding.selectBusinessBtn.setOnClickListener(v -> {
 //
 //            startActivity(new Intent(Signup.this, SelectBusinessActivity.class)
@@ -284,6 +310,7 @@ public class Signup extends BaseActivity {
                     user.setPassword(binding.passwordET.getText().toString());
                     user.setUserType(binding.userTypeSpinner.getSelectedItem().toString());
                     user.setUniqueID(binding.uniqueIDET.getText().toString());
+                    user.setAgreedToTerms(binding.rememberMeCBSignup.isChecked());
 
                     if (binding.userTypeSpinner.getSelectedItemPosition() == 2)
 

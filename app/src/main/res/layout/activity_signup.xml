@@ -32,7 +32,7 @@
         android:layout_height="0dp"
         android:layout_marginTop="@dimen/_68sdp"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/side_icon">
+        app:layout_constraintTop_toBottomOf="@+id/includeView">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
@@ -443,7 +443,7 @@
                 android:autoSizeTextType="uniform"
                 android:checked="false"
                 android:fontFamily="@font/poppins_medium"
-                android:text="Remember Me"
+                android:text="I agree to Terms &amp; Conditions"
                 android:textSize="@dimen/_10ssp"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

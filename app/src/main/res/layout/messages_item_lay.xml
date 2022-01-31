@@ -1,14 +1,67 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="@dimen/_15sdp">
+    android:layout_marginLeft="@dimen/_10sdp"
+    android:background="@drawable/rounded_corner_button_light_blue"
+    android:padding="@dimen/_10sdp"
+    android:layout_marginRight="@dimen/_10sdp"
+    android:layout_marginTop="@dimen/_10sdp">
 
-    <include
-        android:id="@+id/myMessageLay"
-        layout="@layout/message_item_right"/>
+    <TextView
+        android:id="@+id/nameTV"
+        android:layout_width="0dp"
+        android:layout_marginEnd="@dimen/_10sdp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:lineSpacingExtra="5dp"
+        
+        android:textColor="@color/black"
+        android:textSize="@dimen/_12ssp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toStartOf="@+id/attachmentIV"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
-    <include
-        android:id="@+id/othersMessageLay"
-        layout="@layout/message_item_left"/>
-</RelativeLayout>
+
+    <TextView
+        android:id="@+id/msgTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:lineSpacingExtra="5dp"
+        
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nameTV" />
+
+    <TextView
+        android:id="@+id/timeTV"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:lineSpacingExtra="5dp"
+        
+        android:gravity="end"
+        android:textColor="@color/black"
+        android:textSize="@dimen/_10ssp"
+        android:textStyle="normal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/msgTV" />
+
+    <ImageView
+        android:id="@+id/attachmentIV"
+        android:layout_width="@dimen/_10sdp"
+        android:layout_height="@dimen/_10sdp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:srcCompat="@drawable/ic_attachment" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -3,6 +3,7 @@ package com.sar.taxvault.activity;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -18,6 +19,8 @@ import com.sar.taxvault.databinding.ActivityVaultTypeBinding;
 import com.sar.taxvault.utils.UIUpdate;
 
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class VaultTypeActivity extends BaseActivity {
@@ -25,6 +28,8 @@ public class VaultTypeActivity extends BaseActivity {
     ActivityVaultTypeBinding binding;
 
     UserModel user;
+
+    String year;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,10 +68,42 @@ public class VaultTypeActivity extends BaseActivity {
 
     private void initView() {
 
+        Calendar calendar = Calendar.getInstance();
+
+        calendar.setTime(new Date());
+
+        year = String.valueOf(calendar.get(Calendar.YEAR));
+
         getWindow().getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LIGHT_STATUS_BAR);
 
         binding.includeView.titleTV.setText("Categories");
 
+        String[] dates = {"2018","2019","2020","2021","2022","2023","2024","2025","2026","2027","2027"};
+
+        binding.includeView.yearSpinner.setVisibility(View.VISIBLE);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(this,
+                android.R.layout.simple_spinner_item,dates);
+
+        binding.includeView.yearSpinner.setAdapter(adapter);
+        binding.includeView.yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
+
+                    year = binding.includeView.yearSpinner.getSelectedItem().toString();
+
+                    if(categoriesAdapter != null) {
+
+                        categoriesAdapter.setYear(year);
+
+                    }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> adapterView) {
+
+            }
+        });
     }
 
     private void getCurrentUser() {
@@ -154,11 +191,13 @@ public class VaultTypeActivity extends BaseActivity {
         setAdapter(categories);
     }
 
+    RecyclerViewAdapterCategories categoriesAdapter;
     private void setAdapter(List<String> categories) {
 
         binding.vaultRV.setLayoutManager(new LinearLayoutManager(this));
 
-        binding.vaultRV.setAdapter(new RecyclerViewAdapterCategories(this, categories, false));
+        categoriesAdapter = new RecyclerViewAdapterCategories(this, categories,year, false);
+        binding.vaultRV.setAdapter(categoriesAdapter);
 
     }
 

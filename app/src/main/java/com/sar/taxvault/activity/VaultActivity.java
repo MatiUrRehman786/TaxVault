@@ -13,15 +13,19 @@ import android.graphics.Color;
 import android.graphics.Matrix;
 import android.graphics.Paint;
 import android.graphics.drawable.ColorDrawable;
+import android.graphics.pdf.PdfDocument;
 import android.media.ExifInterface;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Toast;
 
 import androidx.activity.result.ActivityResult;
 import androidx.activity.result.ActivityResultCallback;
@@ -46,7 +50,13 @@ import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
+import com.itextpdf.text.BadElementException;
+import com.itextpdf.text.DocumentException;
+import com.itextpdf.text.Image;
+import com.itextpdf.text.pdf.PdfWriter;
+import com.pdftron.pdf.PDFNet;
 import com.pdftron.pdf.config.ViewerConfig;
+import com.sar.taxvault.BuildConfig;
 import com.sar.taxvault.Model.Document;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.MyApplication;
@@ -55,6 +65,7 @@ import com.sar.taxvault.adapters.RecyclerViewAdapterFiles;
 import com.sar.taxvault.databinding.ActivityVaultBinding;
 import com.sar.taxvault.utils.UIUpdate;
 import com.sar.taxvault.utils.Utils;
+import com.whiteelephant.monthpicker.MonthPickerDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -63,23 +74,31 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
 
 import static com.pdftron.pdf.utils.Utils.getRealPathFromURI;
+import static com.sar.taxvault.utils.Utils.getExternalFilesDirPath;
+import static com.sar.taxvault.utils.Utils.getRootDirPath;
 
 public class VaultActivity extends BaseActivity implements EasyPermissions.PermissionCallbacks {
 
     ActivityVaultBinding binding;
 
     String category = "";
+
+    String year;
 
     Uri imageUri = null;
 
@@ -115,6 +134,8 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
         setListeners();
 
+        shouldShowLoader = true;
+
     }
 
     @Override
@@ -124,8 +145,53 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
         super.onResume();
 
-        getCurrentUser();
+        if (shouldShowLoader)
 
+            getCurrentUser();
+
+
+        shouldShowLoader = true;
+    }
+
+    int selectedYear;
+
+    private void createYearPicker() {
+
+
+        final Calendar today = Calendar.getInstance();
+
+        selectedYear = today.get(Calendar.YEAR);
+
+        MonthPickerDialog.Builder builder = new MonthPickerDialog.Builder(VaultActivity.this, (selectedMonth, selectedYear) -> {
+
+
+            Log.d(TAG, "selectedMonth : " + selectedMonth + " selectedYear : " + selectedYear);
+
+            this.selectedYear = selectedYear;
+
+            uploadImage(pdfUri);
+
+            Toast.makeText(VaultActivity.this, "Date set with month" + selectedMonth + " year " + selectedYear, Toast.LENGTH_SHORT).show();
+
+        }, today.get(Calendar.YEAR), today.get(Calendar.MONTH));
+
+        builder.setActivatedMonth(Calendar.JULY)
+                .setMinYear(2000)
+                .setMaxYear(today.get(Calendar.YEAR) + 10)
+                .showYearOnly()
+                .setMinMonth(Calendar.FEBRUARY)
+                .setTitle("Select Year")
+                .setMonthRange(Calendar.FEBRUARY, Calendar.NOVEMBER)
+                .setOnMonthChangedListener(selectedMonth -> {
+                    Log.d(TAG, "Selected month : " + selectedMonth);
+                    // Toast.makeText(MainActivity.this, " Selected month : " + selectedMonth, Toast.LENGTH_SHORT).show();
+                })
+                .setOnYearChangedListener(selectedYear -> {
+                    Log.d(TAG, "Selected year : " + selectedYear);
+                    // Toast.makeText(MainActivity.this, " Selected year : " + selectedYear, Toast.LENGTH_SHORT).show();
+                })
+                .build()
+                .show();
     }
 
     private void getData(String date) {
@@ -170,6 +236,7 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
                     @Override
                     public void onDataChange(DataSnapshot snapshot) {
 
+                        hideLoader();
 
                         if (snapshot.getValue() != null) {
 
@@ -222,7 +289,7 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
                 }
 
-                if (document.getType().equalsIgnoreCase(category))
+                if (document.getType().equalsIgnoreCase(category) && document.getTime().contains(year))
 
                     if (document.belongsToCurrentUser()) {
 
@@ -373,6 +440,7 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
         Bundle b = getIntent().getExtras();
 
         category = b.getString("category");
+        year = b.getString("year");
 
     }
 
@@ -390,23 +458,6 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
         binding.loginBtn3.setOnClickListener(view -> checkPermissions());
 
-        binding.includeView.yearSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
-
-                if (i != 0) {
-
-                    getData(binding.includeView.yearSpinner.getSelectedItem().toString());
-
-                }
-
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> adapterView) {
-
-            }
-        });
 
     }
 
@@ -417,7 +468,7 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
         intent.addCategory(Intent.CATEGORY_OPENABLE);
 
         String[] mimeTypes =
-                {"image/*","application/pdf","application/msword","application/vnd.ms-powerpoint","application/vnd.ms-excel","text/plain"};
+                {"application/*"};
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.KITKAT) {
 
@@ -439,12 +490,10 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
             }
 
-            intent.setType(mimeTypesStr.substring(0,mimeTypesStr.length() - 1));
+            intent.setType(mimeTypesStr.substring(0, mimeTypesStr.length() - 1));
         }
 
-//        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"application/pdf"});
-
-        startActivityForResult(Intent.createChooser(intent,"ChooseFile"), PICK_FILE_REQUEST_CODE);
+        startActivityForResult(Intent.createChooser(intent, "ChooseFile"), PICK_FILE_REQUEST_CODE);
     }
 
     @Override
@@ -491,10 +540,15 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
             new ActivityResultCallback<ActivityResult>() {
                 @Override
                 public void onActivityResult(ActivityResult result) {
+
+                    shouldShowLoader = false;
+
                     if (result.getResultCode() == Activity.RESULT_OK) {
                         // Here, no request code
-                        uploadImage(result.getData().getData());
-//                        doSomeOperations();
+                        pdfUri = result.getData().getData();
+
+                        createYearPicker();
+
                     }
                 }
             });
@@ -535,16 +589,17 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
             @Override
             public void onSuccess(Uri uri) {
 
-                final Uri imageUrl = uri;
-
                 uploadDataToFirebase(uri, name, taskSnapshot.getMetadata().getSizeBytes());
             }
         })
                 .addOnFailureListener(e -> onFailed(e)));
     }
 
+    Uri pdfUri;
 
     private void uploadDataToFirebase(Uri uri, String name, long sizeBytes) {
+
+        shouldShowLoader = true;
 
         FirebaseDatabase.getInstance().getReference("User")
                 .child(FirebaseAuth.getInstance().getCurrentUser().getUid())
@@ -559,6 +614,23 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
                             user.setUserId(snapshot.getKey());
 
                             Long timeStamp = new Date().getTime();
+
+                            String str = selectedYear + "-03-04 11:30: 40";
+
+                            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+
+                            try {
+
+                                Date date = format.parse(str);
+
+                                timeStamp = date.getTime();
+
+                            } catch (ParseException e) {
+
+                                e.printStackTrace();
+
+                            }
+
 
                             Document document = new Document(name, timeStamp, sizeBytes, uri.toString());
 
@@ -580,6 +652,7 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
                             String id = FirebaseAuth.getInstance().getCurrentUser().getUid();
 
                             FirebaseDatabase.getInstance().getReference("User").child(id).setValue(user);
+//                            getCurrentUser();
 
                         } else {
 
@@ -720,7 +793,7 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
         String urlWithExtension = url.substring(0, url.lastIndexOf('?'));
         String extension = urlWithExtension.substring(urlWithExtension.lastIndexOf('.'));
 
-        File f = new File(Utils.getRootDirPath(VaultActivity.this), filename + extension);
+        File f = new File(getRootDirPath(VaultActivity.this), filename + extension);
 
         if (!f.exists()) {
 
@@ -850,7 +923,12 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
         return image;
     }
 
+    Boolean shouldShowLoader = true;
+
     private void dispatchTakePictureIntent() {
+
+        hideLoader();
+
         Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
         // Ensure that there's a camera activity to handle the intent
         if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
@@ -869,6 +947,8 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
                         photoFile);
                 takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, photoURI);
 
+                shouldShowLoader = false;
+
                 dispatchTakePictureLauncher.launch(takePictureIntent);
             }
         }
@@ -876,11 +956,15 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
     private void openGallery() {
 
+        hideLoader();
+
         Intent intent = new Intent();
 
         intent.setType("image/*");
 
         intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        shouldShowLoader = false;
 
         galleryIntentLauncher.launch(Intent.createChooser(intent, "Pick Image"));
 
@@ -897,8 +981,16 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
                         imageUri = result.getData().getData();
 
-                        uploadImage(imageUri);
-
+                        try {
+                            makePDF(new File(imageUri.toString()).getAbsolutePath()
+                            );
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            showErrorAlert(e.getLocalizedMessage());
+                        } catch (DocumentException e) {
+                            e.printStackTrace();
+                            showErrorAlert(e.getLocalizedMessage());
+                        }
                     }
 
                 }
@@ -909,15 +1001,19 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
             result -> {
                 if (result.getResultCode() == Activity.RESULT_OK) {
 
-                    Bitmap photo = null;
+                    imageUri = Uri.fromFile(new File(currentPhotoPath));
 
-//                    if (result.getData() != null) {
-
-//                        photo = (Bitmap) result.getData().getExtras().get("data");
-
-                        imageUri = Uri.fromFile(new File(currentPhotoPath));
-
-                        uploadImage(imageUri);
+//                    Bitmap bitmap = BitmapFactory.decodeFile(currentPhotoPath);
+                    try {
+                        makePDF(new File(imageUri.toString()).getAbsolutePath());
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        showErrorAlert(e.getLocalizedMessage());
+                    } catch (DocumentException e) {
+                        e.printStackTrace();
+                        showErrorAlert(e.getLocalizedMessage());
+                    }
+//                    pdfEditLauncher.launch(MainActivity.start(VaultActivity.this, imageUri));
 //                        compressImage(currentPhotoPath);
 
 //                    }
@@ -925,6 +1021,78 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
                 }
             });
 
+    PdfDocument pdfDocument;
+
+    public void makePDF(String path) throws IOException, DocumentException {
+
+        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), imageUri);
+
+        ByteArrayOutputStream stream = new ByteArrayOutputStream();
+
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, stream);
+
+        byte[] bytesData = stream.toByteArray();
+
+        stream.close();
+
+        com.itextpdf.text.Document document = new com.itextpdf.text.Document();
+
+        String directoryPath = getRootDirPath(VaultActivity.this);
+
+        String path1 = getExternalFilesDirPath() + "/" + UUID.randomUUID().toString() + ".pdf";
+
+        PdfWriter.getInstance(document, new FileOutputStream(path1)); //  Change pdf's name.
+
+        document.open();
+
+        Image image = Image.getInstance(bytesData);
+//
+        image.setAlignment(Image.ALIGN_CENTER);
+
+        document.add(image);
+
+        document.close();
+
+        File file = new File(path1);
+
+        Uri uri = FileProvider.getUriForFile(VaultActivity.this,
+                BuildConfig.APPLICATION_ID + ".provider", file);
+
+        pdfEditLauncher.launch(MainActivity.start(VaultActivity.this, uri));
+    }
+
+    public void saveFile() {
+        if (pdfDocument == null) {
+            Log.i("local-dev", "pdfDocument in 'saveFile' function is null");
+            return;
+        }
+        File root = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS), "ImgToPDF");
+        boolean isDirectoryCreated = root.exists();
+        if (!isDirectoryCreated) {
+            isDirectoryCreated = root.mkdir();
+        }
+//        if (UUID.randomUUID().toString()+".pdf" !
+//        ) {
+        String userInputFileName = UUID.randomUUID().toString() + ".pdf";
+        File file = new File(root, userInputFileName);
+        try {
+
+            FileOutputStream fileOutputStream = new FileOutputStream(file);
+
+            pdfDocument.writeTo(fileOutputStream);
+
+            pdfDocument.close();
+
+            pdfEditLauncher.launch(MainActivity.start(VaultActivity.this, Uri.fromFile(file)));
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            showErrorAlert("Unable to open this file");
+        }
+//        }
+//        Log.i("local-dev", "'saveFile' function successfully done");
+//        Toast.makeText(this, "Successful! PATH:\n" + "Internal Storage/" + Environment.DIRECTORY_DOWNLOADS, Toast.LENGTH_SHORT).show();
+    }
 //    @Override
 //    public void onActivityResult(int requestCode, int resultCode, Intent data) {
 //        super.onActivityResult(requestCode, resultCode, data);

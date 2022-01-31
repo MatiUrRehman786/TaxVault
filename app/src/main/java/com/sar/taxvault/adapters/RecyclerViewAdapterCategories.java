@@ -21,14 +21,16 @@ public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<Recycler
 
     private Context mContext;
 
+    String year;
+
     OnMoveHereClickedListener listener;
 
     Boolean showMoveHere;
 
-    public RecyclerViewAdapterCategories(Context mContext, List<String> list, Boolean showMoveHere) {
+    public RecyclerViewAdapterCategories(Context mContext, List<String> list, String year, Boolean showMoveHere) {
         this.list = list;
         this.mContext = mContext;
-
+        this.year = year;
         this.showMoveHere = showMoveHere;
     }
 
@@ -53,7 +55,9 @@ public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<Recycler
             viewHolder.binding.titleTV.setText(name);
 
             if (!showMoveHere)
+
                 viewHolder.binding.getRoot().setOnClickListener(v -> moveToVaultsList(name));
+
             else {
 
                 viewHolder.binding.moveHereBt.setVisibility(View.VISIBLE);
@@ -75,6 +79,8 @@ public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<Recycler
 
         Intent i = new Intent(mContext, VaultActivity.class);
 
+
+        i.putExtra("year", year);
         i.putExtra("category", name);
 
         mContext.startActivity(i);
@@ -84,6 +90,10 @@ public class RecyclerViewAdapterCategories extends RecyclerView.Adapter<Recycler
     public int getItemCount() {
 
         return list.size();
+    }
+
+    public void setYear(String year) {
+        this.year = year;
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {

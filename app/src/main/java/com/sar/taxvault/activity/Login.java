@@ -522,18 +522,14 @@ public class Login extends BaseActivity {
         FirebaseAuth
                 .getInstance()
                 .sendPasswordResetEmail(binding.emailET.getText().toString())
-                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                .addOnCompleteListener(task -> {
 
-                    @Override
-                    public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
 
-                        if (task.isSuccessful()) {
+                        finish();
 
-                            finish();
+                        Toast.makeText(Login.this, "Email has been sent on your Email!", Toast.LENGTH_SHORT).show();
 
-                            Toast.makeText(Login.this, "Email has been sent on your Email!", Toast.LENGTH_SHORT).show();
-
-                        }
                     }
                 });
     }

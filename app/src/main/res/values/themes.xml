@@ -21,8 +21,22 @@
         <item name="android:textSize">10sp</item>
     </style>
 
+    <style name="MonthPickerDialogStyle" >
+        <item name="monthBgColor">@color/white</item>
+        <item name="monthBgSelectedColor">@color/blue</item>
+        <item name="monthFontColorSelected">@color/blue</item>
+        <item name="monthFontColorNormal">@color/black</item>
+        <item name="monthFontColorDisabled">@color/gray</item>
+
+        <item name="headerBgColor">@color/blue</item>
+        <item name="headerFontColorSelected">@color/white</item>
+        <item name="headerFontColorNormal">@color/white</item>
+        <item name="headerTitleColor">@color/white</item>
+        <item name="android:colorAccent">@color/white</item>
+        <item name="dialogActionButtonColor">@color/blue</item>
+    </style>
     <style name="MyAlertDialogStyle" parent="Theme.AppCompat.Light.Dialog.Alert">
-        <item name="colorAccent">@color/colorAccent</item>
+        <item name="colorAccent">@color/white</item>
     </style>
 
     <style name="ProgressStyle" parent="@android:style/Widget.ProgressBar"></style>

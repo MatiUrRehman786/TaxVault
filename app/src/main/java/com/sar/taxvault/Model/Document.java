@@ -22,7 +22,7 @@ public class Document implements Parcelable {
     String userName;
     String businessId;
 
-    public Document(String name, Long timeStamp, Long size, String url) {
+    public Document(String name, Long timeStamp, Long size, String url ) {
 
         this.name = name;
         this.timeStamp = timeStamp;

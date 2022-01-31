@@ -49,7 +49,7 @@
             android:drawSelectorOnTop="true"
             android:entries="@array/year"
             android:popupBackground="@color/red"
-            android:background="@drawable/rectangle_background_red"
+            android:background="@color/red"
             android:theme="@style/Spinner"
             android:tooltipText="Select Year" />
 

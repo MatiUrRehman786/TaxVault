@@ -73,7 +73,7 @@ public class Main extends BaseActivity {
 
         getWindow().setSoftInputMode(WindowManager.LayoutParams.SOFT_INPUT_STATE_HIDDEN);
 
-        binding.includeView.titleTV.setText("Tax Vault");
+        binding.includeView.titleTV.setText("");
 
         getUserData();
     }

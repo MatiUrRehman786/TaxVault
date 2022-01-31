@@ -2,6 +2,8 @@ package com.sar.taxvault.fragments;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.database.Cursor;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.sar.taxvault.Model.Document;
+import com.sar.taxvault.Model.SelectedManager;
 import com.sar.taxvault.Model.UserModel;
 import com.sar.taxvault.Stripe.MyEphemeralKeyProvider;
 import com.sar.taxvault.activity.ActivitySendMessage;
@@ -33,7 +36,9 @@ import com.sar.taxvault.utils.UIUpdate;
 import org.jetbrains.annotations.NotNull;
 import org.json.JSONObject;
 
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 import java.util.Objects;
 
 import okhttp3.MultipartBody;
@@ -134,7 +139,7 @@ public class TaxVaultFragment extends BaseFragment {
 
             binding.circularProgressBar.setProgress(100);
 
-            binding.usedTV.setText("Used " + 100 + "%");
+            binding.pointsTV.setText("Used " + 100 + "%");
         }
     }
 
@@ -303,48 +308,60 @@ public class TaxVaultFragment extends BaseFragment {
         });
     }
 
+    ArrayList<SelectedManager> managersList;
+    List<String> names;
+
+
     private void checkManager() {
 
-        FirebaseDatabase.getInstance().getReference("User").child(Objects.requireNonNull(FirebaseAuth.getInstance().getCurrentUser()).getUid())
-                .addListenerForSingleValueEvent(new ValueEventListener() {
+        showLoader();
+
+        FirebaseDatabase.getInstance().getReference("userBusiness").child(FirebaseAuth.getInstance().getCurrentUser().getUid())
+                .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NotNull DataSnapshot snapshot) {
 
+                        managersList = new ArrayList<>();
+                        names = new ArrayList<>();
+
+                        hideLoader();
+
                         if (snapshot.getValue() != null) {
 
-                            user = snapshot.getValue(UserModel.class);
+                            SelectedManager manager = snapshot.getValue(SelectedManager.class);
 
-                            if (user != null) {
+                            if (manager != null) {
 
-                                user.setUserId(snapshot.getKey());
+                                manager.id = snapshot.getKey();
 
+                                names.add(manager.businessName);
 
-                                if (user.businessId == null || user.businessId.equalsIgnoreCase("null")||user.businessId.isEmpty()) {
-
-                                    showErrorAlert("Please select manager first");
-
-                                } else if (user.businessStatus == null || user.businessStatus.equalsIgnoreCase("pending") || user.businessStatus.isEmpty()) {
-
-                                    showErrorAlert("Waiting for business manager approval. Once manager approves you will be able to send messages to him.");
-
-                                } else {
-
-                                    startActivity(new Intent(getActivity(), ChatActivity.class));
-
-                                }
                             }
 
+                            managersList.add(manager);
+                        }
+
+                        if (managersList.size() == 0) {
+
+                            showErrorAlert("Please select manager first");
+
+                        } else {
+
+                            startActivity(new Intent(getActivity(), ChatActivity.class));
 
                         }
+
                     }
 
                     @Override
                     public void onCancelled(@NotNull DatabaseError error) {
 
+                        hideLoader();
+
                     }
                 });
-    }
 
+    }
     void checkPackage() {
 
         if (user.getCustomerId() == null) {

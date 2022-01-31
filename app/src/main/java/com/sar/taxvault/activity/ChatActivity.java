@@ -22,6 +22,8 @@ import com.sar.taxvault.utils.UIUpdate;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.Date;
 import java.util.List;
 import java.util.Objects;
@@ -113,7 +115,6 @@ public class ChatActivity extends BaseActivity {
 
         FirebaseDatabase.getInstance().getReference("chat")
                 .child(user.getUserId())
-                .child(user.getBusinessId())
                 .addValueEventListener(new ValueEventListener() {
                     @Override
                     public void onDataChange(@NonNull @NotNull DataSnapshot snapshot) {
@@ -138,6 +139,8 @@ public class ChatActivity extends BaseActivity {
 
 
                         }
+
+                        Collections.reverse(messages);
 
                         binding.rv.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
 

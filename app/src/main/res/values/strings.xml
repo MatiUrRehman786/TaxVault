@@ -13,6 +13,34 @@
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="don_t_have_an_account_sign_up">Don\'t have an account? <b>Sign up</b></string>
     <string name="code_sent">A text message with code has been sent to your phone</string>
+    <string name="title_sample_detail">Sample Detail</string>
+    <string name="title_list_files">Choose a file to open&#8230;</string>
+    <string name="title_choose_application">Choose application&#8230;</string>
+    <string name="pdftron_website">http://www.pdftron.com</string>
+
+    <string name="str_no_application_available">No application available to open this type of file.</string>
+    <string name="str_running_sample_header">Running %s sample&#8230;</string>
+    <string name="str_running_sample_footer">Done!</string>
+
+    <string name="missing_license_key">PDFTron must be initialized</string>
+
+
+    <string name="about">About</string>
+    <string name="about_body"><![CDATA[
+        <b>Miscellaneous Samples for Android PDFNet SDK</b><br>
+        SDK Version: %s<br>
+        <a href="http://www.pdftron.com">PDFTron Systems, Inc.</a><br><br>
+
+        For more information on the samples visit our <a href="http://www.pdftron.com/pdfnet/samplecode.html">Sample Code</a> webpage.
+    ]]></string>
+
+    <string name="button_run">Run</string>
+    <string name="button_runll_all">Run All</string>
+    <string name="button_open_files">Open Files</string>
+
+    <string name="dialog_empty_file_list">No files for this sample.</string>
+    <string name="sample_officetopdf_title">OfficeToPDF</string>
+    <string name="sample_officetopdf_description">The following sample illustrates how to use the PDF.Convert utility class to convert Office files to PDF.</string>
 
     <string-array name="year">
         <item>Year</item>

@@ -1,6 +1,7 @@
 package com.sar.taxvault.adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -9,6 +10,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.sar.taxvault.Model.Chat;
+import com.sar.taxvault.activity.ChatActivity;
+import com.sar.taxvault.activity.MessageDetailsView;
 import com.sar.taxvault.databinding.MessagesItemLayBinding;
 
 import java.text.SimpleDateFormat;
@@ -19,6 +22,7 @@ import java.util.List;
 public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHolder> {
 
     List<Chat> list;
+
     Context mContext;
 
     public MessagesAdapter(Context mContext, List<Chat> list) {
@@ -43,33 +47,29 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
 
         final Chat chat = list.get(i);
 
-        viewHolder.binding.othersMessageLay.getRoot().setVisibility(View.GONE);
+        viewHolder.binding.nameTV.setText("Me");
 
-        viewHolder.binding.myMessageLay.getRoot().setVisibility(View.GONE);
+        if (chat.messageType.equalsIgnoreCase("incoming"))
 
+            viewHolder.binding.nameTV.setText(chat.fromUserName);
 
-        if (chat.messageType.equalsIgnoreCase("incoming")) {
+        viewHolder.binding.timeTV.setText(convertFormat(chat.messageTime));
 
-            viewHolder.binding.othersMessageLay.messageTV.setText(chat.message);
+        if (chat.message != null)
 
-            viewHolder.binding.othersMessageLay.getRoot().setVisibility(View.VISIBLE);
+            viewHolder.binding.msgTV.setText(chat.message);
 
-            viewHolder.binding.othersMessageLay.messageTV.setVisibility(View.VISIBLE);
+        if (!chat.type.equalsIgnoreCase("attach"))
 
-            viewHolder.binding.othersMessageLay.timeTV.setText(convertFormat(chat.messageTime));
+            viewHolder.binding.attachmentIV.setVisibility(View.GONE);
 
-        } else {
+        viewHolder.binding.getRoot().setOnClickListener(v -> {
 
-            viewHolder.binding.myMessageLay.messageTV.setText(chat.message);
+            mContext.startActivity(new Intent(mContext, MessageDetailsView.class)
 
-            viewHolder.binding.myMessageLay.getRoot().setVisibility(View.VISIBLE);
+            .putExtra("chat",chat));
 
-            viewHolder.binding.myMessageLay.messageTV.setVisibility(View.VISIBLE);
-
-            viewHolder.binding.myMessageLay.timeTV.setText(convertFormat(chat.messageTime));
-
-        }
-
+        });
     }
 
     @Override
@@ -89,9 +89,11 @@ public class MessagesAdapter extends RecyclerView.Adapter<MessagesAdapter.ViewHo
         }
     }
 
-    public static String convertFormat(String inputDate) {
+    public static String convertFormat(Long ts) {
 
-        Date date = new Date(Long.parseLong(inputDate));
+        Date date = new Date();
+
+        date.setTime(ts);
 
         SimpleDateFormat dF = new SimpleDateFormat("hh:mm a");
 

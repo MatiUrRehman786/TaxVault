@@ -83,7 +83,7 @@
             android:gravity="center_vertical"
             android:maxLines="1"
             android:text=""
-            android:textColor="@color/white"
+            android:textColor="@color/black"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -113,7 +113,7 @@
         android:id="@+id/circularProgressBar"
         android:layout_width="@dimen/_100sdp"
         android:layout_height="@dimen/_100sdp"
-        app:cpb_background_progressbar_color="@color/gray"
+        app:cpb_background_progressbar_color="#DDDDDD"
         app:cpb_background_progressbar_width="@dimen/_10sdp"
         app:cpb_progress="0"
         app:cpb_progress_direction="to_right"
@@ -140,7 +140,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_margin="@dimen/_4sdp"
-            android:src="@drawable/tax_vault_logo" />
+            android:src="@drawable/curved_logo" />
 
     </androidx.cardview.widget.CardView>
 
@@ -242,7 +242,7 @@
                         android:layout_height="wrap_content"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:fontFamily="@font/poppins_medium"
-                        android:text="Business User"
+                        android:text="Tax Vault Pro"
                         android:textColor="@color/black"
                         android:layout_marginBottom="@dimen/_20sdp"
                         android:textSize="@dimen/_12ssp"

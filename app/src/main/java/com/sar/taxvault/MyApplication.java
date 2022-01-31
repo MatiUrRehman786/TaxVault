@@ -1,23 +1,27 @@
 package com.sar.taxvault;
 
 import android.app.Application;
+import android.content.Context;
 import android.util.Log;
 
-import androidx.datastore.preferences.core.Preferences;
-import androidx.datastore.preferences.rxjava3.RxPreferenceDataStoreBuilder;
-import androidx.datastore.rxjava3.RxDataStore;
 import androidx.lifecycle.Lifecycle;
 import androidx.lifecycle.LifecycleObserver;
 import androidx.lifecycle.OnLifecycleEvent;
 import androidx.lifecycle.ProcessLifecycleOwner;
 import androidx.multidex.MultiDex;
 
-import com.google.firebase.auth.FirebaseAuth;
-import com.sar.taxvault.utils.AppLifeCycleHandler;
+import com.sar.taxvault.utils.OfficeToPDFTest;
+import com.sar.taxvault.utils.PDFNetSample;
 
-import org.greenrobot.eventbus.EventBus;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 public class MyApplication extends Application implements LifecycleObserver {
+
+    private ArrayList<PDFNetSample> mListSamples = new ArrayList<PDFNetSample>();
+    private static MyApplication singleton;
+    private Context m_context;
 
     public static Boolean enteredBackground = false;
 
@@ -31,6 +35,13 @@ public class MyApplication extends Application implements LifecycleObserver {
 
         ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
 
+        singleton = this;
+
+        mListSamples.add(new OfficeToPDFTest(getApplicationContext()));
+
+        m_context = getApplicationContext();
+
+        Collections.sort(mListSamples, (o1, o2) -> o1.getTitle().compareTo(o2.getTitle()));
     }
 
 
@@ -46,5 +57,18 @@ public class MyApplication extends Application implements LifecycleObserver {
     public void onAppForegrounded() {
         // App in foreground
         Log.d(TAG, "onAppForegrounded: ");
+    }
+
+
+    public List<PDFNetSample> getContent() {
+        return this.mListSamples;
+    }
+
+    public static MyApplication getInstance() {
+        return singleton;
+    }
+
+    public Context getContext() {
+        return m_context;
     }
 }

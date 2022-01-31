@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 
 import com.google.firebase.auth.FirebaseAuth;
@@ -173,7 +172,7 @@ public class MoveHereActivity extends BaseActivity {
 
         binding.vaultRV.setLayoutManager(new LinearLayoutManager(this));
 
-       RecyclerViewAdapterCategories adapterCategories = new RecyclerViewAdapterCategories(this, categories, true);
+       RecyclerViewAdapterCategories adapterCategories = new RecyclerViewAdapterCategories(this, categories, "2022", true);
 
        adapterCategories.setListener(category -> {
 

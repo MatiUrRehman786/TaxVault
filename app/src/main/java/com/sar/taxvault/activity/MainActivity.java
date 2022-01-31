@@ -5,24 +5,19 @@ import android.content.Intent;
 import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
 import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
-import android.widget.Toast;
 
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.pdftron.common.PDFNetException;
 import com.pdftron.pdf.config.ViewerBuilder2;
 import com.pdftron.pdf.config.ViewerConfig;
 import com.pdftron.pdf.controls.PdfViewCtrlTabHostFragment;
 import com.pdftron.pdf.controls.PdfViewCtrlTabHostFragment2;
 import com.pdftron.pdf.model.FileInfo;
-import com.pdftron.pdf.utils.Utils;
 import com.pdftron.pdf.widget.toolbar.builder.AnnotationToolbarBuilder;
 import com.pdftron.pdf.widget.toolbar.builder.ToolbarButtonType;
 import com.pdftron.pdf.widget.toolbar.component.DefaultToolbars;
@@ -33,16 +28,10 @@ import com.sar.taxvault.custom.CustomQuickMenu;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.io.IOUtils;
 
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
-import java.nio.channels.FileChannel;
-import java.sql.Date;
 
 public class MainActivity extends BaseActivity implements PdfViewCtrlTabHostFragment.TabHostListener {
 
@@ -71,24 +60,37 @@ public class MainActivity extends BaseActivity implements PdfViewCtrlTabHostFrag
 
             ViewerConfig viewerConfig = new ViewerConfig.Builder()
                     .addToolbarBuilder(buildNotesToolbar())
+                    .showTopToolbar(true)
+                    .showBottomToolbar(true)
+//                    .fullscreenModeEnabled(true)
                     .toolbarTitle("Edit Document")
+//                    .multiTabEnabled(true)
+                    .fullscreenModeEnabled(true)
+                    .multiTabEnabled(true)
+                    .documentEditingEnabled(true)
+//                    .longPressQuickMenuEnabled(true)
                     .saveCopyExportPath(getFilesDir().getPath())
                     .build();
 
-            try {
+//            try {
 
+            try {
                 mPdfViewCtrlTabHostFragment = ViewerBuilder2.withFile(toFile(path))
                         .usingCustomToolbar(new int[]{R.menu.my_custom_options_toolbar})
                         .usingNavIcon(R.drawable.ic_baseline_arrow_back_ios_24)
                         .usingConfig(viewerConfig)
                         .usingTheme(R.style.Theme_TaxVault)
                         .build(this);
-
             } catch (IOException e) {
-
                 e.printStackTrace();
-
+                showErrorAlert(e.getLocalizedMessage());
             }
+
+//            } catch (IOException e) {
+
+//                e.printStackTrace();
+
+//            }
 
 
             mPdfViewCtrlTabHostFragment.addHostListener(this);
@@ -299,7 +301,7 @@ public class MainActivity extends BaseActivity implements PdfViewCtrlTabHostFrag
 
         Log.d(TAG, "onTabPaused: " + b);
 //        if(b) {
-        if (fileInfo.getFile() != null) {
+        if (fileInfo.getFile() != null ) {
 
             if (fileInfo.getFile().exists()) {
 

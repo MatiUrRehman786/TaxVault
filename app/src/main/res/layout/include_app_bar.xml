@@ -27,15 +27,16 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/menuIV"
+            android:visibility="invisible"
             android:layout_width="@dimen/_16sdp"
             android:layout_height="@dimen/_16sdp"
-            android:visibility="invisible"
             android:padding="@dimen/_1sdp"
             android:layout_marginStart="@dimen/_16sdp"
-            android:src="@drawable/drawer_icon"
+            android:src="@drawable/back"
             app:layout_constraintBottom_toBottomOf="@+id/layoutCL"
             app:layout_constraintStart_toStartOf="@+id/layoutCL"
             app:layout_constraintTop_toTopOf="@+id/layoutCL" />
+
 
         <androidx.appcompat.widget.AppCompatSpinner
             android:id="@+id/yearSpinner"
@@ -64,6 +65,21 @@
             app:layout_constraintEnd_toEndOf="@+id/yearSpinner"
             app:layout_constraintTop_toTopOf="@+id/yearSpinner" />
 
+
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/attachmentIV"
+            android:visibility="gone"
+            android:layout_width="@dimen/_16sdp"
+            android:elevation="@dimen/_2sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:padding="@dimen/_1sdp"
+            android:layout_marginEnd="@dimen/_10sdp"
+            android:layout_marginStart="@dimen/_16sdp"
+            android:src="@drawable/ic_attachment"
+            app:layout_constraintBottom_toBottomOf="@+id/layoutCL"
+            app:layout_constraintEnd_toEndOf="@+id/layoutCL"
+            app:layout_constraintTop_toTopOf="@+id/layoutCL" />
 <!--        <ImageView-->
 <!--            android:id="@+id/backIV"-->
 <!--            android:layout_width="@dimen/_20sdp"-->

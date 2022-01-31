@@ -69,7 +69,7 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="@+id/fromTV" />
 
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/toTV"
             android:layout_width="0dp"
             android:layout_height="@dimen/_40sdp"
@@ -91,23 +91,7 @@
             app:layout_constraintStart_toEndOf="@+id/uniqueIDACTV"
             app:layout_constraintTop_toTopOf="parent" />
 
-        <Spinner
-            android:id="@+id/spinnerSP"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/_40sdp"
-            android:layout_marginStart="@dimen/_10sdp"
-            android:layout_marginTop="@dimen/_10sdp"
-            android:layout_marginEnd="@dimen/_20sdp"
-            android:background="@drawable/rectangle_background_light_gray"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:paddingStart="@dimen/_10sdp"
-            android:paddingEnd="@dimen/_10sdp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/uniqueIDACTV"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.appcompat.widget.AppCompatTextView
+        <TextView
             android:id="@+id/fromTV"
             android:layout_width="0dp"
             android:layout_height="@dimen/_40sdp"
@@ -130,14 +114,14 @@
             app:layout_constraintStart_toEndOf="@+id/uniqueIDACTV"
             app:layout_constraintTop_toBottomOf="@+id/toTV" />
 
-        <androidx.appcompat.widget.AppCompatEditText
+        <TextView
             android:id="@+id/messageET"
             android:layout_width="0dp"
             android:layout_height="0dp"
+            android:layout_marginBottom="@dimen/_10sdp"
             android:layout_marginTop="@dimen/_20sdp"
             android:layout_marginEnd="@dimen/_20sdp"
             android:autoSizeMaxTextSize="@dimen/_12ssp"
-            android:layout_marginBottom="@dimen/_10sdp"
             android:autoSizeMinTextSize="@dimen/_9ssp"
             android:autoSizeTextType="uniform"
             android:background="@drawable/rectangle_background_light_gray"
@@ -148,6 +132,7 @@
             android:maxLines="1"
             android:paddingHorizontal="@dimen/_12sdp"
             android:paddingVertical="@dimen/_8sdp"
+            android:scrollbars="vertical"
             android:singleLine="true"
             android:textColor="@color/black"
             android:textSize="@dimen/_12ssp"
@@ -165,7 +150,7 @@
             android:background="@drawable/rectangle_background_blue"
             android:elevation="@dimen/_1sdp"
             android:paddingVertical="@dimen/_12sdp"
-            android:text="SEND"
+            android:text="Reply"
             android:textAlignment="center"
             android:textColor="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -177,7 +162,6 @@
             android:id="@+id/attachmentIV"
             android:layout_width="@dimen/_20sdp"
             android:layout_height="@dimen/_20sdp"
-            android:visibility="gone"
             android:src="@drawable/ic_attachment"
             app:layout_constraintBottom_toBottomOf="@+id/attachmentTV"
             app:layout_constraintStart_toStartOf="@+id/messageET"
@@ -186,7 +170,6 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/attachmentTV"
-            android:visibility="gone"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/_10sdp"
@@ -198,7 +181,9 @@
             android:fontFamily="@font/poppins_medium"
             android:gravity="top"
             android:imeOptions="actionNext"
+            android:maxLines="1"
             android:scrollbars="vertical"
+            android:singleLine="true"
             android:textColor="@color/blue"
             android:textSize="@dimen/_10ssp"
             app:layout_constraintBottom_toTopOf="@+id/sendBt"
