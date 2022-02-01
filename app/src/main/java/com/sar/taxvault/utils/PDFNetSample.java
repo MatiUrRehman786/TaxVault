@@ -5,6 +5,8 @@
 
 package com.sar.taxvault.utils;
 
+import android.util.Log;
+
 import com.sar.taxvault.MyApplication;
 import com.sar.taxvault.R;
 
@@ -88,13 +90,18 @@ public abstract class PDFNetSample {
 
     protected void printHeader(OutputListener outputListener) {
         String header = MyApplication.getInstance().getString(R.string.str_running_sample_header, this.mTitle);
-        outputListener.println(header + "\n");
+
+        Log.d(TAG, "printHeader: "+header);
     }
+    final static String TAG = "OfficeToPDFTest";
 
     protected void printFooter(OutputListener outputListener) {
         String footer = MyApplication.getInstance().getString(R.string.str_running_sample_footer);
-        outputListener.println("\n" + footer);
-        outputListener.println("--------------------");
+
+        Log.d(TAG, "printFooter: "+footer);
+
+//        outputListener.println("\n" + footer);
+//        outputListener.println("--------------------");
     }
 
     protected void EnableRun() {

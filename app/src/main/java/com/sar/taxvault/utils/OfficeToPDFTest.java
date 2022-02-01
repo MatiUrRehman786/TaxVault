@@ -1,6 +1,7 @@
 package com.sar.taxvault.utils;
 
 import android.content.Context;
+import android.util.Log;
 
 import com.pdftron.common.PDFNetException;
 import com.pdftron.pdf.Convert;
@@ -19,7 +20,7 @@ import java.util.UUID;
 /** * The following sample illustrates how to use the PDF.Convert utility class to convert * .docx files to PDF * <p> * This conversion is performed entirely within the PDFNet and has *no* external or * system dependencies dependencies -- Conversion results will be the sam whether * on Windows, Linux or Android. * <p> * Please contact us if you have any questions. */
 public class OfficeToPDFTest extends PDFNetSample {
 
-    private static OutputListener mOutputListener;
+//    private static OutputListener mOutputListener;
 
 //    private static ArrayList<String> mFileList = new ArrayList<>();
 
@@ -41,7 +42,9 @@ public class OfficeToPDFTest extends PDFNetSample {
 
         } catch (Exception e) {
 
-            mOutputListener.printError(e.getStackTrace());
+
+            Log.d(TAG, "OfficeToPDFTest: ");
+//            mOutputListener.printError(e.getStackTrace());
 
         }
 
@@ -54,27 +57,13 @@ public class OfficeToPDFTest extends PDFNetSample {
     public void run(OutputListener outputListener) {
         super.run(outputListener);
 
-        mOutputListener = outputListener;
+//        mOutputListener = outputListener;
 
 //        mFileList.clear();
 
         printHeader(outputListener);
 
-
-        // first the one-line conversion interface
-//        simpleDocxConvert("Fishermen.docx", "Fishermen.pdf");
-
-        // then the more flexible line-by-line interface
-//        flexibleDocxConvert("the_rime_of_the_ancient_mariner.docx", "the_rime_of_the_ancient_mariner.pdf");
-
-        // conversion of RTL content
-        flexibleDocxConvert(UUID.randomUUID().toString()+".pdf");
-
-//        for (String file : mFileList) {
-//
-//            addToFileList(file);
-//
-//        }
+        flexibleDocxConvert(UUID.randomUUID().toString()+".pdf", outputListener);
 
         printFooter(outputListener);
     }
@@ -106,7 +95,7 @@ public class OfficeToPDFTest extends PDFNetSample {
 //        }
 //    }
 
-    public static void flexibleDocxConvert(String outputFilename) {
+    public static void flexibleDocxConvert(String outputFilename, OutputListener outputListener) {
         try {
             OfficeToPDFOptions options = new OfficeToPDFOptions();
             options.setSmartSubstitutionPluginPath(sLayoutSmartPluginPath);
@@ -115,6 +104,8 @@ public class OfficeToPDFTest extends PDFNetSample {
             // perform any conversion logic.
             // in a multithreaded environment, this object can be used to monitor
             // the conversion progress and potentially cancel it as well
+            Log.d(TAG, "flexibleDocxConvert: File Path"+filePath);
+
             DocumentConversion conversion = Convert.streamingPdfConversion(
                     filePath, options);
 
@@ -133,7 +124,9 @@ public class OfficeToPDFTest extends PDFNetSample {
 
                 // print information about the conversion
                 for (int i = 0; i < num_warnings; ++i) {
-                    mOutputListener.println("Warning: " + conversion.getWarningString(i));
+
+                    Log.d(TAG, "flexibleDocxConvert: Warning: " + conversion.getWarningString(i));
+
                 }
 
                 // save the result
@@ -142,15 +135,39 @@ public class OfficeToPDFTest extends PDFNetSample {
                 File file = new File(MyApplication.getInstance().getExternalFilesDir(null), outputFilename);
 
                 doc.save(file.getAbsolutePath(), SDFDoc.SaveMode.INCREMENTAL, null);
-                mOutputListener.fileConverted(file);
+
+                outputListener.fileConverted(file);
+
+                if(file.exists()) {
+
+                    Log.d(TAG, "flexibleDocxConvert: File exists");
+
+                    Log.d(TAG, "flexibleDocxConvert: "+file.getName());
+
+                    Log.d(TAG, "flexibleDocxConvert: "+file.getPath());
+
+                    Log.d(TAG, "flexibleDocxConvert: "+file.getAbsolutePath());
+
+                } else {
+
+                    Log.d(TAG, "flexibleDocxConvert: Not File exist");
+
+                }
+
+//                mOutputListener.fileConverted(file);
+                Log.d(TAG, "flexibleDocxConvert: Successfully saved");
                 // done
             } else {
-                mOutputListener.println("Encountered an error during conversion: " + conversion.getErrorString());
+                outputListener.printError("Unable to convert the file. Please try again");
+//                mOutputListener.println("Encountered an error during conversion: " + conversion.getErrorString());
+                Log.d(TAG, "Encountered an error during conversion:"+ conversion.getErrorString());
+
             }
         } catch (PDFNetException e) {
-            mOutputListener.println("Unable to convert MS Office document, error:");
-            mOutputListener.printError(e.getStackTrace());
-            mOutputListener.printError(e.getStackTrace());
+
+            outputListener.printError("Unable to convert the file. "+e.getLocalizedMessage());
+
+            Log.d(TAG, "flexibleDocxConvert: Unable to convert MS Office document, error"+e.getLocalizedMessage());
         }
     }
 

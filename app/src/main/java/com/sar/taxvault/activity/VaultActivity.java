@@ -6,6 +6,7 @@ import android.app.Dialog;
 import android.content.ContentResolver;
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Canvas;
@@ -20,6 +21,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
 import android.provider.MediaStore;
+import android.provider.OpenableColumns;
 import android.util.Log;
 import android.view.View;
 import android.webkit.MimeTypeMap;
@@ -63,10 +65,17 @@ import com.sar.taxvault.MyApplication;
 import com.sar.taxvault.R;
 import com.sar.taxvault.adapters.RecyclerViewAdapterFiles;
 import com.sar.taxvault.databinding.ActivityVaultBinding;
+import com.sar.taxvault.utils.FilePath;
+import com.sar.taxvault.utils.LoggingOutputListener;
+import com.sar.taxvault.utils.OfficeToPDFTest;
+import com.sar.taxvault.utils.OutputListener;
+import com.sar.taxvault.utils.PDFNetSample;
 import com.sar.taxvault.utils.UIUpdate;
 import com.sar.taxvault.utils.Utils;
 import com.whiteelephant.monthpicker.MonthPickerDialog;
 
+import org.apache.commons.io.FileUtils;
+import org.apache.commons.io.FilenameUtils;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
@@ -74,6 +83,8 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.format.DateTimeFormatter;
@@ -84,6 +95,12 @@ import java.util.List;
 import java.util.Objects;
 import java.util.UUID;
 
+import io.reactivex.Completable;
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.disposables.CompositeDisposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import io.reactivex.schedulers.Schedulers;
 import pub.devrel.easypermissions.AfterPermissionGranted;
 import pub.devrel.easypermissions.AppSettingsDialog;
 import pub.devrel.easypermissions.EasyPermissions;
@@ -125,6 +142,8 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
         setContentView(binding.getRoot());
 
         getExtrasFromIntent();
+
+        mSample = (PDFNetSample) new OfficeToPDFTest(getApplicationContext());
 
         isUploading = false;
 
@@ -308,6 +327,76 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
         }
 
         setAdapter(documents);
+
+    }
+
+    private OutputListener mOutputListener;
+
+
+    private PDFNetSample mSample;
+
+    protected final CompositeDisposable mDisposables = new CompositeDisposable();
+
+    void convert(File file, Uri uri) {
+
+        OfficeToPDFTest.fileName = file.getName() +"."+ getMimeType(uri);
+        OfficeToPDFTest.filePath = file.getPath();
+
+        mDisposables.add(
+
+                Completable.fromAction(() -> mSample.runOnBackground())
+                        .subscribeOn(Schedulers.io())
+                        .observeOn(AndroidSchedulers.mainThread())
+                        .subscribe(() -> mSample.run(new OutputListener() {
+                            @Override
+                            public void fileConverted(File file) {
+
+                                hideLoader();
+
+                                pdfEditLauncher.launch(MainActivity.start(VaultActivity.this, Uri.fromFile(file)));
+
+                            }
+
+                            @Override
+                            public void print(String output) {
+
+                            }
+
+                            @Override
+                            public void print() {
+
+                            }
+
+                            @Override
+                            public void println(String output) {
+
+                            }
+
+                            @Override
+                            public void println() {
+
+                            }
+
+                            @Override
+                            public void printError(String errorMessage) {
+
+                                hideLoader();
+
+                                showErrorAlert("Unable to create pdf");
+
+                            }
+
+                            @Override
+                            public void printError(StackTraceElement[] stackTrace) {
+
+                            }
+                        }), new Consumer<Throwable>() {
+                            @Override
+                            public void accept(Throwable throwable) throws Exception {
+                                throwable.printStackTrace();
+                            }
+                        })
+        );
 
     }
 
@@ -514,11 +603,97 @@ public class VaultActivity extends BaseActivity implements EasyPermissions.Permi
 
                 uri = resultData.getData();
 
-                pdfEditLauncher.launch(MainActivity.start(VaultActivity.this, uri));
+                if(uri.toString().contains("pdf")) {
+
+                    pdfEditLauncher.launch(MainActivity.start(VaultActivity.this, uri));
+
+                    return;
+                }
+
+                File file = null;
+
+                try {
+
+                    file = toFile(uri);
+
+                } catch (IOException e) {
+
+                    e.printStackTrace();
+
+                }
+
+                shouldShowLoader = false;
+
+                hideLoader();
+
+                if(file != null && file.exists()) {
+
+                    convert(file, uri);
+
+                } else
+
+                    showErrorAlert("File not exist");
 
             }
         }
     }
+
+    private File toFile(Uri uri) throws IOException {
+
+        String displayName = "";
+
+        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+
+        if (cursor != null && cursor.moveToFirst()) {
+
+            try {
+
+                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+
+            } finally {
+
+                cursor.close();
+
+            }
+        }
+
+        File file = File.createTempFile(
+                FilenameUtils.getBaseName(displayName),
+                "." + FilenameUtils.getExtension(displayName)
+        );
+
+        InputStream inputStream = getContentResolver().openInputStream(uri);
+
+        FileUtils.copyInputStreamToFile(inputStream, file);
+
+        return file;
+
+    }
+    void createTempFile(Uri uri) {
+
+        String dirPath = "/data/user/0/com.sar.taxvault/tempFile+"+UUID.randomUUID().toString()+".pdf";
+
+        try (InputStream ins = getContentResolver().openInputStream(uri)) {
+
+            File dest = new File(dirPath);
+
+            try (OutputStream os = new FileOutputStream(dest)) {
+                byte[] buffer = new byte[4096];
+                int length;
+                while ((length = ins.read(buffer)) > 0) {
+                    os.write(buffer, 0, length);
+                }
+                os.flush();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+    }
+
 
     private void openEditor(Uri uri) {
         ViewerConfig config = new ViewerConfig.Builder().openUrlCachePath(this.getCacheDir().getAbsolutePath()).build();

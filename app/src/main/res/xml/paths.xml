@@ -5,4 +5,8 @@
 
     <external-path name="external_files" path="."/>
 
+    <files-path name="my_docs" path="docs/"/>
+
+    <files-path name="files" path="." />
+
 </paths>

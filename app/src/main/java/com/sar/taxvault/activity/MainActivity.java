@@ -32,6 +32,7 @@ import org.apache.commons.io.FilenameUtils;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.UUID;
 
 public class MainActivity extends BaseActivity implements PdfViewCtrlTabHostFragment.TabHostListener {
 
@@ -72,8 +73,6 @@ public class MainActivity extends BaseActivity implements PdfViewCtrlTabHostFrag
                     .saveCopyExportPath(getFilesDir().getPath())
                     .build();
 
-//            try {
-
             try {
                 mPdfViewCtrlTabHostFragment = ViewerBuilder2.withFile(toFile(path))
                         .usingCustomToolbar(new int[]{R.menu.my_custom_options_toolbar})
@@ -109,22 +108,22 @@ public class MainActivity extends BaseActivity implements PdfViewCtrlTabHostFrag
 
     private File toFile(Uri uri) throws IOException {
 
-        String displayName = "";
+        String displayName = UUID.randomUUID().toString()+".pdf";
 
-        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
-
-        if (cursor != null && cursor.moveToFirst()) {
-
-            try {
-
-                displayName = cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
-
-            } finally {
-
-                cursor.close();
-
-            }
-        }
+//        Cursor cursor = getContentResolver().query(uri, null, null, null, null);
+//
+//        if (cursor != null && cursor.moveToFirst()) {
+//
+//            try {
+//
+//                displayName = UUID.randomUUID().toString() +  cursor.getString(cursor.getColumnIndex(OpenableColumns.DISPLAY_NAME));
+//
+//            } finally {
+//
+//                cursor.close();
+//
+//            }
+//        }
 
         File file = File.createTempFile(
                 FilenameUtils.getBaseName(displayName),
